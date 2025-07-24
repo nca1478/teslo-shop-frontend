@@ -1,13 +1,11 @@
 import { notFound } from "next/navigation";
 
 interface Props {
-    params: {
-        id: string;
-    };
+    params: Promise<{ id: string }>;
 }
 
-export default function CategoryPage({ params }: Props) {
-    const { id } = params;
+export default async function CategoryPage({ params }: Props) {
+    const { id } = await params;
 
     if (id === "kids") {
         notFound();

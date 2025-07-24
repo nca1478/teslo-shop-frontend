@@ -6,7 +6,7 @@ export const TopMenu = () => {
     return (
         <nav className="flex px-5 justify-between items-center w-full">
             {/* Logo */}
-            <div>
+            <div className="m-2 p-2 rounded-md transition-all hover:bg-gray-100">
                 <Link href="/">
                     <span className={`${titleFont.className} antialiased font-bold`}>Teslo</span>
                     <span> | Shop</span>
