@@ -1,11 +1,7 @@
-import { titleFont } from "@/config/fonts";
-
 export default function HomePage() {
     return (
         <main>
-            <h1>Hola Mundo</h1>
-            <h1 className={`${titleFont.className} font-bold`}>Hola Mundo</h1>
-            <h1 className={`${titleFont.className}`}>Hola Mundo</h1>
+            <h1>Home Page</h1>
         </main>
     );
 }
