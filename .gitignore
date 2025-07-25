@@ -12,6 +12,7 @@
 
 # db
 /postgres
+/src/generated/prisma
 
 # testing
 /coverage
@@ -42,5 +43,3 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-/src/generated/prisma
