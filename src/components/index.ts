@@ -7,3 +7,6 @@ export * from "./ui/sidebar/Sidebar";
 // products
 export * from "./products/product-grid/ProductGrid";
 export * from "./products/product-grid/ProductGridItem";
+
+// product
+export * from "./product/size-selector/SizeSelector";
