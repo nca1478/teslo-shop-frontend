@@ -4,12 +4,13 @@ import { useState } from "react";
 import Image from "next/image";
 import { Swiper as SwiperObject } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, FreeMode, Navigation, Thumbs } from "swiper/modules";
+import { Autoplay, FreeMode, Navigation, Pagination, Thumbs } from "swiper/modules";
 
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
+import "swiper/css/pagination";
 import "swiper/css/thumbs";
 import "./slideshow.css";
 
@@ -25,13 +26,15 @@ export const ProductSlideshow = ({ images, title, className }: Props) => {
     return (
         <div className={className}>
             <Swiper
-                style={
-                    {
-                        "--swiper-navigation-color": "#fff",
-                        "--swiper-pagination-color": "#fff",
-                    } as React.CSSProperties
-                }
+                // Estilos de las flechas
+                // style={
+                //     {
+                //         "--swiper-navigation-color": "#fff",
+                //         "--swiper-pagination-color": "#fff",
+                //     } as React.CSSProperties
+                // }
                 spaceBetween={10}
+                pagination={true}
                 navigation={true}
                 autoplay={{
                     delay: 2500,
@@ -39,7 +42,7 @@ export const ProductSlideshow = ({ images, title, className }: Props) => {
                 thumbs={{
                     swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
                 }}
-                modules={[FreeMode, Navigation, Thumbs, Autoplay]}
+                modules={[FreeMode, Navigation, Thumbs, Autoplay, Pagination]}
                 className="mySwiper2"
             >
                 {images.map((image, index) => (
