@@ -3,11 +3,14 @@ import { prisma } from "../lib/prisma";
 
 async function main() {
     // 1. Borrar registros previos
-    await Promise.all([
-        await prisma.productImage.deleteMany(),
-        await prisma.product.deleteMany(),
-        await prisma.category.deleteMany(),
-    ]);
+    await prisma.$executeRaw`TRUNCATE TABLE ONLY public."ProductImage" RESTART IDENTITY CASCADE;`;
+    await prisma.product.deleteMany();
+    await prisma.category.deleteMany();
+    // await Promise.all([
+    //     await prisma.productImage.deleteMany(),
+    //     await prisma.product.deleteMany(),
+    //     await prisma.category.deleteMany(),
+    // ]);
 
     const { categories, products } = initialData;
 
@@ -31,6 +34,16 @@ async function main() {
                 ...rest,
                 categoryId: categoriesMap[type],
             },
+        });
+
+        // 4. Agregar Imagenes
+        const imagesData = images.map((image) => ({
+            url: image,
+            productId: dbProduct.id,
+        }));
+
+        await prisma.productImage.createMany({
+            data: imagesData,
         });
     });
 
