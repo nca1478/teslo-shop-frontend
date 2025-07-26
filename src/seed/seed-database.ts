@@ -9,20 +9,30 @@ async function main() {
         await prisma.category.deleteMany(),
     ]);
 
-    const { categories } = initialData;
+    const { categories, products } = initialData;
 
     // 2. Agregar categorias
     const categoriesData = categories.map((name) => ({ name }));
     await prisma.category.createMany({ data: categoriesData });
 
-    const newCategories = await prisma.category.findMany();
+    const dbCategories = await prisma.category.findMany();
 
-    const categoriesMap = newCategories.reduce((map, category) => {
+    const categoriesMap = dbCategories.reduce((map, category) => {
         map[category.name.toLowerCase()] = category.id;
         return map;
     }, {} as Record<string, string>);
 
-    console.log(categoriesMap);
+    // 3. Agregar Productos
+    products.forEach(async (product) => {
+        const { type, images, ...rest } = product;
+
+        const dbProduct = await prisma.product.create({
+            data: {
+                ...rest,
+                categoryId: categoriesMap[type],
+            },
+        });
+    });
 
     console.log("Seed ejecutado correctamente");
 }
