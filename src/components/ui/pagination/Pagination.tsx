@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname, useSearchParams } from "next/navigation";
 import { IoChevronBackOutline, IoChevronForwardOutline } from "react-icons/io5";
 
 interface Props {
@@ -6,6 +9,30 @@ interface Props {
 }
 
 export const Pagination = ({ totalPages }: Props) => {
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+    const currentPage = Number(searchParams.get("page")) ?? 1;
+
+    const createPageUrl = (pageNumber: number | string) => {
+        const params = new URLSearchParams(searchParams);
+
+        if (pageNumber === "...") {
+            return `${pathname}?${params.toString()}`;
+        }
+
+        if (+pageNumber <= 0) {
+            return `${pathname}`;
+        }
+
+        if (+pageNumber > totalPages) {
+            return `${pathname}?${params.toString()}`;
+        }
+
+        params.set("page", pageNumber.toString());
+
+        return `${pathname}?${params.toString()}`;
+    };
+
     return (
         <div className="flex text-center justify-center mt-10 mb-20">
             <nav aria-label="Page navigation example">
@@ -13,8 +40,7 @@ export const Pagination = ({ totalPages }: Props) => {
                     <li className="page-item">
                         <Link
                             className="page-link relative block py-1.5 px-3 border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
-                            href="#"
-                            aria-disabled="true"
+                            href={createPageUrl(currentPage - 1)}
                         >
                             <IoChevronBackOutline size={30} />
                         </Link>
@@ -46,7 +72,7 @@ export const Pagination = ({ totalPages }: Props) => {
                     <li className="page-item">
                         <Link
                             className="page-link relative block py-1.5 px-3 border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
-                            href="#"
+                            href={createPageUrl(currentPage + 1)}
                         >
                             <IoChevronForwardOutline size={30} />
                         </Link>
