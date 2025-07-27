@@ -12,7 +12,7 @@ export default async function HomePage({ searchParams }: Props) {
     const { page } = await searchParams;
     const pageParam = page ? parseInt(page) : 1;
 
-    const { products, currentPage, totalPages } = await getPaginatedProductsWithImages({
+    const { products, totalPages } = await getPaginatedProductsWithImages({
         page: pageParam,
     });
 

@@ -10,7 +10,7 @@ interface Props {
     params: Promise<{ id: string }>;
 }
 
-export default async function OrdersPage({ params }: Props) {
+export default async function OrdersByIdPage({ params }: Props) {
     const { id } = await params;
 
     // Todo: verificar
