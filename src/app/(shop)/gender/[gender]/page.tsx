@@ -1,23 +1,32 @@
-import { ProductGrid, Title } from "@/components";
+import { redirect } from "next/navigation";
+import { Pagination, ProductGrid, Title } from "@/components";
 import { Gender } from "@/interfaces";
-import { initialData } from "@/seed/seed";
+import { getPaginatedProductsWithImages } from "@/actions";
 
 interface Props {
     params: Promise<{ gender: Gender }>;
+    searchParams: Promise<{ page?: string }>;
 }
 
-const seedProducts = initialData.products;
-
-export default async function CategoryPage({ params }: Props) {
+export default async function GenderPage({ params, searchParams }: Props) {
     const { gender } = await params;
+    const { page } = await searchParams;
+    const pageParam = page ? parseInt(page) : 1;
 
-    const products = seedProducts.filter((product) => product.gender === gender);
+    const { products, totalPages } = await getPaginatedProductsWithImages({
+        page: pageParam,
+        gender,
+    });
+
+    if (products.length === 0) {
+        redirect(`/gender/${gender}`);
+    }
 
     const labels: Record<Gender, string> = {
         men: "Hombres",
         women: "Mujeres",
         kids: "Niños",
-        unisex: "Unisex",
+        unisex: "Todos",
     };
 
     return (
@@ -25,6 +34,8 @@ export default async function CategoryPage({ params }: Props) {
             <Title title={`Artículos para ${labels[gender]}`} className="mb-2" />
 
             <ProductGrid products={products} />
+
+            <Pagination totalPages={totalPages} />
         </>
     );
 }
