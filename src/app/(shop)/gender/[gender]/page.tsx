@@ -1,3 +1,5 @@
+export const revalidate = 60; // mantener página en cache por 60 seg
+
 import { redirect } from "next/navigation";
 import { Pagination, ProductGrid, Title } from "@/components";
 import { Gender } from "@/interfaces";
