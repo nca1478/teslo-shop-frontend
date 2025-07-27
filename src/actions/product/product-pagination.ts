@@ -14,8 +14,7 @@ export const getPaginatedProductsWithImages = async ({
     take = 12,
     gender,
 }: PaginationOptions) => {
-    if (isNaN(Number(page))) page = 1;
-    if (page < 1) page = 1;
+    if (isNaN(Number(page)) || page < 1) page = 1;
 
     try {
         // 1. Obtener los productos
