@@ -6,6 +6,7 @@ import {
     ProductSlideshow,
     QuantitySelector,
     SizeSelector,
+    StockLabel,
 } from "@/components";
 import { titleFont } from "@/config/fonts";
 import { notFound } from "next/navigation";
@@ -49,6 +50,9 @@ export default async function ProductBySlugPage({ params }: Props) {
 
                 {/* Precio */}
                 <p className="text-lg mb-5">${product.price}</p>
+
+                {/* Stock */}
+                <StockLabel slug={product.slug} />
 
                 {/* Selector de Tallas */}
                 <SizeSelector selectedSize={product.sizes[0]} availableSizes={product.sizes} />
