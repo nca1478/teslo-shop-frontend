@@ -9,10 +9,27 @@ import {
     StockLabel,
 } from "@/components";
 import { titleFont } from "@/config/fonts";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 interface Props {
     params: Promise<{ slug: string }>;
+}
+
+// Generar Metadata - Etiquetas para el SEO
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+    const { slug } = await params;
+    const product = await getProductBySlug(slug);
+
+    return {
+        title: product?.title ?? "Producto no encontrado",
+        description: product?.description ?? "",
+        openGraph: {
+            title: product?.title ?? "Producto no encontrado",
+            description: product?.description ?? "",
+            images: [`/products/${product?.images[1]}`],
+        },
+    };
 }
 
 export default async function ProductBySlugPage({ params }: Props) {
