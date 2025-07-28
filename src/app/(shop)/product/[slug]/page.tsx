@@ -1,16 +1,11 @@
 export const revalidate = 10080; // 7 días | ojo: no funciona
 
 import { getProductBySlug } from "@/actions";
-import {
-    ProductMobileSlideshow,
-    ProductSlideshow,
-    QuantitySelector,
-    SizeSelector,
-    StockLabel,
-} from "@/components";
+import { ProductMobileSlideshow, ProductSlideshow, StockLabel } from "@/components";
 import { titleFont } from "@/config/fonts";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { AddToCart } from "./ui/AddToCart";
 
 interface Props {
     params: Promise<{ slug: string }>;
@@ -71,14 +66,8 @@ export default async function ProductBySlugPage({ params }: Props) {
                 {/* Stock */}
                 <StockLabel slug={product.slug} />
 
-                {/* Selector de Tallas */}
-                <SizeSelector selectedSize={product.sizes[0]} availableSizes={product.sizes} />
-
-                {/* Selector de Cantidad */}
-                <QuantitySelector quantity={2} />
-
-                {/* Button */}
-                <button className="btn-primary my-5">Agregar al carrito</button>
+                {/* Agregar al carrito - client side */}
+                <AddToCart product={product} />
 
                 {/* Descripción */}
                 <h3 className="font-bold text-sm">Descripción</h3>
