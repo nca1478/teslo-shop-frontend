@@ -2,6 +2,7 @@
 
 import { QuantitySelector, SizeSelector } from "@/components";
 import { Product, Size } from "@/interfaces";
+import { useCartStore } from "@/store";
 import { useState } from "react";
 
 interface Props {
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export const AddToCart = ({ product }: Props) => {
+    const addProductToCart = useCartStore((state) => state);
     const [size, setSize] = useState<Size | undefined>();
     const [quantity, setQuantity] = useState(1);
     const [posted, setPosted] = useState(false);
