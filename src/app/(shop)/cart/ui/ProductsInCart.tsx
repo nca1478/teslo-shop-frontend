@@ -7,7 +7,8 @@ import { useCartStore } from "@/store";
 import Link from "next/link";
 
 export const ProductsInCart = () => {
-    const productsInCart = useCartStore((state) => state.cart);
+    const productsInCart = useCartStore((store) => store.cart);
+    const updateProductQuantity = useCartStore((store) => store.updateProductQuantity);
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
@@ -46,11 +47,16 @@ export const ProductsInCart = () => {
 
                         {/* Precio */}
                         <p>${product.price}</p>
+
+                        {/* Cantidad */}
                         <QuantitySelector
-                            quantity={3}
-                            onQuantityChanged={(value) => console.log(value)}
+                            quantity={product.quantity}
+                            onQuantityChanged={(quantity) =>
+                                updateProductQuantity(product, quantity)
+                            }
                         />
 
+                        {/* Boton Eliminar */}
                         <button className="underline mt-3">Remover</button>
                     </div>
                 </div>
