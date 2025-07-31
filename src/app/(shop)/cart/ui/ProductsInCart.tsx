@@ -9,6 +9,7 @@ import Link from "next/link";
 export const ProductsInCart = () => {
     const productsInCart = useCartStore((store) => store.cart);
     const updateProductQuantity = useCartStore((store) => store.updateProductQuantity);
+    const removeProduct = useCartStore((store) => store.removeProduct);
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
@@ -57,7 +58,9 @@ export const ProductsInCart = () => {
                         />
 
                         {/* Boton Eliminar */}
-                        <button className="underline mt-3">Remover</button>
+                        <button className="underline mt-3" onClick={() => removeProduct(product)}>
+                            Remover
+                        </button>
                     </div>
                 </div>
             ))}
