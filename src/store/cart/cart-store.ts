@@ -1,5 +1,6 @@
-import { CartProduct } from "@/interfaces";
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import { CartProduct } from "@/interfaces";
 
 interface State {
     cart: CartProduct[];
@@ -8,32 +9,39 @@ interface State {
     //   removeProduct:
 }
 
-export const useCartStore = create<State>()((set, get) => ({
-    cart: [],
+export const useCartStore = create<State>()(
+    persist(
+        (set, get) => ({
+            cart: [],
 
-    // Métodos
-    addProductToCart: (product: CartProduct) => {
-        const { cart } = get();
+            // Métodos
+            addProductToCart: (product: CartProduct) => {
+                const { cart } = get();
 
-        // 1. Revisar si el producto existe en el carrito con la talla seleccionada
-        const productInCart = cart.some(
-            (item) => item.id === product.id && item.size === product.size
-        );
+                // 1. Revisar si el producto existe en el carrito con la talla seleccionada
+                const productInCart = cart.some(
+                    (item) => item.id === product.id && item.size === product.size
+                );
 
-        if (!productInCart) {
-            set({ cart: [...cart, product] });
-            return;
+                if (!productInCart) {
+                    set({ cart: [...cart, product] });
+                    return;
+                }
+
+                // 2. El producto existe por talla, tengo que incrementar
+                const updateCartProducts = cart.map((item) => {
+                    if (item.id === product.id && item.size === product.size) {
+                        return { ...item, quantity: item.quantity + product.quantity };
+                    }
+
+                    return item;
+                });
+
+                set({ cart: updateCartProducts });
+            },
+        }),
+        {
+            name: "shopping-cart",
         }
-
-        // 2. El producto existe por talla, tengo que incrementar
-        const updateCartProducts = cart.map((item) => {
-            if (item.id === product.id && item.size === product.size) {
-                return { ...item, quantity: item.quantity + product.quantity };
-            }
-
-            return item;
-        });
-
-        set({ cart: updateCartProducts });
-    },
-}));
+    )
+);
