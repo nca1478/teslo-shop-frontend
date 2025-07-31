@@ -22,7 +22,7 @@ export default function CartPage() {
                             Continúa comprando
                         </Link>
 
-                        {/* Items */}
+                        {/* Productos en el carrito */}
                         <ProductsInCart />
                     </div>
 
@@ -31,15 +31,6 @@ export default function CartPage() {
                         <h2 className="text-2xl mb-2">Resumen de orden</h2>
 
                         <OrderSummary />
-
-                        <div className="mt-5 mb-2 w-full">
-                            <Link
-                                className="flex btn-primary justify-center"
-                                href="/checkout/address"
-                            >
-                                Checkout
-                            </Link>
-                        </div>
                     </div>
                 </div>
             </div>

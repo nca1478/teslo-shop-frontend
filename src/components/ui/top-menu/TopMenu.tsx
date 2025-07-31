@@ -53,16 +53,24 @@ export const TopMenu = () => {
                     <IoSearchOutline className="w-5 h-5" />
                 </Link>
 
-                <Link href="/cart" className="mx-2">
-                    <div className="relative">
-                        {loaded && totalItemsInCart > 0 && (
-                            <span className="fade-in absolute text-xs rounded-full px-1 font-bold -top-2 -right-3 bg-blue-700 text-white">
+                {/* Si el carrito no tiene productos se deshabilita, si no muestra la cantidad (globito en azul) */}
+                {loaded && totalItemsInCart > 0 ? (
+                    <Link href="/cart" className="mx-2">
+                        <div className="relative">
+                            <span className="fade-in absolute text-xs rounded-full px-1 font-bold -top-2 -right-2 bg-blue-700 text-white">
                                 {totalItemsInCart}
                             </span>
-                        )}
-                        <IoCartOutline className="w-5 h-5" />
-                    </div>
-                </Link>
+
+                            <IoCartOutline className="w-5 h-5" />
+                        </div>
+                    </Link>
+                ) : (
+                    <button className="mx-2 cursor-not-allowed" disabled>
+                        <div className="relative">
+                            <IoCartOutline className="w-5 h-5" />
+                        </div>
+                    </button>
+                )}
 
                 {/* Abrir menu */}
                 <button

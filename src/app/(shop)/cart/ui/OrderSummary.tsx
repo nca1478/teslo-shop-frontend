@@ -44,18 +44,27 @@ export const OrderSummary = () => {
                 <span className="mt-5 text-2xl text-right">{currencyFormat(total)}</span>
             </div>
 
-            {/* Botón de siguiente */}
+            {/* Botones de siguiente y checkout */}
             <div className="mt-5 mb-2 w-full">
                 {itemsInCart > 0 ? (
-                    <Link className="flex btn-primary justify-center" href="/checkout/address">
-                        Siguiente
-                    </Link>
+                    <>
+                        <Link
+                            className="flex btn-primary justify-center mb-3"
+                            href="/checkout/address"
+                        >
+                            Siguiente
+                        </Link>
+
+                        <Link className="flex btn-primary justify-center" href="/checkout/address">
+                            Checkout
+                        </Link>
+                    </>
                 ) : (
                     <button
-                        className="flex w-full btn-disabled cursor-not-allowed justify-center"
+                        className="btn-primary justify-center cursor-not-allowed w-full"
                         disabled
                     >
-                        Siguiente
+                        Checkout
                     </button>
                 )}
             </div>
