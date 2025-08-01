@@ -18,6 +18,8 @@ export const authConfig: NextAuthConfig = {
 
                 const { email, password } = parsedCredentials.data;
 
+                console.log(parsedCredentials.success);
+
                 console.log({ email, password });
 
                 // TODO: Buscar el correo
