@@ -12,7 +12,7 @@ import {
     IoShirtOutline,
     IoTicketOutline,
 } from "react-icons/io5";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { useUIStore } from "@/store";
 import { logout } from "@/actions";
 
@@ -24,6 +24,7 @@ export const Sidebar = () => {
 
     const handleLogout = () => {
         logout();
+        signOut({ callbackUrl: "/" }); // hace re-render del componente Sidebar
         closeSideMenu();
     };
 
