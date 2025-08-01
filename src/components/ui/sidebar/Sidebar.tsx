@@ -85,9 +85,11 @@ export const Sidebar = () => {
                     <span className="ml-3 text-xl">Ordenes</span>
                 </Link>
 
+                {/* Ingresar */}
                 <Link
-                    href="/"
+                    href="/auth/login"
                     className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+                    onClick={closeSideMenu}
                 >
                     <IoLogInOutline size={30} />
                     <span className="ml-3 text-xl">Ingresar</span>
