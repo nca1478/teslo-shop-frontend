@@ -12,12 +12,16 @@ import {
     IoShirtOutline,
     IoTicketOutline,
 } from "react-icons/io5";
+import { useSession } from "next-auth/react";
 import { useUIStore } from "@/store";
 import { logout } from "@/actions";
 
 export const Sidebar = () => {
     const isSideMenuOpen = useUIStore((state) => state.isSideMenuOpen);
     const closeSideMenu = useUIStore((state) => state.closeSideMenu);
+    const { data: session } = useSession();
+
+    console.log({ session });
 
     const handleLogout = () => {
         logout();
