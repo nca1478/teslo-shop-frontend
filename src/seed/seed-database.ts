@@ -3,6 +3,7 @@ import { prisma } from "../lib/prisma";
 
 async function main() {
     // 1. Borrar registros previos
+    await prisma.user.deleteMany();
     await prisma.$executeRaw`TRUNCATE TABLE ONLY public."ProductImage" RESTART IDENTITY CASCADE;`;
     await prisma.product.deleteMany();
     await prisma.category.deleteMany();
@@ -12,9 +13,14 @@ async function main() {
     //     await prisma.category.deleteMany(),
     // ]);
 
-    const { categories, products } = initialData;
+    const { categories, products, users } = initialData;
 
-    // 2. Agregar categorias
+    // 2. Agregar usuarios
+    await prisma.user.createMany({
+        data: users,
+    });
+
+    // 3. Agregar categorias
     const categoriesData = categories.map((name) => ({ name }));
     await prisma.category.createMany({ data: categoriesData });
 
@@ -25,7 +31,7 @@ async function main() {
         return map;
     }, {} as Record<string, string>);
 
-    // 3. Agregar Productos
+    // 4. Agregar Productos
     products.forEach(async (product) => {
         const { type, images, ...rest } = product;
 
@@ -36,7 +42,7 @@ async function main() {
             },
         });
 
-        // 4. Agregar Imagenes
+        // 5. Agregar Imagenes
         const imagesData = images.map((image) => ({
             url: image,
             productId: dbProduct.id,
