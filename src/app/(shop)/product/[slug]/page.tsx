@@ -2,10 +2,10 @@ export const revalidate = 10080; // 7 días | ojo: no funciona
 
 import { getProductBySlug } from "@/actions";
 import { ProductMobileSlideshow, ProductSlideshow, StockLabel } from "@/components";
-import { titleFont } from "@/config/fonts";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { AddToCart } from "./ui/AddToCart";
+import { titleFont } from "@/config/fonts/fonts";
 
 interface Props {
     params: Promise<{ slug: string }>;

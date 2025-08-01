@@ -1,4 +1,4 @@
-import { titleFont } from "@/config/fonts";
+import { titleFont } from "@/config/fonts/fonts";
 
 interface Props {
     title: string;

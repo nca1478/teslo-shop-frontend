@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { titleFont } from "@/config/fonts";
 import { IoCartOutline, IoSearchOutline } from "react-icons/io5";
 import { useCartStore, useUIStore } from "@/store";
+import { titleFont } from "@/config/fonts/fonts";
 
 export const TopMenu = () => {
     const openSideMenu = useUIStore((state) => state.openSideMenu);

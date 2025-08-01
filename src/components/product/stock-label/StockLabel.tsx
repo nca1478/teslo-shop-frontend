@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { getStockBySlug } from "@/actions";
-import { titleFont } from "@/config/fonts";
+import { titleFont } from "@/config/fonts/fonts";
 
 interface Props {
     slug: string;

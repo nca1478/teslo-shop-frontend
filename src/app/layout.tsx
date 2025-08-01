@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { inter } from "@/config/fonts";
 import { Provider } from "@/components";
+import { inter } from "@/config/fonts/fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {

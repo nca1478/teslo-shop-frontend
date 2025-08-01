@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { titleFont } from "@/config/fonts";
+import { titleFont } from "@/config/fonts/fonts";
 
 export const PageNotFound = () => {
     return (
