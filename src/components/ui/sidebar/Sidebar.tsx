@@ -13,10 +13,16 @@ import {
     IoTicketOutline,
 } from "react-icons/io5";
 import { useUIStore } from "@/store";
+import { logout } from "@/actions";
 
 export const Sidebar = () => {
     const isSideMenuOpen = useUIStore((state) => state.isSideMenuOpen);
     const closeSideMenu = useUIStore((state) => state.closeSideMenu);
+
+    const handleLogout = () => {
+        logout();
+        closeSideMenu();
+    };
 
     return (
         <div>
@@ -87,13 +93,14 @@ export const Sidebar = () => {
                     <span className="ml-3 text-xl">Ingresar</span>
                 </Link>
 
-                <Link
-                    href="/"
-                    className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+                {/* Salir */}
+                <button
+                    className="w-full flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all cursor-pointer"
+                    onClick={handleLogout}
                 >
                     <IoLogOutOutline size={30} />
                     <span className="ml-3 text-xl">Salir</span>
-                </Link>
+                </button>
 
                 {/* Line Separator */}
                 <div className="w-full h-px bg-gray-200 my-10" />
