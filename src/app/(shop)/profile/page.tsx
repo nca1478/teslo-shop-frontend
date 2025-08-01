@@ -1,5 +1,5 @@
+import { auth } from "@/auth.config";
 import { Title } from "@/components";
-import { auth } from "@/config";
 import { redirect } from "next/navigation";
 
 export default async function ProfilePage() {

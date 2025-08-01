@@ -1,1 +1,2 @@
-export * from "./auth/auth.config";
+export * from "./fonts/fonts";
+export * from "./protected-routes/protected.routes";
