@@ -1,17 +1,14 @@
-import { initialData } from "./seed";
 import { prisma } from "../lib/prisma";
+import { initialData } from "./seed";
+import { countries } from "./seed-countries";
 
 async function main() {
     // 1. Borrar registros previos
     await prisma.user.deleteMany();
+    await prisma.country.deleteMany();
     await prisma.$executeRaw`TRUNCATE TABLE ONLY public."ProductImage" RESTART IDENTITY CASCADE;`;
     await prisma.product.deleteMany();
     await prisma.category.deleteMany();
-    // await Promise.all([
-    //     await prisma.productImage.deleteMany(),
-    //     await prisma.product.deleteMany(),
-    //     await prisma.category.deleteMany(),
-    // ]);
 
     const { categories, products, users } = initialData;
 
@@ -20,18 +17,22 @@ async function main() {
         data: users,
     });
 
-    // 3. Agregar categorias
+    // 3. Agregar paises
+    await prisma.country.createMany({
+        data: countries,
+    });
+
+    // 4. Agregar categorias
     const categoriesData = categories.map((name) => ({ name }));
     await prisma.category.createMany({ data: categoriesData });
 
     const dbCategories = await prisma.category.findMany();
-
     const categoriesMap = dbCategories.reduce((map, category) => {
         map[category.name.toLowerCase()] = category.id;
         return map;
     }, {} as Record<string, string>);
 
-    // 4. Agregar Productos
+    // 5. Agregar Productos
     products.forEach(async (product) => {
         const { type, images, ...rest } = product;
 
@@ -42,7 +43,7 @@ async function main() {
             },
         });
 
-        // 5. Agregar Imagenes
+        // 6. Agregar Imagenes
         const imagesData = images.map((image) => ({
             url: image,
             productId: dbProduct.id,
