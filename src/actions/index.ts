@@ -1,3 +1,6 @@
+// address
+export * from "./address/set-user-address";
+
 // auth
 export * from "./auth/login";
 export * from "./auth/logout";
