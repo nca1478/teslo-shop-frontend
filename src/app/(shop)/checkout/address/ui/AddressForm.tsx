@@ -1,12 +1,13 @@
 "use client";
 
 import clsx from "clsx";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useSession } from "next-auth/react";
 import { Address, Country } from "@/interfaces";
 import { useAddressStore } from "@/store";
-import { useEffect } from "react";
-import { useSession } from "next-auth/react";
 import { deleteUserAddress, setUserAddress } from "@/actions";
+import { useRouter } from "next/navigation";
 
 type FormInputs = {
     firstName: string;
@@ -41,19 +42,22 @@ export const AddressForm = ({ countries, userStoredAddress = {} }: Props) => {
 
     const setAddress = useAddressStore((state) => state.setAddress);
     const address = useAddressStore((state) => state.address);
+    const router = useRouter();
 
     // obtener datos del usuario. si no hay sessión, entonces redirige a la vista de login
     const { data: session } = useSession({ required: true });
 
-    const onSubmit = (data: FormInputs) => {
+    const onSubmit = async (data: FormInputs) => {
         const { rememberAddress, ...restAddress } = data;
         setAddress(data);
 
         if (rememberAddress) {
-            setUserAddress(restAddress, session!.user.id); // guardar en la db
+            await setUserAddress(restAddress, session!.user.id); // guardar en la db
         } else {
-            deleteUserAddress(session!.user.id); // eliminar de la db
+            await deleteUserAddress(session!.user.id); // eliminar de la db
         }
+
+        router.push("/checkout"); // si sale bien, abre el page checkout
     };
 
     useEffect(() => {
