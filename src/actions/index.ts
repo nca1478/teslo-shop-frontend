@@ -1,5 +1,6 @@
 // address
 export * from "./address/set-user-address";
+export * from "./address/delete-user-address";
 
 // auth
 export * from "./auth/login";
