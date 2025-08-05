@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
 interface State {
     address: {
@@ -16,25 +16,28 @@ interface State {
 }
 
 export const useAddressStore = create<State>()(
-    persist(
-        (set) => ({
-            address: {
-                firstName: "",
-                lastName: "",
-                address: "",
-                address2: "",
-                postalCode: "",
-                country: "",
-                phone: "",
-            },
+    devtools(
+        persist(
+            (set) => ({
+                address: {
+                    firstName: "",
+                    lastName: "",
+                    address: "",
+                    address2: "",
+                    postalCode: "",
+                    country: "",
+                    phone: "",
+                },
 
-            // Métodos
-            setAddress: (address) => {
-                set({ address });
-            },
-        }),
-        {
-            name: "address-storage",
-        }
+                // Métodos
+                setAddress: (address) => {
+                    set({ address });
+                },
+            }),
+            {
+                name: "address-storage",
+                storage: createJSONStorage(() => localStorage),
+            }
+        )
     )
 );
