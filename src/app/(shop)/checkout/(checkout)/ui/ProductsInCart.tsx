@@ -6,8 +6,8 @@ import { useCartStore } from "@/store";
 import { currencyFormat } from "@/utils";
 
 export const ProductsInCart = () => {
-    const productsInCart = useCartStore((state) => state.cart);
     const [loaded, setLoaded] = useState(false);
+    const productsInCart = useCartStore((state) => state.cart);
 
     useEffect(() => {
         setLoaded(true);

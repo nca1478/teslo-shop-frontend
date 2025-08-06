@@ -1,16 +1,35 @@
 "use client";
 
-import { useAddressStore, useCartStore } from "@/store";
-import { currencyFormat } from "@/utils";
 import { useEffect, useState } from "react";
 import { useShallow } from "zustand/shallow";
+import clsx from "clsx";
+import { useAddressStore, useCartStore } from "@/store";
+import { currencyFormat } from "@/utils";
 
 export const PlaceOrder = () => {
     const [loaded, setLoaded] = useState(false);
+    const [isPlacingOrder, setIsPlacingOrder] = useState(false);
+
+    const cart = useCartStore((store) => store.cart);
     const address = useAddressStore((state) => state.address);
     const { itemsInCart, subTotal, tax, total } = useCartStore(
         useShallow((state) => state.getSummaryInformation())
     );
+
+    const onPlaceOrder = async () => {
+        setIsPlacingOrder(true);
+        // await sleep(2);
+
+        const productsToOrder = cart.map((product) => ({
+            productId: product.id,
+            quantity: product.quantity,
+            size: product.size,
+        }));
+
+        console.log({ address, productsToOrder });
+
+        setIsPlacingOrder(false);
+    };
 
     useEffect(() => {
         setLoaded(true);
@@ -75,7 +94,11 @@ export const PlaceOrder = () => {
 
                 <button
                     //href="/orders/123"
-                    className="flex btn-primary justify-center"
+                    onClick={onPlaceOrder}
+                    className={clsx({
+                        "btn-primary": !isPlacingOrder,
+                        "btn-disabled": isPlacingOrder,
+                    })}
                 >
                     Colocar orden
                 </button>
