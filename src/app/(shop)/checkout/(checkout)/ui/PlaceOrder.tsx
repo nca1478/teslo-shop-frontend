@@ -36,11 +36,11 @@ export const PlaceOrder = () => {
     }, []);
 
     if (!loaded) {
-        <p>Loading...</p>;
+        return <p>Loading...</p>;
     }
 
     return (
-        <div className="bg-white rounded-xl shadow-xl p-7">
+        <>
             {/* Dirección de Entrega */}
             <h2 className="text-2xl mb-2">Dirección de entrega</h2>
             <div className="mb-10">
@@ -103,6 +103,6 @@ export const PlaceOrder = () => {
                     Colocar orden
                 </button>
             </div>
-        </div>
+        </>
     );
 };

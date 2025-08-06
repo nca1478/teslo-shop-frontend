@@ -22,7 +22,9 @@ export default function CheckoutPage() {
                     </div>
 
                     {/* Checkout - Resumen de orden */}
-                    <PlaceOrder />
+                    <div className="bg-white rounded-xl shadow-xl p-7">
+                        <PlaceOrder />
+                    </div>
                 </div>
             </div>
         </div>
