@@ -11,7 +11,8 @@ Tienda E-commerce desarrollada en Nextjs 15 y Tailwind.
 5. Levantar la base de datos `docker compose up -d`.
 6. Correr las migraciones de Prisma `npx prisma migrate dev` y `npx prisma generate`.
 7. Ejecutar seed `npm run seed`.
-8. Correr el proyecto `npm run dev`.
+8. Limpiar el localStorage del navegador.
+9. Correr el proyecto `npm run dev`.
 
 # Ejecutar en PROD
 
