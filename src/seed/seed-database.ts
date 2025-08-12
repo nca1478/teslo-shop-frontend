@@ -4,11 +4,22 @@ import { countries } from "./seed-countries";
 
 async function main() {
     // 1. Borrar registros previos
+
+    // orders
+    await prisma.orderAddress.deleteMany();
+    await prisma.orderItem.deleteMany();
+    await prisma.order.deleteMany();
+
+    // users
     await prisma.userAddress.deleteMany();
     await prisma.user.deleteMany();
-    await prisma.country.deleteMany();
+
+    // products
     await prisma.$executeRaw`TRUNCATE TABLE ONLY public."ProductImage" RESTART IDENTITY CASCADE;`;
     await prisma.product.deleteMany();
+
+    // categories & countries
+    await prisma.country.deleteMany();
     await prisma.category.deleteMany();
 
     const { categories, products, users } = initialData;
