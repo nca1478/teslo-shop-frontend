@@ -5,6 +5,7 @@ import { useShallow } from "zustand/shallow";
 import clsx from "clsx";
 import { useAddressStore, useCartStore } from "@/store";
 import { currencyFormat } from "@/utils";
+import { placeOrder } from "@/actions";
 
 export const PlaceOrder = () => {
     const [loaded, setLoaded] = useState(false);
@@ -26,7 +27,9 @@ export const PlaceOrder = () => {
             size: product.size,
         }));
 
-        console.log({ address, productsToOrder });
+        const resp = await placeOrder(productsToOrder, address);
+
+        console.log(resp);
 
         setIsPlacingOrder(false);
     };

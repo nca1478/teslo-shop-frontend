@@ -11,6 +11,9 @@ export * from "./auth/register";
 // country
 export * from "./country/get-countries";
 
+// order
+export * from "./order/place-order";
+
 // product
 export * from "./product/get-product-by-slug";
 export * from "./product/product-pagination";
