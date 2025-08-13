@@ -1,8 +1,8 @@
 "use server";
 
-import { auth } from "@/auth.config";
 import type { Address, Size } from "@/interfaces";
 import { prisma } from "@/lib/prisma";
+import { auth } from "@/auth.config";
 
 interface ProductToOrder {
     productId: string;
@@ -54,7 +54,6 @@ export const placeOrder = async (productIds: ProductToOrder[], address: Address)
     );
 
     // crear la transacción de la bd
-
     try {
         const prismaTx = await prisma.$transaction(async (tx) => {
             // 1. actualizar el stock de los productos
@@ -121,6 +120,7 @@ export const placeOrder = async (productIds: ProductToOrder[], address: Address)
 
             // 3. crear la dirección de la orden
             const { country, ...restAddress } = address;
+
             const orderAddress = await tx.orderAddress.create({
                 data: {
                     ...restAddress,
