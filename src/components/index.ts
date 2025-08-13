@@ -23,3 +23,4 @@ export * from "./ui/sidebar/Sidebar";
 export * from "./ui/footer/Footer";
 export * from "./ui/pagination/Pagination";
 export * from "./ui/unauthorized/PageUnauthorized";
+export * from "./ui/spinner/Spinner";
