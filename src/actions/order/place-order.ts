@@ -53,7 +53,10 @@ export const placeOrder = async (productIds: ProductToOrder[], address: Address)
         { subTotal: 0, tax: 0, total: 0 }
     );
 
-    console.log({ itemsInOrder, subTotal, tax, total });
-
     // crear la transacción de la bd
+    const prismaTx = await prisma.$transaction(async (tx) => {
+        // 1. actualizar el stock de los productos
+        // 2. crear la orden - orderItem - detalle de la orden
+        // 3. crear la dirección de la orden
+    });
 };
