@@ -35,19 +35,21 @@ export default async function OrdersByIdPage({ params }: Props) {
                             className={clsx(
                                 "flex items-center rounded-lg py-2 px-3.5 text-xs font-bold text-white mb-5",
                                 {
-                                    "bg-red-500": false,
-                                    "bg-green-700": true,
+                                    "bg-red-500": !order!.isPaid,
+                                    "bg-green-700": order!.isPaid,
                                 }
                             )}
                         >
+                            {/* Etiqueta de status de pago */}
                             <IoCardOutline size={30} />
                             {/* <span className="mx-2">Pendiente de pago</span> */}
-                            <span className="mx-2">Pagada</span>
+                            <span className="mx-2">{order!.isPaid ? "Pagado" : "No Pagada"}</span>
                         </div>
 
                         {/* Items */}
                         {order!.OrderItem.map((item) => (
-                            <div key={item.product.slug} className="flex mb-5">
+                            <div key={item.product.slug + "-" + item.size} className="flex mb-5">
+                                {/* Imagen del Producto */}
                                 <Image
                                     src={`/products/${item.product.ProductImage[0].url}`}
                                     width={100}
@@ -61,12 +63,17 @@ export default async function OrdersByIdPage({ params }: Props) {
                                 />
 
                                 <div>
+                                    {/* Nombre Producto */}
                                     <p>
                                         {item.product.title} - <span>{`(${item.size})`}</span>
                                     </p>
+
+                                    {/* Precio * Cantidad */}
                                     <p>
-                                        ${item.price} x {item.quantity} Und
+                                        ${item.price} x {item.quantity} Und.
                                     </p>
+
+                                    {/* Subtotal */}
                                     <p className="font-bold">
                                         Subtotal: {currencyFormat(item.price * item.quantity)}
                                     </p>
@@ -75,8 +82,9 @@ export default async function OrdersByIdPage({ params }: Props) {
                         ))}
                     </div>
 
-                    {/* Checkout - Resumen de orden */}
+                    {/* Checkout */}
                     <div className="bg-white rounded-xl shadow-xl p-7">
+                        {/* Dirección de Entrega */}
                         <h2 className="text-2xl mb-2">Dirección de entrega</h2>
                         <div className="mb-10">
                             <p className="text-xl">{`${address!.firstName} ${
@@ -94,8 +102,8 @@ export default async function OrdersByIdPage({ params }: Props) {
                         {/* Divider */}
                         <div className="w-full h-0.5 rounded bg-gray-200 mb-10" />
 
+                        {/* Resumen de la orden */}
                         <h2 className="text-2xl mb-2">Resumen de orden</h2>
-
                         <div className="grid grid-cols-2">
                             <span>Cantidad</span>
                             <span className="text-right">
@@ -116,6 +124,7 @@ export default async function OrdersByIdPage({ params }: Props) {
                             </span>
                         </div>
 
+                        {/* Etiqueta de status de pago */}
                         <div className="mt-5 mb-2 w-full">
                             <div
                                 className={clsx(

@@ -36,14 +36,18 @@ export const ProductsInCart = () => {
 
                     <div>
                         {/* Nombre Producto */}
-                        <span>
+                        <p>
                             {product.title} - <span>{`(${product.size})`}</span>
-                        </span>
+                        </p>
 
-                        {/* Precio */}
+                        {/* Precio * Cantidad */}
+                        <p>
+                            ${product.price} x {product.quantity} Und.
+                        </p>
+
+                        {/* Subtotal */}
                         <p className="font-bold">
-                            ${product.price} x {product.quantity} ={" "}
-                            {currencyFormat(product.price * product.quantity)}
+                            Subtotal: {currencyFormat(product.price * product.quantity)}
                         </p>
                     </div>
                 </div>
