@@ -31,6 +31,7 @@ export default async function OrdersByIdPage({ params }: Props) {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
                     {/* Carrito */}
                     <div className="flex flex-col mt-5">
+                        {/* Etiqueta de status de pago */}
                         <div
                             className={clsx(
                                 "flex items-center rounded-lg py-2 px-3.5 text-xs font-bold text-white mb-5",
@@ -40,7 +41,6 @@ export default async function OrdersByIdPage({ params }: Props) {
                                 }
                             )}
                         >
-                            {/* Etiqueta de status de pago */}
                             <IoCardOutline size={30} />
                             {/* <span className="mx-2">Pendiente de pago</span> */}
                             <span className="mx-2">{order!.isPaid ? "Pagado" : "No Pagada"}</span>

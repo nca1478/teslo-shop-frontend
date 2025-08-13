@@ -1,2 +1,2 @@
 // rutas protegidas
-export const protectedRoutes = ["/checkout", "/checkout/address"];
+export const protectedRoutes = ["profile", "/checkout", "/checkout/address", "/orders"];
