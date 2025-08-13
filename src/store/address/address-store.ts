@@ -12,8 +12,8 @@ interface State {
         city: string;
         phone: string;
     };
-
     setAddress: (address: State["address"]) => void;
+    removeCurrentAddress: () => void;
 }
 
 export const useAddressStore = create<State>()(
@@ -34,6 +34,21 @@ export const useAddressStore = create<State>()(
                 // Métodos
                 setAddress: (address) => {
                     set({ address });
+                },
+
+                removeCurrentAddress: () => {
+                    set({
+                        address: {
+                            firstName: "",
+                            lastName: "",
+                            address: "",
+                            address2: "",
+                            postalCode: "",
+                            country: "",
+                            phone: "",
+                            city: "",
+                        },
+                    });
                 },
             }),
             {

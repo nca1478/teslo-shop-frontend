@@ -2,20 +2,27 @@
 
 import { useEffect, useState } from "react";
 import { useShallow } from "zustand/shallow";
+import { useRouter } from "next/navigation";
 import clsx from "clsx";
+
 import { useAddressStore, useCartStore } from "@/store";
 import { currencyFormat } from "@/utils";
 import { placeOrder } from "@/actions";
 
 export const PlaceOrder = () => {
+    const router = useRouter();
     const [loaded, setLoaded] = useState(false);
     const [isPlacingOrder, setIsPlacingOrder] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string | undefined>("");
 
     const cart = useCartStore((store) => store.cart);
-    const address = useAddressStore((state) => state.address);
+    const clearCart = useCartStore((store) => store.clearCart);
     const { itemsInCart, subTotal, tax, total } = useCartStore(
         useShallow((state) => state.getSummaryInformation())
     );
+
+    const address = useAddressStore((state) => state.address);
+    const removeCurrentAddress = useAddressStore((store) => store.removeCurrentAddress);
 
     const onPlaceOrder = async () => {
         setIsPlacingOrder(true);
@@ -28,10 +35,18 @@ export const PlaceOrder = () => {
         }));
 
         const resp = await placeOrder(productsToOrder, address);
+        if (!resp.ok) {
+            setIsPlacingOrder(false);
+            setErrorMessage(resp.message);
+            return;
+        }
 
-        console.log(resp);
+        // Salio todo bien - limpiar stores
+        clearCart();
+        removeCurrentAddress();
 
-        setIsPlacingOrder(false);
+        // ir a la vista de orden final
+        router.replace("/orders/" + resp.order!.id);
     };
 
     useEffect(() => {
@@ -94,6 +109,8 @@ export const PlaceOrder = () => {
                         </a>
                     </span>
                 </p>
+
+                <p className="text-red-500 mb-2">{errorMessage}</p>
 
                 <button
                     //href="/orders/123"
