@@ -3,6 +3,7 @@
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import { CreateOrderData, CreateOrderActions } from "@paypal/paypal-js";
 import { Spinner } from "../ui/spinner/Spinner";
+import { setTransactionId } from "@/actions";
 
 interface Props {
     orderId: string;
@@ -39,7 +40,11 @@ export const PayPalButton = ({ orderId, amount }: Props) => {
             ],
         });
 
-        console.log({ transactionId });
+        const order = await setTransactionId(orderId, transactionId);
+
+        if (!order) {
+            throw new Error("No se pudo actualizar la orden");
+        }
 
         return transactionId;
     };
