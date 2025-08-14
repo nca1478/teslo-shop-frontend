@@ -18,6 +18,7 @@ export * from "./order/get-orders-by-user";
 
 // payments
 export * from "./payments/set-transaction-id";
+export * from "./payments/paypal-check-payment";
 
 // product
 export * from "./product/get-product-by-slug";
