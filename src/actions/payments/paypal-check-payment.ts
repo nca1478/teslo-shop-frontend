@@ -1,6 +1,7 @@
 "use server";
 
 import { PayPalOrderStatusResponse } from "@/interfaces";
+import { prisma } from "@/lib/prisma";
 
 export const paypalCheckPayment = async (paypalTransactionId: string) => {
     const authToken = await getPayPalBearerToken();
@@ -29,9 +30,28 @@ export const paypalCheckPayment = async (paypalTransactionId: string) => {
         };
     }
 
-    // TODO: realizar la actualizacion en la base de datos
+    // Actualizar la base de datos
+    try {
+        await prisma.order.update({
+            where: { id: "6344375f-c1a7-48ac-9f24-f7988fc41eef" },
+            data: {
+                isPaid: true,
+                paidAt: new Date(),
+            },
+        });
 
-    console.log({ status, purchase_units });
+        // TODO: Revalidar un path
+
+        return {
+            ok: true,
+        };
+    } catch (error) {
+        console.log(error);
+        return {
+            ok: false,
+            message: "El pago no se pudo realizar",
+        };
+    }
 };
 
 const getPayPalBearerToken = async (): Promise<string | null> => {
