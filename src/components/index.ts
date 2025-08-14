@@ -1,3 +1,6 @@
+// orders
+export * from "./orders/OrderStatus";
+
 // paypal
 export * from "./paypal/PaypalButton";
 
