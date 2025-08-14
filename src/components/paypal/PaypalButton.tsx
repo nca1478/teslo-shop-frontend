@@ -39,14 +39,13 @@ export const PayPalButton = ({ orderId, amount }: Props) => {
             intent: "CAPTURE",
             purchase_units: [
                 {
-                    // reference_id: "d9f80740-38f0-11e8-b467-0ed5f89f718b",
+                    invoice_id: orderId,
                     amount: { currency_code: "USD", value: `${rountedAmount}` },
                 },
             ],
         });
 
         const order = await setTransactionId(orderId, transactionId);
-
         if (!order) {
             throw new Error("No se pudo actualizar la orden");
         }
