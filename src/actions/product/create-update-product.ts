@@ -1,6 +1,7 @@
 "use server";
 
 import { z } from "zod";
+import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { Gender } from "@/generated/prisma";
 import { Size } from "@/interfaces";
@@ -85,7 +86,10 @@ export const createUpdateProduct = async (formData: FormData) => {
             return { product };
         });
 
-        // Todo: RevalidatePaths
+        // revalidar los paths
+        revalidatePath("/admin/products");
+        revalidatePath(`/admin/product/${product.slug}`);
+        revalidatePath(`/products/${product.slug}`);
 
         return {
             ok: true,

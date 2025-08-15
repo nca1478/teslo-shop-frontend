@@ -5,6 +5,7 @@ import clsx from "clsx";
 import Image from "next/image";
 import { Category, Product, ProductImage } from "@/interfaces";
 import { createUpdateProduct } from "@/actions";
+import { useRouter } from "next/navigation";
 
 interface Props {
     // Partial: los datos de Product son opcionales y puede tener ProductImage[] (optional)
@@ -27,6 +28,7 @@ interface FormInputs {
 }
 
 export const ProductForm = ({ product, categories }: Props) => {
+    const router = useRouter();
     const {
         handleSubmit,
         register,
@@ -74,7 +76,14 @@ export const ProductForm = ({ product, categories }: Props) => {
         formData.append("categoryId", productToSave.categoryId);
         formData.append("gender", productToSave.gender);
 
-        return await createUpdateProduct(formData);
+        const { ok, product: updatedProduct } = await createUpdateProduct(formData);
+
+        if (!ok) {
+            alert("Producto no se pudo actualizar");
+            return;
+        }
+
+        router.replace(`/admin/product/${updatedProduct?.slug}`);
     };
 
     return (
