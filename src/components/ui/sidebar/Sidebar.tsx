@@ -130,8 +130,9 @@ export const Sidebar = () => {
 
                         {/* Productos */}
                         <Link
-                            href="/"
+                            href="/admin/products"
                             className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+                            onClick={closeSideMenu}
                         >
                             <IoShirtOutline size={30} />
                             <span className="ml-3 text-xl">Productos</span>
