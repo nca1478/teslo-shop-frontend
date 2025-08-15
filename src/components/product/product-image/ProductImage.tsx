@@ -24,6 +24,8 @@ export const ProductImage = ({
     const localSrc = src
         ? src.startsWith("http")
             ? src
+            : src === "placeholder.png"
+            ? "/imgs/placeholder.png"
             : `/products/${src}`
         : "/imgs/placeholder.png";
 
