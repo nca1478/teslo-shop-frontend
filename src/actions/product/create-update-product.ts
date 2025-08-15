@@ -66,8 +66,6 @@ export const createUpdateProduct = async (formData: FormData) => {
                         },
                     },
                 });
-
-                console.log({ updatedProduct: product });
             } else {
                 // Crear
                 product = await prisma.product.create({
@@ -81,6 +79,11 @@ export const createUpdateProduct = async (formData: FormData) => {
                         },
                     },
                 });
+            }
+
+            // Cargar y guardar las imágenes
+            if (formData.getAll("images")) {
+                console.log(formData.getAll("images"));
             }
 
             return { product };

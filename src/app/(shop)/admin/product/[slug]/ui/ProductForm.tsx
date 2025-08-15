@@ -25,6 +25,7 @@ interface FormInputs {
     tags: string;
     gender: "men" | "women" | "kids" | "unisex";
     categoryId: string;
+    images?: FileList;
 }
 
 export const ProductForm = ({ product, categories }: Props) => {
@@ -41,6 +42,7 @@ export const ProductForm = ({ product, categories }: Props) => {
             ...product,
             tags: product.tags?.join(", "),
             sizes: product.sizes ?? [],
+            images: undefined,
         },
     });
 
@@ -60,8 +62,9 @@ export const ProductForm = ({ product, categories }: Props) => {
 
     const onSubmit = async (data: FormInputs) => {
         const formData = new FormData();
-        const { ...productToSave } = data;
+        const { images, ...productToSave } = data;
 
+        // agregar si existe (es update) si no (es create)
         if (product.id) {
             formData.append("id", product.id ?? "");
         }
@@ -75,6 +78,13 @@ export const ProductForm = ({ product, categories }: Props) => {
         formData.append("tags", productToSave.tags);
         formData.append("categoryId", productToSave.categoryId);
         formData.append("gender", productToSave.gender);
+
+        // si vienen images, agregarlas al formData
+        if (images) {
+            for (let i = 0; i < images.length; i++) {
+                formData.append("images", images[i]);
+            }
+        }
 
         const { ok, product: updatedProduct } = await createUpdateProduct(formData);
 
@@ -221,7 +231,8 @@ export const ProductForm = ({ product, categories }: Props) => {
                             type="file"
                             multiple
                             className="p-2 border rounded-md bg-gray-200"
-                            accept="image/png, image/jpeg"
+                            accept="image/png, image/jpeg, image/avif"
+                            {...register("images")}
                         />
                     </div>
 
