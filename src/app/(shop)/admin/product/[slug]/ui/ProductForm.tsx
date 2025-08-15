@@ -1,10 +1,11 @@
 "use client";
 
-import { Category, Product } from "@/interfaces";
 import { useForm } from "react-hook-form";
+import Image from "next/image";
+import { Category, Product, ProductImage } from "@/interfaces";
 
 interface Props {
-    product: Product;
+    product: Product & { ProductImage?: ProductImage[] }; // & adicionalmente va a tener ProductImage[] (optional)
     categories: Category[];
 }
 
@@ -46,6 +47,7 @@ export const ProductForm = ({ product, categories }: Props) => {
         >
             {/* Textos */}
             <div className="w-full">
+                {/* Titulo */}
                 <div className="flex flex-col mb-2">
                     <span>Título</span>
                     <input
@@ -55,6 +57,7 @@ export const ProductForm = ({ product, categories }: Props) => {
                     />
                 </div>
 
+                {/* Slug */}
                 <div className="flex flex-col mb-2">
                     <span>Slug</span>
                     <input
@@ -64,6 +67,7 @@ export const ProductForm = ({ product, categories }: Props) => {
                     />
                 </div>
 
+                {/* Descripción */}
                 <div className="flex flex-col mb-2">
                     <span>Descripción</span>
                     <textarea
@@ -73,6 +77,7 @@ export const ProductForm = ({ product, categories }: Props) => {
                     ></textarea>
                 </div>
 
+                {/* Precio */}
                 <div className="flex flex-col mb-2">
                     <span>Price</span>
                     <input
@@ -82,6 +87,7 @@ export const ProductForm = ({ product, categories }: Props) => {
                     />
                 </div>
 
+                {/* Tags */}
                 <div className="flex flex-col mb-2">
                     <span>Tags</span>
                     <input
@@ -91,6 +97,7 @@ export const ProductForm = ({ product, categories }: Props) => {
                     />
                 </div>
 
+                {/* Gender */}
                 <div className="flex flex-col mb-2">
                     <span>Gender</span>
                     <select
@@ -105,6 +112,7 @@ export const ProductForm = ({ product, categories }: Props) => {
                     </select>
                 </div>
 
+                {/* Categoria */}
                 <div className="flex flex-col mb-2">
                     <span>Categoria</span>
                     <select
@@ -125,21 +133,25 @@ export const ProductForm = ({ product, categories }: Props) => {
 
             {/* Selector de tallas y fotos */}
             <div className="w-full">
-                {/* As checkboxes */}
+                {/* Checkboxes */}
                 <div className="flex flex-col">
-                    <span>Tallas</span>
-                    <div className="flex flex-wrap">
-                        {sizes.map((size) => (
-                            // bg-blue-500 text-white <--- si está seleccionado
-                            <div
-                                key={size}
-                                className="flex  items-center justify-center w-10 h-10 mr-2 border rounded-md"
-                            >
-                                <span>{size}</span>
-                            </div>
-                        ))}
+                    {/* Tallas */}
+                    <div>
+                        <span>Tallas</span>
+                        <div className="flex flex-wrap">
+                            {sizes.map((size) => (
+                                // bg-blue-500 text-white <--- si está seleccionado
+                                <div
+                                    key={size}
+                                    className="flex  items-center justify-center w-10 h-10 mr-2 border rounded-md"
+                                >
+                                    <span>{size}</span>
+                                </div>
+                            ))}
+                        </div>
                     </div>
 
+                    {/* Fotos */}
                     <div className="flex flex-col mt-2 mb-2">
                         <span>Fotos</span>
                         <input
@@ -148,6 +160,29 @@ export const ProductForm = ({ product, categories }: Props) => {
                             className="p-2 border rounded-md bg-gray-200"
                             accept="image/png, image/jpeg"
                         />
+                    </div>
+
+                    {/* Imagenes del producto */}
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        {product.ProductImage?.map((image) => (
+                            <div key={image.id}>
+                                <Image
+                                    alt={product.title ?? ""}
+                                    src={`/products/${image.url}`}
+                                    width={300}
+                                    height={300}
+                                    className="rounded-t-xl shadow-md"
+                                />
+
+                                <button
+                                    type="button"
+                                    onClick={() => console.log(image.id, image.url)}
+                                    className="btn-danger w-full rounded-b-xl"
+                                >
+                                    Eliminar
+                                </button>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
