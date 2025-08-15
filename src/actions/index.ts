@@ -28,3 +28,4 @@ export * from "./product/get-stock-by-slug";
 
 // user
 export * from "./user/get-paginated-users";
+export * from "./user/change-user-role";
