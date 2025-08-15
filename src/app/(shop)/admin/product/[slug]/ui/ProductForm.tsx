@@ -7,7 +7,8 @@ import { Category, Product, ProductImage } from "@/interfaces";
 import { createUpdateProduct } from "@/actions";
 
 interface Props {
-    product: Product & { ProductImage?: ProductImage[] }; // & adicionalmente va a tener ProductImage[] (optional)
+    // Partial: los datos de Product son opcionales y puede tener ProductImage[] (optional)
+    product: Partial<Product> & { ProductImage?: ProductImage[] };
     categories: Category[];
 }
 
@@ -29,14 +30,14 @@ export const ProductForm = ({ product, categories }: Props) => {
     const {
         handleSubmit,
         register,
-        formState: { isValid },
+        // formState: { isValid },
         getValues,
         setValue,
         watch,
     } = useForm<FormInputs>({
         defaultValues: {
             ...product,
-            tags: product.tags.join(", "),
+            tags: product.tags?.join(", "),
             sizes: product.sizes ?? [],
         },
     });
@@ -59,7 +60,10 @@ export const ProductForm = ({ product, categories }: Props) => {
         const formData = new FormData();
         const { ...productToSave } = data;
 
-        formData.append("id", product.id ?? "");
+        if (product.id) {
+            formData.append("id", product.id ?? "");
+        }
+
         formData.append("title", productToSave.title);
         formData.append("slug", productToSave.slug);
         formData.append("description", productToSave.description);
@@ -70,9 +74,7 @@ export const ProductForm = ({ product, categories }: Props) => {
         formData.append("categoryId", productToSave.categoryId);
         formData.append("gender", productToSave.gender);
 
-        const { ok } = await createUpdateProduct(formData);
-
-        console.log({ ok });
+        return await createUpdateProduct(formData);
     };
 
     return (
@@ -170,6 +172,16 @@ export const ProductForm = ({ product, categories }: Props) => {
             <div className="w-full">
                 {/* Checkboxes */}
                 <div className="flex flex-col">
+                    {/* Existencia */}
+                    <div className="flex flex-col mb-2">
+                        <span>Existencia</span>
+                        <input
+                            type="number"
+                            className="p-2 border rounded-md bg-gray-200"
+                            {...register("inStock", { required: true, min: 0 })}
+                        />
+                    </div>
+
                     {/* Tallas */}
                     <div>
                         <span className="font-bold">Tallas</span>
@@ -194,7 +206,7 @@ export const ProductForm = ({ product, categories }: Props) => {
                     </div>
 
                     {/* Fotos */}
-                    <div className="flex flex-col mt-2 mb-2">
+                    <div className="flex flex-col mb-2">
                         <span>Fotos</span>
                         <input
                             type="file"

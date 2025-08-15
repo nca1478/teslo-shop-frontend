@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { Gender, Product } from "@/generated/prisma";
+import { Gender } from "@/generated/prisma";
 import { Size } from "@/interfaces";
 
 // Validación de datos del formulario
@@ -69,15 +69,27 @@ export const createUpdateProduct = async (formData: FormData) => {
                 console.log({ updatedProduct: product });
             } else {
                 // Crear
+                product = await prisma.product.create({
+                    data: {
+                        ...rest,
+                        sizes: {
+                            set: rest.sizes as Size[],
+                        },
+                        tags: {
+                            set: tagsArray,
+                        },
+                    },
+                });
             }
 
-            return {
-                ok: true,
-            };
+            return { product };
         });
+
+        // Todo: RevalidatePaths
 
         return {
             ok: true,
+            product: prismaTx.product,
         };
     } catch (error) {
         console.log(error);
