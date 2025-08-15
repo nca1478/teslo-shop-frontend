@@ -8,6 +8,9 @@ export * from "./auth/login";
 export * from "./auth/logout";
 export * from "./auth/register";
 
+// category
+export * from "./category/get-categories";
+
 // country
 export * from "./country/get-countries";
 
