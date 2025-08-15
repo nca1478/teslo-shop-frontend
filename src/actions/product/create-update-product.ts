@@ -2,9 +2,13 @@
 
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
+import { v2 as cloudinary } from "cloudinary";
 import { prisma } from "@/lib/prisma";
 import { Gender } from "@/generated/prisma";
 import { Size } from "@/interfaces";
+
+// configurar url cloudinary (subir imagenes)
+cloudinary.config(process.env.CLOUDINARY_URL ?? "");
 
 // Validación de datos del formulario
 const productSchema = z.object({
@@ -83,7 +87,8 @@ export const createUpdateProduct = async (formData: FormData) => {
 
             // Cargar y guardar las imágenes
             if (formData.getAll("images")) {
-                console.log(formData.getAll("images"));
+                const images = await uploadImages(formData.getAll("images") as File[]);
+                console.log(images);
             }
 
             return { product };
@@ -104,5 +109,29 @@ export const createUpdateProduct = async (formData: FormData) => {
             ok: false,
             message: "Revisar los logs, no se pudo actualizar/crear",
         };
+    }
+};
+
+const uploadImages = async (images: File[]) => {
+    try {
+        const uploadPromises = images.map(async (image) => {
+            try {
+                const buffer = await image.arrayBuffer();
+                const base64Image = Buffer.from(buffer).toString("base64");
+
+                return cloudinary.uploader
+                    .upload(`data:image/png;base64,${base64Image}`)
+                    .then((res) => res.secure_url);
+            } catch (error) {
+                console.log(error);
+                return null;
+            }
+        });
+
+        const uploadedImages = await Promise.all(uploadPromises);
+        return uploadedImages;
+    } catch (error) {
+        console.log(error);
+        return null;
     }
 };
