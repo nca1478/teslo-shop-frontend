@@ -96,6 +96,17 @@ export const ProductForm = ({ product, categories }: Props) => {
         router.replace(`/admin/product/${updatedProduct?.slug}`);
     };
 
+    const onDeleteProductImage = async (image: ProductWithImage) => {
+        const { ok, error } = await deleteProductImage(image.id, image.url);
+
+        if (!ok) {
+            alert(error);
+            return;
+        }
+
+        return;
+    };
+
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
@@ -250,7 +261,7 @@ export const ProductForm = ({ product, categories }: Props) => {
 
                                 <button
                                     type="button"
-                                    onClick={() => deleteProductImage(image.id, image.url)}
+                                    onClick={() => onDeleteProductImage(image)}
                                     className="btn-danger w-full rounded-b-xl"
                                 >
                                     Eliminar
