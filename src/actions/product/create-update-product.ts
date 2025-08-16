@@ -88,7 +88,18 @@ export const createUpdateProduct = async (formData: FormData) => {
             // Cargar y guardar las imágenes
             if (formData.getAll("images")) {
                 const images = await uploadImages(formData.getAll("images") as File[]);
-                console.log(images);
+
+                if (!images) {
+                    throw new Error("Error al subir las imágenes");
+                }
+
+                // guardar en la base de datos
+                await prisma.productImage.createMany({
+                    data: images.map((image) => ({
+                        url: image!,
+                        productId: product.id,
+                    })),
+                });
             }
 
             return { product };
