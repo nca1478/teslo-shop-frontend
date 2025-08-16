@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { redirect } from "next/navigation";
 import { OrderStatus, PayPalButton, ProductImage, Title } from "@/components";
 import { getOrderById } from "@/actions";
