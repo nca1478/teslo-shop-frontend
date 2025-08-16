@@ -248,21 +248,21 @@ export const ProductForm = ({ product, categories }: Props) => {
                     </div>
 
                     {/* Imagenes del producto */}
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                         {product.ProductImage?.map((image) => (
-                            <div key={image.id}>
+                            <div key={image.id} className="relative">
                                 <ProductImage
                                     alt={product.title ?? ""}
                                     src={image.url}
                                     width={300}
                                     height={300}
-                                    className="rounded-t-xl shadow-md"
+                                    className="rounded-t-xl shadow-md w-full"
                                 />
 
                                 <button
                                     type="button"
                                     onClick={() => onDeleteProductImage(image)}
-                                    className="btn-danger w-full rounded-b-xl"
+                                    className="btn-danger w-full rounded-b-xl text-xs sm:text-sm py-1 sm:py-2"
                                 >
                                     Eliminar
                                 </button>
