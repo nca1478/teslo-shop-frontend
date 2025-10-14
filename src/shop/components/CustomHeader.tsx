@@ -1,9 +1,10 @@
 import { useRef, type KeyboardEvent } from "react";
 import { Link, useParams, useSearchParams } from "react-router";
-import { Search, Menu } from "lucide-react";
+import { Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { CustomLogo } from "@/components/custom/CustomLogo";
 
 export const CustomHeader = () => {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -32,14 +33,7 @@ export const CustomHeader = () => {
             <div className="container mx-auto px-4 lg:px-8">
                 <div className="flex h-16 items-center justify-between">
                     {/* Logo */}
-                    <Link to="/">
-                        <div className="flex items-center space-x-4">
-                            <Button variant="ghost" size="icon" className="md:hidden">
-                                <Menu className="h-5 w-5" />
-                            </Button>
-                            <h1 className="text-xl font-semibold tracking-tight">TESLA STYLE</h1>
-                        </div>
-                    </Link>
+                    <CustomLogo />
 
                     {/* Navigation - Desktop */}
                     <nav className="hidden md:flex items-center space-x-8">
