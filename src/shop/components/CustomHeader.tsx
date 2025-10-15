@@ -14,63 +14,61 @@ export const CustomHeader = () => {
     const query = searchParams.get("query") || "";
 
     const handleSearch = (event: KeyboardEvent<HTMLInputElement>) => {
+        // Solo ejecuta si se presiona Enter
         if (event.key !== "Enter") return;
 
+        // Obtiene el valor del input
         const query = inputRef.current?.value;
+
+        // Crea nuevos parámetros de búsqueda
         const newSearchParams = new URLSearchParams();
 
         if (!query) {
+            // Elimina el parámetro si no hay query
             newSearchParams.delete("query");
         } else {
+            // Establece el parámetro query
             newSearchParams.set("query", inputRef.current!.value);
         }
 
+        // Actualiza los parámetros de la URL
         setSearchParams(newSearchParams);
     };
 
+    const clearInput = () => {
+        if (inputRef.current) {
+            inputRef.current.value = "";
+        }
+        // Limpiar también los searchParams
+        setSearchParams(new URLSearchParams());
+    };
+
+    const selectNavigation = (selectedGender: undefined | "men" | "women" | "kid") => {
+        return cn(
+            "text-sm font-medium transition-colors hover:text-primary",
+            selectedGender === gender ? "underline underline-offset-4" : ""
+        );
+    };
+
     return (
-        <header className="sticky top-0 z-50 w-full border-b backdrop-blur bg-slate-50">
+        <header className="sticky top-0 z-50 w-full border-b backdrop-blur bg-white/80">
             <div className="container mx-auto px-4 lg:px-8">
                 <div className="flex h-16 items-center justify-between">
                     {/* Logo */}
-                    <CustomLogo />
+                    <CustomLogo handleClickLogo={clearInput} />
 
                     {/* Navigation - Desktop */}
-                    <nav className="hidden md:flex items-center space-x-8">
-                        <Link
-                            to="/"
-                            className={cn(
-                                "text-sm font-medium transition-colors hover:text-primary",
-                                !gender ? "underline underline-offset-4" : ""
-                            )}
-                        >
+                    <nav className="hidden md:flex items-center space-x-8" onClick={clearInput}>
+                        <Link to="/" className={selectNavigation(undefined)}>
                             Todos
                         </Link>
-                        <Link
-                            to="/gender/men"
-                            className={cn(
-                                "text-sm font-medium transition-colors hover:text-primary",
-                                gender === "men" ? "underline underline-offset-4" : ""
-                            )}
-                        >
+                        <Link to="/gender/men" className={selectNavigation("men")}>
                             Hombres
                         </Link>
-                        <Link
-                            to="/gender/women"
-                            className={cn(
-                                "text-sm font-medium transition-colors hover:text-primary",
-                                gender === "women" ? "underline underline-offset-4" : ""
-                            )}
-                        >
+                        <Link to="/gender/women" className={selectNavigation("women")}>
                             Mujeres
                         </Link>
-                        <Link
-                            to="/gender/kid"
-                            className={cn(
-                                "text-sm font-medium transition-colors hover:text-primary",
-                                gender === "kid" ? "underline underline-offset-4" : ""
-                            )}
-                        >
+                        <Link to="/gender/kid" className={selectNavigation("kid")}>
                             Niños
                         </Link>
                     </nav>
@@ -96,14 +94,14 @@ export const CustomHeader = () => {
                         </Button>
 
                         {/* Login */}
-                        <Link to="/auth/login">
+                        <Link to="/auth/login" onClick={() => window.scrollTo(0, 0)}>
                             <Button variant="default" size="sm" className="ml-1">
                                 Login
                             </Button>
                         </Link>
 
                         {/* Admin */}
-                        <Link to="/admin">
+                        <Link to="/admin" onClick={() => window.scrollTo(0, 0)}>
                             <Button variant="destructive" size="sm" className="ml-1">
                                 Admin
                             </Button>

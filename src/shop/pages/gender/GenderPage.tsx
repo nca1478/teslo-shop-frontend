@@ -6,13 +6,15 @@ import { useProducts } from "@/shop/hooks/useProducts";
 
 export const GenderPage = () => {
     const { gender } = useParams();
-    const genderLabel = gender === "men" ? "Hombres" : gender === "women" ? "Mujeres" : "Niños";
-
     const { data } = useProducts();
+
+    const getGenderLabel = () => {
+        return gender === "men" ? "Hombres" : gender === "women" ? "Mujeres" : "Niños";
+    };
 
     return (
         <>
-            <CustomJumbotron title={`Productos para ${genderLabel}`} />
+            <CustomJumbotron title={`Productos para ${getGenderLabel()}`} />
 
             <ProductsGrid products={data?.products || []} />
 

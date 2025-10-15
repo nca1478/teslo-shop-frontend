@@ -13,10 +13,10 @@ interface Props {
 export const ProductsGrid = ({ products }: Props) => {
     const [showFilters, setShowFilters] = useState(false);
     const [searchParams, setSearchParams] = useSearchParams();
-    const viewMode = searchParams.get("viewMode") || "grid";
+    const viewMode = searchParams.get("view-mode") || "grid";
 
     const handleViewModeChange = (mode: "grid" | "list") => {
-        searchParams.set("viewMode", mode);
+        searchParams.set("view-mode", mode);
         setSearchParams(searchParams);
     };
 

@@ -8,8 +8,8 @@ const queryClient = new QueryClient();
 export const TesloShopApp = () => {
     return (
         <QueryClientProvider client={queryClient}>
+            <RouterProvider router={appRouter} />
             <ReactQueryDevtools initialIsOpen={false} />
-            <RouterProvider router={appRouter} />;
         </QueryClientProvider>
     );
 };
