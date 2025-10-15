@@ -5,10 +5,10 @@ import { ProductsGrid } from "@/shop/components/ProductsGrid";
 import { useProducts } from "@/shop/hooks/useProducts";
 
 export const GenderPage = () => {
-    const { data } = useProducts();
     const { gender } = useParams();
-
     const genderLabel = gender === "men" ? "Hombres" : gender === "women" ? "Mujeres" : "Niños";
+
+    const { data } = useProducts();
 
     return (
         <>
@@ -16,7 +16,7 @@ export const GenderPage = () => {
 
             <ProductsGrid products={data?.products || []} />
 
-            <CustomPagination totalPages={7} />
+            <CustomPagination totalPages={data?.pages || 0} />
         </>
     );
 };
