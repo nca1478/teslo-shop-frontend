@@ -1,20 +1,25 @@
-import type { User } from "@/interfaces/user.interface";
 import { create } from "zustand";
+import type { User } from "@/interfaces/user.interface";
 import { loginAction } from "../actions/login.action";
+
+type AuthStatus = "authenticated" | "not-authenticated" | "checking";
 
 type AuthState = {
     // Propiedades
     user: User | null;
     token: string | null;
+    authStatus: AuthStatus;
 
     // Acciones
     login: (email: string, password: string) => Promise<boolean>;
+    logout: () => void;
 };
 
 export const useAuthStore = create<AuthState>()((set) => ({
-    // Implementación del Store
+    // Store
     user: null,
     token: null,
+    authStatus: "checking",
 
     // Acciones
     login: async (email: string, password: string) => {
@@ -29,5 +34,10 @@ export const useAuthStore = create<AuthState>()((set) => ({
             set({ user: null, token: null });
             return false;
         }
+    },
+
+    logout: () => {
+        localStorage.removeItem("token");
+        set({ user: null, token: null });
     },
 }));

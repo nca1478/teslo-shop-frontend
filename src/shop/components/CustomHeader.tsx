@@ -5,10 +5,12 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CustomLogo } from "@/components/custom/CustomLogo";
+import { useAuthStore } from "@/auth/store/auth.store";
 
 export const CustomHeader = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const { gender } = useParams();
+    const { user, logout } = useAuthStore();
 
     const inputRef = useRef<HTMLInputElement>(null);
     const query = searchParams.get("query") || "";
@@ -93,19 +95,30 @@ export const CustomHeader = () => {
                             <Search className="h-5 w-5" />
                         </Button>
 
-                        {/* Login */}
-                        <Link to="/auth/login" onClick={() => window.scrollTo(0, 0)}>
-                            <Button variant="default" size="sm" className="ml-1">
-                                Login
-                            </Button>
-                        </Link>
-
-                        {/* Admin */}
-                        <Link to="/admin" onClick={() => window.scrollTo(0, 0)}>
-                            <Button variant="destructive" size="sm" className="ml-1">
-                                Admin
-                            </Button>
-                        </Link>
+                        {/* Login, Logout y Admin Buttons */}
+                        {!user ? (
+                            <Link to="/auth/login" onClick={() => window.scrollTo(0, 0)}>
+                                <Button variant="default" size="sm" className="ml-1">
+                                    Login
+                                </Button>
+                            </Link>
+                        ) : (
+                            <>
+                                <Button
+                                    variant="default"
+                                    size="sm"
+                                    className="ml-1"
+                                    onClick={logout}
+                                >
+                                    Logout
+                                </Button>
+                                <Link to="/admin" onClick={() => window.scrollTo(0, 0)}>
+                                    <Button variant="destructive" size="sm" className="ml-1">
+                                        Admin
+                                    </Button>
+                                </Link>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>
