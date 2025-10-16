@@ -4,15 +4,18 @@ import { Toaster } from "sonner";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
 import { CustomFullScreenLoading } from "./components/custom/CustomFullscreenLoading";
-import { checkAuthAction } from "./auth/actions/check-auth.action";
 import { appRouter } from "./app.router";
+import { useAuthStore } from "./auth/store/auth.store";
 
 const queryClient = new QueryClient();
 
 const CheckAuthProvider = ({ children }: PropsWithChildren) => {
+    const { checkAuthStatus } = useAuthStore();
+
     const { isLoading } = useQuery({
         queryKey: ["auth"],
-        queryFn: checkAuthAction,
+        // queryFn: checkAuthAction,
+        queryFn: checkAuthStatus,
         retry: false,
         refetchInterval: 1000 * 60 * 1.5,
         refetchOnWindowFocus: true,

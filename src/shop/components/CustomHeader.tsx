@@ -103,22 +103,16 @@ export const CustomHeader = () => {
                                 </Button>
                             </Link>
                         ) : (
-                            <>
-                                <Button
-                                    variant="default"
-                                    size="sm"
-                                    className="ml-1"
-                                    onClick={logout}
-                                >
-                                    Logout
-                                </Button>
-                                <Link to="/admin" onClick={() => window.scrollTo(0, 0)}>
-                                    <Button variant="destructive" size="sm" className="ml-1">
-                                        Admin
-                                    </Button>
-                                </Link>
-                            </>
+                            <Button variant="default" size="sm" className="ml-1" onClick={logout}>
+                                Logout
+                            </Button>
                         )}
+
+                        <Link to="/admin" onClick={() => window.scrollTo(0, 0)}>
+                            <Button variant="destructive" size="sm" className="ml-1">
+                                Admin
+                            </Button>
+                        </Link>
                     </div>
                 </div>
             </div>
