@@ -6,11 +6,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CustomLogo } from "@/components/custom/CustomLogo";
-import { loginAction } from "@/auth/actions/login.action";
+import { useAuthStore } from "@/auth/store/auth.store";
 
 export const LoginPage = () => {
     const navigate = useNavigate();
     const [isPosting, setIsPosting] = useState(false);
+    const { login } = useAuthStore();
 
     const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -20,13 +21,13 @@ export const LoginPage = () => {
         const email = formData.get("email") as string;
         const password = formData.get("password") as string;
 
-        try {
-            const data = await loginAction(email, password);
-            localStorage.setItem("token", data.token);
+        const isLogin = await login(email, password);
+        if (isLogin) {
             navigate("/");
-        } catch (error) {
-            toast.error("Correo y/o contraseña no válidos!");
+            return;
         }
+
+        toast.error("Correo y/o contraseña no son válidos");
 
         setIsPosting(false);
     };
