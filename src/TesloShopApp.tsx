@@ -1,5 +1,5 @@
-import { RouterProvider } from "react-router";
 import type { PropsWithChildren } from "react";
+import { RouterProvider } from "react-router";
 import { Toaster } from "sonner";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
@@ -14,7 +14,6 @@ const CheckAuthProvider = ({ children }: PropsWithChildren) => {
 
     const { isLoading } = useQuery({
         queryKey: ["auth"],
-        // queryFn: checkAuthAction,
         queryFn: checkAuthStatus,
         retry: false,
         refetchInterval: 1000 * 60 * 1.5,
