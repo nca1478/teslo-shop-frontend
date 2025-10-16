@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { CustomLogo } from "@/components/custom/CustomLogo";
 import { useAuthStore } from "@/auth/store/auth.store";
-import { getInitials } from "@/utils/get-initial.util";
+import { getInitials } from "@/lib/get-initial.util";
 
 interface SidebarProps {
     isCollapsed: boolean;
