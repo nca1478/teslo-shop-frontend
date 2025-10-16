@@ -25,7 +25,6 @@ export const AdminRoutes = ({ children }: PropsWithChildren) => {
 
     if (authStatus === "checking") return null;
     if (authStatus === "not-authenticated") return <Navigate to="/" />;
-    // if (authStatus === "not-authenticated") return <Navigate to="/auth/login" />;
     if (!isAdmin()) return <Navigate to="/" />;
 
     return children;
