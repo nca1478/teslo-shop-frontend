@@ -11,6 +11,7 @@ import {
     HelpCircle,
     ChevronLeft,
     ChevronRight,
+    LogOut,
 } from "lucide-react";
 import { CustomLogo } from "@/components/custom/CustomLogo";
 import { useAuthStore } from "@/auth/store/auth.store";
@@ -23,7 +24,7 @@ interface SidebarProps {
 
 export const AdminSidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
     const { pathname } = useLocation();
-    const { user } = useAuthStore();
+    const { user, logout } = useAuthStore();
 
     const menuItems = [
         { icon: Home, label: "Dashboard", to: "/admin" },
@@ -34,6 +35,7 @@ export const AdminSidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) 
         { icon: Bell, label: "Notificaciones" },
         { icon: Settings, label: "Ajustes" },
         { icon: HelpCircle, label: "Ayuda" },
+        { icon: LogOut, label: "Logout" },
     ];
 
     const isActiveRoute = (to: string) => {
@@ -66,19 +68,31 @@ export const AdminSidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) 
                         const Icon = item.icon;
                         return (
                             <li key={index}>
-                                <Link
-                                    to={item.to || "/admin"}
-                                    className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-all duration-200 group ${
-                                        isActiveRoute(item.to || "/xxx")
-                                            ? "bg-blue-50 text-blue-600 border-r-2 border-blue-600"
-                                            : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                                    }`}
-                                >
-                                    <Icon size={20} className="flex-shrink-0" />
-                                    {!isCollapsed && (
-                                        <span className="font-medium">{item.label}</span>
-                                    )}
-                                </Link>
+                                {item.label === "Logout" ? (
+                                    <button
+                                        onClick={logout}
+                                        className="w-full flex items-center space-x-3 px-3 py-2 rounded-lg transition-all duration-200 group text-gray-600 hover:bg-gray-50 hover:text-gray-900 cursor-pointer"
+                                    >
+                                        <Icon size={20} className="flex-shrink-0" />
+                                        {!isCollapsed && (
+                                            <span className="font-medium">{item.label}</span>
+                                        )}
+                                    </button>
+                                ) : (
+                                    <Link
+                                        to={item.to || "/admin"}
+                                        className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-all duration-200 group ${
+                                            isActiveRoute(item.to || "/xxx")
+                                                ? "bg-blue-50 text-blue-600 border-r-2 border-blue-600"
+                                                : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                                        }`}
+                                    >
+                                        <Icon size={20} className="flex-shrink-0" />
+                                        {!isCollapsed && (
+                                            <span className="font-medium">{item.label}</span>
+                                        )}
+                                    </Link>
+                                )}
                             </li>
                         );
                     })}
