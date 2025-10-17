@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router";
+import { useForm } from "react-hook-form";
 import { Plus, SaveAll, Tag, Upload, X } from "lucide-react";
 import { AdminTitle } from "@/admin/components/AdminTitle";
 import { Button } from "@/components/ui/button";
@@ -14,8 +15,10 @@ interface Props {
 const availableSizes = ["XS", "S", "M", "L", "XL", "XXL"];
 
 export const ProductForm = ({ title, subTitle, product }: Props) => {
-    const [newTag, setNewTag] = useState("");
     const [dragActive, setDragActive] = useState(false);
+    const { register } = useForm({
+        defaultValues: product,
+    });
 
     const addTag = () => {
         // if (newTag.trim() && !product.tags.includes(newTag.trim())) {
@@ -111,6 +114,7 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
                                         type="text"
                                         // value={product.title}
                                         // onChange={(e) => handleInputChange("title", e.target.value)}
+                                        {...register("title")}
                                         className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                         placeholder="Título del producto"
                                     />
@@ -123,6 +127,7 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
                                         </label>
                                         <input
                                             type="number"
+                                            {...register("price")}
                                             // value={product.price}
                                             // onChange={(e) =>
                                             //     handleInputChange(
@@ -141,6 +146,7 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
                                         </label>
                                         <input
                                             type="number"
+                                            {...register("stock")}
                                             // value={product.stock}
                                             // onChange={(e) =>
                                             //     handleInputChange("stock", parseInt(e.target.value))
@@ -157,6 +163,7 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
                                     </label>
                                     <input
                                         type="text"
+                                        {...register("slug")}
                                         // value={product.slug}
                                         // onChange={(e) => handleInputChange("slug", e.target.value)}
                                         className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
@@ -169,6 +176,7 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
                                         Género del producto
                                     </label>
                                     <select
+                                        {...register("gender")}
                                         // value={product.gender}
                                         // onChange={(e) =>
                                         //     handleInputChange("gender", e.target.value)
@@ -178,7 +186,7 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
                                         <option value="men">Hombre</option>
                                         <option value="women">Mujer</option>
                                         <option value="unisex">Unisex</option>
-                                        <option value="kids">Niño</option>
+                                        <option value="kid">Niño</option>
                                     </select>
                                 </div>
 
@@ -187,6 +195,7 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
                                         Descripción del producto
                                     </label>
                                     <textarea
+                                        {...register("description")}
                                         // value={product.description}
                                         // onChange={(e) =>
                                         //     handleInputChange("description", e.target.value)
