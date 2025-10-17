@@ -3,7 +3,7 @@ import type { Product } from "@/interfaces/product.interface";
 import { sleep } from "@/lib/sleep";
 
 export const createUpdateProductAction = async (product: Partial<Product>): Promise<Product> => {
-    await sleep(1500);
+    await sleep(1000); // pausa
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { id, user, images = [], ...rest } = product;

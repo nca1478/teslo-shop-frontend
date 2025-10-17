@@ -12,11 +12,12 @@ interface Props {
     subTitle: string;
     product: Product;
     onSubmit: (product: Partial<Product>) => Promise<void>;
+    isPosting: boolean;
 }
 
 const availableSizes: Size[] = ["XS", "S", "M", "L", "XL", "XXL"];
 
-export const ProductForm = ({ title, subTitle, product, onSubmit }: Props) => {
+export const ProductForm = ({ title, subTitle, product, onSubmit, isPosting }: Props) => {
     const [dragActive, setDragActive] = useState(false);
     const {
         register,
@@ -100,13 +101,13 @@ export const ProductForm = ({ title, subTitle, product, onSubmit }: Props) => {
                 <AdminTitle title={title} subtitle={subTitle} />
                 <div className="flex justify-end mb-10 gap-4">
                     <Link to="/admin/products" className="flex items-center gap-2">
-                        <Button variant="outline">
+                        <Button variant="outline" type="button">
                             <X className="w-4 h-4" />
                             Cancelar
                         </Button>
                     </Link>
 
-                    <Button>
+                    <Button type="submit" disabled={isPosting}>
                         <SaveAll className="w-4 h-4" />
                         Guardar cambios
                     </Button>
