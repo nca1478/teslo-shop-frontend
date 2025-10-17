@@ -115,6 +115,7 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
                             </h2>
 
                             <div className="space-y-6">
+                                {/* Title */}
                                 <div>
                                     <label className="block text-sm font-medium text-slate-700 mb-2">
                                         Título del producto
@@ -138,66 +139,88 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
                                 </div>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    {/* Price */}
                                     <div>
                                         <label className="block text-sm font-medium text-slate-700 mb-2">
                                             Precio ($)
                                         </label>
                                         <input
                                             type="number"
-                                            {...register("price")}
-                                            // value={product.price}
-                                            // onChange={(e) =>
-                                            //     handleInputChange(
-                                            //         "price",
-                                            //         parseFloat(e.target.value)
-                                            //     )
-                                            // }
-                                            className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                            {...register("price", { required: true, min: 1 })}
+                                            className={cn(
+                                                `w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`,
+                                                {
+                                                    "border-red-500": errors.price,
+                                                }
+                                            )}
                                             placeholder="Precio del producto"
                                         />
+                                        {errors.price && (
+                                            <p className="text-red-500 text-sm mt-1">
+                                                El precio debe ser mayor a 0
+                                            </p>
+                                        )}
                                     </div>
 
+                                    {/* Stock */}
                                     <div>
                                         <label className="block text-sm font-medium text-slate-700 mb-2">
                                             Stock del producto
                                         </label>
                                         <input
                                             type="number"
-                                            {...register("stock")}
-                                            // value={product.stock}
-                                            // onChange={(e) =>
-                                            //     handleInputChange("stock", parseInt(e.target.value))
-                                            // }
-                                            className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                            {...register("stock", { required: true, min: 1 })}
+                                            className={cn(
+                                                `w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`,
+                                                {
+                                                    "border-red-500": errors.stock,
+                                                }
+                                            )}
                                             placeholder="Stock del producto"
                                         />
+                                        {errors.stock && (
+                                            <p className="text-red-500 text-sm mt-1">
+                                                El stock debe ser mayor a 0
+                                            </p>
+                                        )}
                                     </div>
                                 </div>
 
+                                {/* Slug */}
                                 <div>
                                     <label className="block text-sm font-medium text-slate-700 mb-2">
                                         Slug del producto
                                     </label>
                                     <input
                                         type="text"
-                                        {...register("slug")}
-                                        // value={product.slug}
-                                        // onChange={(e) => handleInputChange("slug", e.target.value)}
-                                        className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                        {...register("slug", {
+                                            required: true,
+                                            validate: (value) =>
+                                                !/\s/.test(value) ||
+                                                "El slug no puede contener espacios en blanco",
+                                        })}
+                                        className={cn(
+                                            `w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`,
+                                            {
+                                                "border-red-500": errors.slug,
+                                            }
+                                        )}
                                         placeholder="Slug del producto"
                                     />
+                                    {errors.slug && (
+                                        <p className="text-red-500 text-sm mt-1">
+                                            {errors.slug.message || "El slug es requerido"}
+                                        </p>
+                                    )}
                                 </div>
 
+                                {/* Gender */}
                                 <div>
                                     <label className="block text-sm font-medium text-slate-700 mb-2">
                                         Género del producto
                                     </label>
                                     <select
                                         {...register("gender")}
-                                        // value={product.gender}
-                                        // onChange={(e) =>
-                                        //     handleInputChange("gender", e.target.value)
-                                        // }
                                         className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                     >
                                         <option value="men">Hombre</option>
@@ -207,20 +230,27 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
                                     </select>
                                 </div>
 
+                                {/* Description */}
                                 <div>
                                     <label className="block text-sm font-medium text-slate-700 mb-2">
                                         Descripción del producto
                                     </label>
                                     <textarea
-                                        {...register("description")}
-                                        // value={product.description}
-                                        // onChange={(e) =>
-                                        //     handleInputChange("description", e.target.value)
-                                        // }
+                                        {...register("description", { required: true })}
                                         rows={5}
-                                        className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-none"
+                                        className={cn(
+                                            `w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`,
+                                            {
+                                                "border-red-500": errors.description,
+                                            }
+                                        )}
                                         placeholder="Descripción del producto"
                                     />
+                                    {errors.description && (
+                                        <p className="text-red-500 text-sm mt-1">
+                                            La descripción es requerida
+                                        </p>
+                                    )}
                                 </div>
                             </div>
                         </div>
