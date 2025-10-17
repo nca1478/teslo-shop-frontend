@@ -43,6 +43,7 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
             set({ user: data.user, token: data.token, authStatus: "authenticated" });
 
             return true;
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
             localStorage.removeItem("token");
             set({ user: null, token: null, authStatus: "not-authenticated" });
@@ -64,6 +65,7 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
             set({ user: data.user, token: data.token, authStatus: "authenticated" });
 
             return true;
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
             localStorage.removeItem("token");
             set({ user: null, token: null, authStatus: "not-authenticated" });
@@ -83,6 +85,7 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
             });
 
             return true;
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
             set({
                 user: undefined,

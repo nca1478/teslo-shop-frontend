@@ -15,11 +15,11 @@ export const AdminProductPage = () => {
     const subtitle =
         id === "new" ? "Aquí puedes crear un nuevo producto." : "Aquí puedes editar el producto.";
 
-    const handleSubmit = async (product: Partial<Product>) => {
-        await mutation.mutateAsync(product, {
-            onSuccess: (data) => {
+    const handleSubmit = async (productLike: Partial<Product>) => {
+        await mutation.mutateAsync(productLike, {
+            onSuccess: (product) => {
                 toast.success("Producto actualizado exitosamente");
-                navigate(`/admin/products/${data.id}`);
+                navigate(`/admin/products/${product.id}`);
             },
             onError: (error) => {
                 console.log(error);
@@ -44,7 +44,7 @@ export const AdminProductPage = () => {
             subTitle={subtitle}
             product={product}
             onSubmit={handleSubmit}
-            isPosting={mutation.isPending}
+            isPending={mutation.isPending}
         />
     );
 };

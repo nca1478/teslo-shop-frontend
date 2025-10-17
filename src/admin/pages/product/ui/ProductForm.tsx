@@ -11,13 +11,13 @@ interface Props {
     title: string;
     subTitle: string;
     product: Product;
-    onSubmit: (product: Partial<Product>) => Promise<void>;
-    isPosting: boolean;
+    onSubmit: (productLike: Partial<Product>) => Promise<void>;
+    isPending: boolean;
 }
 
 const availableSizes: Size[] = ["XS", "S", "M", "L", "XL", "XXL"];
 
-export const ProductForm = ({ title, subTitle, product, onSubmit, isPosting }: Props) => {
+export const ProductForm = ({ title, subTitle, product, onSubmit, isPending }: Props) => {
     const [dragActive, setDragActive] = useState(false);
     const {
         register,
@@ -101,13 +101,13 @@ export const ProductForm = ({ title, subTitle, product, onSubmit, isPosting }: P
                 <AdminTitle title={title} subtitle={subTitle} />
                 <div className="flex justify-end mb-10 gap-4">
                     <Link to="/admin/products" className="flex items-center gap-2">
-                        <Button variant="outline" type="button">
+                        <Button type="button" variant="outline">
                             <X className="w-4 h-4" />
                             Cancelar
                         </Button>
                     </Link>
 
-                    <Button type="submit" disabled={isPosting}>
+                    <Button type="submit" disabled={isPending}>
                         <SaveAll className="w-4 h-4" />
                         Guardar cambios
                     </Button>
@@ -157,6 +157,7 @@ export const ProductForm = ({ title, subTitle, product, onSubmit, isPosting }: P
                                         </label>
                                         <input
                                             type="number"
+                                            min={1}
                                             {...register("price", { required: true, min: 1 })}
                                             className={cn(
                                                 `w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`,
@@ -180,6 +181,7 @@ export const ProductForm = ({ title, subTitle, product, onSubmit, isPosting }: P
                                         </label>
                                         <input
                                             type="number"
+                                            min={0}
                                             {...register("stock", { required: true, min: 1 })}
                                             className={cn(
                                                 `w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`,
@@ -187,7 +189,6 @@ export const ProductForm = ({ title, subTitle, product, onSubmit, isPosting }: P
                                                     "border-red-500": errors.stock,
                                                 }
                                             )}
-                                            min={0}
                                             placeholder="Stock del producto"
                                         />
                                         {errors.stock && (
@@ -275,6 +276,14 @@ export const ProductForm = ({ title, subTitle, product, onSubmit, isPosting }: P
 
                             <div className="space-y-4">
                                 <div className="flex flex-wrap gap-2">
+                                    {/* 
+                                        Renderiza las etiquetas de tallas seleccionadas:
+                                        - Itera sobre todas las tallas disponibles (availableSizes)
+                                        - Para cada talla, crea una etiqueta visual (span) con estilo de "pill" azul
+                                        - Solo muestra las tallas que están en selectedSizes (usando hidden si no está seleccionada)
+                                        - Cada etiqueta incluye un botón X para remover esa talla específica
+                                        - El botón X llama a removeSize(size) cuando se hace clic
+                                    */}
                                     {availableSizes.map((size) => (
                                         <span
                                             key={size}
@@ -301,6 +310,13 @@ export const ProductForm = ({ title, subTitle, product, onSubmit, isPosting }: P
                                     <span className="text-sm text-slate-600 mr-2">
                                         Añadir tallas:
                                     </span>
+                                    {/* 
+                                        Renderiza botones para cada talla disponible.
+                                        Cada botón permite agregar una talla al producto.
+                                        - Si la talla ya está seleccionada: se muestra deshabilitado (gris claro)
+                                        - Si la talla no está seleccionada: se muestra habilitado (gris oscuro con hover)
+                                        - Al hacer clic, se ejecuta addSize() para agregar la talla al formulario
+                                    */}
                                     {availableSizes.map((size) => (
                                         <button
                                             key={size}
@@ -351,7 +367,11 @@ export const ProductForm = ({ title, subTitle, product, onSubmit, isPosting }: P
                                         placeholder="Añadir nueva etiqueta..."
                                         className="flex-1 px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                     />
-                                    <Button onClick={addTag} className="px-4 py-2rounded-lg ">
+                                    <Button
+                                        onClick={addTag}
+                                        className="px-4 py-2rounded-lg"
+                                        type="button"
+                                    >
                                         <Plus className="h-4 w-4" />
                                     </Button>
                                 </div>

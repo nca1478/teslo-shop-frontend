@@ -12,6 +12,7 @@ export const checkAuthAction = async (): Promise<AuthResponse> => {
         localStorage.setItem("token", data.token);
 
         return data;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
         localStorage.removeItem("token");
         throw new Error("Token expire or not valid");

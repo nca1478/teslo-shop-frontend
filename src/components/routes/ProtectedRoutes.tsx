@@ -2,7 +2,7 @@ import { Navigate } from "react-router";
 import type { PropsWithChildren } from "react";
 import { useAuthStore } from "@/auth/store/auth.store";
 
-export const NotAuthenticatedRoutes = ({ children }: PropsWithChildren) => {
+export const AuthenticatedRoutes = ({ children }: PropsWithChildren) => {
     const { authStatus } = useAuthStore();
 
     if (authStatus === "checking") return null;
@@ -11,7 +11,7 @@ export const NotAuthenticatedRoutes = ({ children }: PropsWithChildren) => {
     return children;
 };
 
-export const AuthenticatedRoutes = ({ children }: PropsWithChildren) => {
+export const NotAuthenticatedRoutes = ({ children }: PropsWithChildren) => {
     const { authStatus } = useAuthStore();
 
     if (authStatus === "checking") return null;
