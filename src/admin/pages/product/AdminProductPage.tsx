@@ -1,10 +1,12 @@
 // https://github.com/Klerith/bolt-product-editor
-import { useParams } from "react-router";
+import { Navigate, useParams } from "react-router";
 import { Link } from "react-router";
 import { useState } from "react";
 import { X, Plus, Upload, Tag, SaveAll } from "lucide-react";
 import { AdminTitle } from "@/admin/components/AdminTitle";
 import { Button } from "@/components/ui/button";
+import { useProduct } from "@/admin/hooks/useProduct";
+import { CustomFullScreenLoading } from "@/components/custom/CustomFullscreenLoading";
 
 interface Product {
     id: string;
@@ -21,6 +23,7 @@ interface Product {
 
 export const AdminProductPage = () => {
     const { id } = useParams();
+    const { isLoading, isError, data: product2 } = useProduct(id || "");
 
     const productTitle = id === "new" ? "Nuevo producto" : "Editar producto";
     const productSubtitle =
@@ -47,8 +50,15 @@ export const AdminProductPage = () => {
 
     const [newTag, setNewTag] = useState("");
     const [dragActive, setDragActive] = useState(false);
-
     const availableSizes = ["XXS", "XS", "S", "M", "L", "XL", "XXL", "XXXL"];
+
+    if (isError) {
+        return <Navigate to="/admin/products" />;
+    }
+
+    if (isLoading) {
+        return <CustomFullScreenLoading />;
+    }
 
     const handleInputChange = (field: keyof Product, value: string | number) => {
         setProduct((prev) => ({ ...prev, [field]: value }));
@@ -115,12 +125,12 @@ export const AdminProductPage = () => {
             <div className="flex justify-between items-center">
                 <AdminTitle title={productTitle} subtitle={productSubtitle} />
                 <div className="flex justify-end mb-10 gap-4">
-                    <Button variant="outline">
-                        <Link to="/admin/products" className="flex items-center gap-2">
+                    <Link to="/admin/products" className="flex items-center gap-2">
+                        <Button variant="outline">
                             <X className="w-4 h-4" />
                             Cancelar
-                        </Link>
-                    </Button>
+                        </Button>
+                    </Link>
 
                     <Button>
                         <SaveAll className="w-4 h-4" />
