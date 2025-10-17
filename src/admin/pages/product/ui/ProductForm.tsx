@@ -5,6 +5,7 @@ import { Plus, SaveAll, Tag, Upload, X } from "lucide-react";
 import { AdminTitle } from "@/admin/components/AdminTitle";
 import { Button } from "@/components/ui/button";
 import type { Product } from "@/interfaces/product.interface";
+import { cn } from "@/lib/utils";
 
 interface Props {
     title: string;
@@ -16,7 +17,11 @@ const availableSizes = ["XS", "S", "M", "L", "XL", "XXL"];
 
 export const ProductForm = ({ title, subTitle, product }: Props) => {
     const [dragActive, setDragActive] = useState(false);
-    const { register } = useForm({
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({
         defaultValues: product,
     });
 
@@ -76,8 +81,12 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
         console.log(files);
     };
 
+    const onSubmit = (product: Product) => {
+        console.log("onsubmit", product);
+    };
+
     return (
-        <>
+        <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex justify-between items-center">
                 <AdminTitle title={title} subtitle={subTitle} />
                 <div className="flex justify-end mb-10 gap-4">
@@ -112,12 +121,20 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
                                     </label>
                                     <input
                                         type="text"
-                                        // value={product.title}
-                                        // onChange={(e) => handleInputChange("title", e.target.value)}
-                                        {...register("title")}
-                                        className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                        {...register("title", { required: true })}
+                                        className={cn(
+                                            `w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`,
+                                            {
+                                                "border-red-500": errors.title,
+                                            }
+                                        )}
                                         placeholder="Título del producto"
                                     />
+                                    {errors.title && (
+                                        <p className="text-red-500 text-sm mt-1">
+                                            El título es requerido
+                                        </p>
+                                    )}
                                 </div>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -423,6 +440,6 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
                     </div>
                 </div>
             </div>
-        </>
+        </form>
     );
 };
