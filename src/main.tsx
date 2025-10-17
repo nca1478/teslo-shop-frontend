@@ -4,7 +4,7 @@ import { TesloShopApp } from "./TesloShopApp";
 import "./index.css";
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <TesloShopApp />
-  </StrictMode>
+    <StrictMode>
+        <TesloShopApp />
+    </StrictMode>
 );

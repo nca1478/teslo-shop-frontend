@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState, type KeyboardEvent } from "react";
 import { Link } from "react-router";
 import { useForm } from "react-hook-form";
 import { Plus, SaveAll, Tag, Upload, X } from "lucide-react";
@@ -28,23 +28,34 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
         defaultValues: product,
     });
 
+    const tagsInputRef = useRef<HTMLInputElement>(null);
     const selectedSizes = watch("sizes");
+    const selectedTags = watch("tags");
+    const currentStock = watch("stock");
 
     const addTag = () => {
-        // if (newTag.trim() && !product.tags.includes(newTag.trim())) {
-        //     setProduct((prev) => ({
-        //         ...prev,
-        //         tags: [...prev.tags, newTag.trim()],
-        //     }));
-        //     setNewTag("");
-        // }
+        const newTag = tagsInputRef.current!.value;
+        if (newTag === "") return;
+
+        const newTagSet = new Set(getValues("tags"));
+        newTagSet.add(newTag);
+        setValue("tags", Array.from(newTagSet));
+
+        tagsInputRef.current!.value = "";
+        tagsInputRef.current!.focus();
     };
 
-    const removeTag = (tagToRemove: string) => {
-        // setProduct((prev) => ({
-        //     ...prev,
-        //     tags: prev.tags.filter((tag) => tag !== tagToRemove),
-        // }));
+    const removeTag = (tag: string) => {
+        const tagsSet = new Set(getValues("tags"));
+        tagsSet.delete(tag);
+        setValue("tags", Array.from(tagsSet));
+    };
+
+    const onKeyDownTagsInput = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter" || e.key === " " || e.key === ",") {
+            e.preventDefault();
+            addTag();
+        }
     };
 
     const addSize = (size: Size) => {
@@ -53,11 +64,10 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
         setValue("sizes", Array.from(sizeSet));
     };
 
-    const removeSize = (sizeToRemove: string) => {
-        // setProduct((prev) => ({
-        //     ...prev,
-        //     sizes: prev.sizes.filter((size) => size !== sizeToRemove),
-        // }));
+    const removeSize = (size: Size) => {
+        const sizeSet = new Set(getValues("sizes"));
+        sizeSet.delete(size);
+        setValue("sizes", Array.from(sizeSet));
     };
 
     const handleDrag = (e: React.DragEvent) => {
@@ -179,6 +189,7 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
                                                     "border-red-500": errors.stock,
                                                 }
                                             )}
+                                            min={0}
                                             placeholder="Stock del producto"
                                         />
                                         {errors.stock && (
@@ -278,8 +289,9 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
                                         >
                                             {size}
                                             <button
-                                                // onClick={() => removeSize(size)}
-                                                className="ml-2 text-blue-600 hover:text-blue-800 transition-colors duration-200"
+                                                onClick={() => removeSize(size)}
+                                                type="button"
+                                                className="cursor-pointer ml-2 text-blue-600 hover:text-blue-800 transition-colors duration-200"
                                             >
                                                 <X className="h-3 w-3" />
                                             </button>
@@ -316,7 +328,7 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
 
                             <div className="space-y-4">
                                 <div className="flex flex-wrap gap-2">
-                                    {product.tags.map((tag) => (
+                                    {selectedTags.map((tag) => (
                                         <span
                                             key={tag}
                                             className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 border border-green-200"
@@ -324,8 +336,8 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
                                             <Tag className="h-3 w-3 mr-1" />
                                             {tag}
                                             <button
-                                                // onClick={() => removeTag(tag)}
-                                                className="ml-2 text-green-600 hover:text-green-800 transition-colors duration-200"
+                                                onClick={() => removeTag(tag)}
+                                                className="cursor-pointer ml-2 text-green-600 hover:text-green-800 transition-colors duration-200"
                                             >
                                                 <X className="h-3 w-3" />
                                             </button>
@@ -336,15 +348,14 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
                                 <div className="flex gap-2">
                                     <input
                                         type="text"
-                                        // value={newTag}
-                                        // onChange={(e) => setNewTag(e.target.value)}
-                                        // onKeyDown={(e) => e.key === "Enter" && addTag()}
+                                        ref={tagsInputRef}
+                                        onKeyDown={(e) => onKeyDownTagsInput(e)}
                                         placeholder="Añadir nueva etiqueta..."
                                         className="flex-1 px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                     />
-                                    {/* <Button onClick={addTag} className="px-4 py-2rounded-lg ">
+                                    <Button onClick={addTag} className="px-4 py-2rounded-lg ">
                                         <Plus className="h-4 w-4" />
-                                    </Button> */}
+                                    </Button>
                                 </div>
                             </div>
                         </div>
@@ -442,16 +453,16 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
                                     </span>
                                     <span
                                         className={`px-2 py-1 text-xs font-medium rounded-full ${
-                                            product.stock > 5
+                                            currentStock > 5
                                                 ? "bg-green-100 text-green-800"
-                                                : product.stock > 0
+                                                : currentStock > 0
                                                 ? "bg-yellow-100 text-yellow-800"
                                                 : "bg-red-100 text-red-800"
                                         }`}
                                     >
-                                        {product.stock > 5
+                                        {currentStock > 5
                                             ? "En stock"
-                                            : product.stock > 0
+                                            : currentStock > 0
                                             ? "Bajo stock"
                                             : "Sin stock"}
                                     </span>
@@ -471,7 +482,7 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
                                         Tallas disponibles
                                     </span>
                                     <span className="text-sm text-slate-600">
-                                        {product.sizes.length} tallas
+                                        {selectedSizes.length} tallas
                                     </span>
                                 </div>
                             </div>
