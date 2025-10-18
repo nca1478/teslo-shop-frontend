@@ -2,43 +2,10 @@ import { BarChart3, DollarSign, Eye, ShoppingCart, TrendingUp, Users } from "luc
 import ActivityFeed from "@/admin/components/ActivityFeed";
 import Chart from "@/admin/components/Chart";
 import QuickActions from "@/admin/components/QuickActions";
-import StatCard from "@/admin/components/StatCard";
 import { AdminTitle } from "@/admin/components/AdminTitle";
-
-const stats = [
-    {
-        title: "Total Users",
-        value: "24,567",
-        change: "+12.5% from last month",
-        changeType: "positive" as const,
-        icon: Users,
-        color: "bg-blue-500",
-    },
-    {
-        title: "Revenue",
-        value: "$84,230",
-        change: "+8.2% from last month",
-        changeType: "positive" as const,
-        icon: DollarSign,
-        color: "bg-green-500",
-    },
-    {
-        title: "Orders",
-        value: "1,429",
-        change: "-2.4% from last month",
-        changeType: "negative" as const,
-        icon: ShoppingCart,
-        color: "bg-purple-500",
-    },
-    {
-        title: "Conversion Rate",
-        value: "3.24%",
-        change: "+0.3% from last month",
-        changeType: "positive" as const,
-        icon: TrendingUp,
-        color: "bg-orange-500",
-    },
-];
+import { CustomStatCard } from "@/components/custom/CustomStatCard";
+import { useUsers } from "@/auth/hooks/useUsers";
+import { useProducts } from "@/shop/hooks/useProducts";
 
 const chartData = [
     { label: "Desktop", value: 65 },
@@ -54,6 +21,44 @@ const performanceData = [
 ];
 
 export const DashboardPage = () => {
+    const { data: users } = useUsers();
+    const { data: products } = useProducts();
+
+    const stats = [
+        {
+            title: "Total de Usuarios",
+            value: users?.count.toString() || "0",
+            change: "3 usuarios esta semana",
+            changeType: "positive" as const,
+            icon: Users,
+            color: "bg-blue-500",
+        },
+        {
+            title: "Total de Productos",
+            value: products?.count.toString() || "0",
+            change: "10 productos esta semana",
+            changeType: "positive" as const,
+            icon: ShoppingCart,
+            color: "bg-green-500",
+        },
+        {
+            title: "Orders",
+            value: "1,429",
+            change: "-2.4% from last month",
+            changeType: "negative" as const,
+            icon: DollarSign,
+            color: "bg-purple-500",
+        },
+        {
+            title: "Conversion Rate",
+            value: "3.24%",
+            change: "+0.3% from last month",
+            changeType: "positive" as const,
+            icon: TrendingUp,
+            color: "bg-orange-500",
+        },
+    ];
+
     return (
         <>
             {/* Welcome Section */}
@@ -62,7 +67,7 @@ export const DashboardPage = () => {
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 {stats.map((stat, index) => (
-                    <StatCard key={index} {...stat} />
+                    <CustomStatCard key={index} {...stat} />
                 ))}
             </div>
 

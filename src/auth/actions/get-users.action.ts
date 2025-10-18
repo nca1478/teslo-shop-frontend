@@ -6,13 +6,13 @@ interface Options {
     offset?: number | string;
     isActive?: boolean;
     query?: string;
-    role: string;
+    role?: string;
 }
 
-export const getUsersAction = async (options: Options): Promise<UsersResponse> => {
+export const getUsersAction = async (options: Options = {}): Promise<UsersResponse> => {
     const { limit, offset, isActive, query, role } = options;
 
-    const { data } = await tesloApi.get<UsersResponse>("/users", {
+    const { data } = await tesloApi.get<UsersResponse>("/auth/users", {
         params: {
             limit,
             offset,
