@@ -22,12 +22,25 @@ export const useProduct = (id: string) => {
 
         // Al completar con éxito la creación/actualización:
         onSuccess: (product: Product) => {
-            // Invalidamos la lista de productos para que se recargue con datos frescos
-            queryClient.invalidateQueries({ queryKey: ["products"] });
-            queryClient.invalidateQueries({ queryKey: ["products", { id: product.id }] });
+            // Actualización directa del caché del producto editado
+            queryClient.setQueryData(["products", { id: product.id }], product);
 
-            // Actualización directa del caché del producto editado (no es necesario)
-            // queryClient.setQueryData(["products", { id: product.id }], product);
+            // Actualizar el caché de la lista de productos de forma optimista
+            queryClient.setQueriesData({ queryKey: ["products"], exact: false }, (oldData: any) => {
+                if (!oldData?.products) return oldData;
+
+                const updatedProducts = oldData.products.map((p: Product) =>
+                    p.id === product.id ? product : p
+                );
+
+                return {
+                    ...oldData,
+                    products: updatedProducts,
+                };
+            });
+
+            // Como respaldo, invalidamos las queries para asegurar consistencia
+            queryClient.invalidateQueries({ queryKey: ["products"] });
         },
     });
 

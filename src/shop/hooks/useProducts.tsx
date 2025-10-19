@@ -46,6 +46,7 @@ export const useProducts = () => {
         queryKey: ["products", { limit, offset, gender, sizes, minPrice, maxPrice, query }],
         queryFn: () =>
             getProductsAction({ limit, offset, gender, sizes, minPrice, maxPrice, query }),
-        staleTime: 1000 * 60 * 5,
+        staleTime: 1000 * 30, // Reducido a 30 segundos para actualizaciones más frecuentes
+        refetchOnWindowFocus: true, // Recargar cuando la ventana recibe foco
     });
 };

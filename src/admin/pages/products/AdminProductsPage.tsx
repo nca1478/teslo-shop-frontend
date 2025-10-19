@@ -11,12 +11,12 @@ import {
 import { AdminTitle } from "@/admin/components/AdminTitle";
 import { CustomPagination } from "@/components/custom/CustomPagination";
 import { Button } from "@/components/ui/button";
-import { useProducts } from "@/shop/hooks/useProducts";
+import { useAdminProducts } from "@/admin/hooks/useAdminProducts";
 import { CustomFullScreenLoading } from "@/components/custom/CustomFullscreenLoading";
 import { currencyFormatter } from "@/lib/currency-formatter";
 
 export const AdminProductsPage = () => {
-    const { data, isLoading } = useProducts();
+    const { data, isLoading } = useAdminProducts();
 
     if (isLoading) return <CustomFullScreenLoading />;
 
