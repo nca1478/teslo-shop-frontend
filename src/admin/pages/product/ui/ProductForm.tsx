@@ -1,4 +1,4 @@
-import { useRef, useState, type KeyboardEvent } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { Link } from "react-router";
 import { useForm } from "react-hook-form";
 import { Plus, SaveAll, Tag, Upload, X } from "lucide-react";
@@ -41,6 +41,11 @@ export const ProductForm = ({ title, subTitle, product, onSubmit, isPending }: P
     const selectedSizes = watch("sizes");
     const selectedTags = watch("tags");
     const currentStock = watch("stock");
+
+    // limpiar las Imágenes por cargar
+    useEffect(() => {
+        setFiles([]);
+    }, [product]);
 
     const addTag = () => {
         const newTag = tagsInputRef.current!.value;
