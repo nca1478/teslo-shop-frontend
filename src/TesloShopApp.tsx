@@ -1,4 +1,5 @@
 import type { PropsWithChildren } from "react";
+import { Suspense } from "react";
 import { RouterProvider } from "react-router";
 import { Toaster } from "sonner";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -24,7 +25,9 @@ export const TesloShopApp = () => {
 
             {/* Custom Provider */}
             <CheckAuthProvider>
-                <RouterProvider router={appRouter} />
+                <Suspense fallback={<CustomFullScreenLoading />}>
+                    <RouterProvider router={appRouter} />
+                </Suspense>
             </CheckAuthProvider>
 
             <ReactQueryDevtools initialIsOpen={false} />
