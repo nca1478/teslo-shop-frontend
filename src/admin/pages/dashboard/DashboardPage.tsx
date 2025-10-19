@@ -1,63 +1,13 @@
-import { BarChart3, DollarSign, Eye, ShoppingCart, TrendingUp, Users } from "lucide-react";
+import { BarChart3, Eye } from "lucide-react";
 import ActivityFeed from "@/admin/components/ActivityFeed";
 import Chart from "@/admin/components/Chart";
 import QuickActions from "@/admin/components/QuickActions";
 import { AdminTitle } from "@/admin/components/AdminTitle";
 import { CustomStatCard } from "@/components/custom/CustomStatCard";
-import { useUsers } from "@/auth/hooks/useUsers";
-import { useProducts } from "@/shop/hooks/useProducts";
-
-const chartData = [
-    { label: "Desktop", value: 65 },
-    { label: "Mobile", value: 28 },
-    { label: "Tablet", value: 7 },
-];
-
-const performanceData = [
-    { label: "Page Views", value: 24567 },
-    { label: "Sessions", value: 18234 },
-    { label: "Users", value: 12847 },
-    { label: "Bounce Rate", value: 23 },
-];
+import { useDashboardData } from "@/admin/hooks/useDashboardData";
 
 export const DashboardPage = () => {
-    const { data: users } = useUsers();
-    const { data: products } = useProducts();
-
-    const stats = [
-        {
-            title: "Total de Usuarios",
-            value: users?.count.toString() || "0",
-            change: "3 usuarios esta semana",
-            changeType: "positive" as const,
-            icon: Users,
-            color: "bg-blue-500",
-        },
-        {
-            title: "Total de Productos",
-            value: products?.count.toString() || "0",
-            change: "10 productos esta semana",
-            changeType: "positive" as const,
-            icon: ShoppingCart,
-            color: "bg-green-500",
-        },
-        {
-            title: "Orders",
-            value: "1,429",
-            change: "-2.4% from last month",
-            changeType: "negative" as const,
-            icon: DollarSign,
-            color: "bg-purple-500",
-        },
-        {
-            title: "Conversion Rate",
-            value: "3.24%",
-            change: "+0.3% from last month",
-            changeType: "positive" as const,
-            icon: TrendingUp,
-            color: "bg-orange-500",
-        },
-    ];
+    const { stats, chartData, performanceData, topPages, systemStatus } = useDashboardData();
 
     return (
         <>
@@ -92,12 +42,7 @@ export const DashboardPage = () => {
                         <Eye size={20} className="text-gray-400" />
                     </div>
                     <div className="space-y-3">
-                        {[
-                            { page: "/dashboard", views: 2847, change: "+12%" },
-                            { page: "/products", views: 1923, change: "+8%" },
-                            { page: "/analytics", views: 1456, change: "+15%" },
-                            { page: "/settings", views: 987, change: "-3%" },
-                        ].map((item, index) => (
+                        {topPages.map((item, index) => (
                             <div key={index} className="flex items-center justify-between py-2">
                                 <div>
                                     <p className="font-medium text-gray-900">{item.page}</p>
@@ -125,32 +70,7 @@ export const DashboardPage = () => {
                         <BarChart3 size={20} className="text-gray-400" />
                     </div>
                     <div className="space-y-4">
-                        {[
-                            {
-                                service: "API Server",
-                                status: "Online",
-                                uptime: "99.9%",
-                                color: "bg-green-500",
-                            },
-                            {
-                                service: "Database",
-                                status: "Online",
-                                uptime: "99.8%",
-                                color: "bg-green-500",
-                            },
-                            {
-                                service: "Cache Server",
-                                status: "Warning",
-                                uptime: "98.2%",
-                                color: "bg-yellow-500",
-                            },
-                            {
-                                service: "CDN",
-                                status: "Online",
-                                uptime: "99.9%",
-                                color: "bg-green-500",
-                            },
-                        ].map((item, index) => (
+                        {systemStatus.map((item, index) => (
                             <div key={index} className="flex items-center justify-between">
                                 <div className="flex items-center space-x-3">
                                     <div className={`w-3 h-3 rounded-full ${item.color}`}></div>
