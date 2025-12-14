@@ -20,7 +20,7 @@ jobs:
               id: health-check-prod
               continue-on-error: true
               run: |
-                  echo "🔍 Checking production API health..."
+                  echo "🔍 Checking production API health... (Auto-scheduled)"
 
                   # Configurar variables
                   API_URL="${{ secrets.HEALTH_CHECK_URL }}"
