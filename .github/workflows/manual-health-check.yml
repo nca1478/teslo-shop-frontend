@@ -67,7 +67,7 @@ jobs:
                   fi
 
                   # Extraer métricas (mejorado para HTTP/2)
-                  HTTP_CODE=$(echo "$RESPONSE" | grep -E "< HTTP/[12](\.[012])? [0-9]{3}" | sed 's/.*< HTTP\/[12](\.[012])? \([0-9]\{3\}\).*/\1/' | tail -1)
+                  HTTP_CODE=$(echo "$RESPONSE" | grep "< HTTP/" | grep -o "[0-9]\{3\}" | tail -1)
                   if [[ -z "$HTTP_CODE" ]]; then
                     # Fallback para HTTP/1.1
                     HTTP_CODE=$(echo "$RESPONSE" | grep -E "^[0-9]{3}$" | tail -1)
