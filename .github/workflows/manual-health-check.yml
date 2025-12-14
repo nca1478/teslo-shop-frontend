@@ -1,0 +1,115 @@
+name: Manual Health Check
+
+on:
+    # Solo ejecución manual
+    workflow_dispatch:
+        inputs:
+            api_url:
+                description: "API URL to check (optional - uses default if empty)"
+                required: false
+                type: string
+            timeout:
+                description: "Timeout in seconds"
+                required: false
+                default: "30"
+                type: string
+            retries:
+                description: "Number of retries"
+                required: false
+                default: "2"
+                type: string
+
+jobs:
+    manual-health-check:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Manual Health Check
+              run: |
+                  echo "🔍 Manual Health Check Started"
+                  echo "================================"
+
+                  # Usar input del usuario o valor por defecto
+                  API_URL="${{ github.event.inputs.api_url || secrets.HEALTH_CHECK_URL }}"
+                  TIMEOUT="${{ github.event.inputs.timeout }}"
+                  RETRIES="${{ github.event.inputs.retries }}"
+
+                  # Verificar que la URL esté configurada
+                  if [[ -z "$API_URL" ]]; then
+                    echo "❌ ERROR: No API URL configured"
+                    echo "Please provide api_url parameter or configure HEALTH_CHECK_URL secret"
+                    exit 1
+                  fi
+
+                  echo "🎯 Target URL: $API_URL"
+                  echo "⏱️  Timeout: ${TIMEOUT}s"
+                  echo "🔄 Retries: $RETRIES"
+                  echo ""
+
+                  # Hacer petición con configuración personalizada
+                  echo "📡 Making HTTP request..."
+                  RESPONSE=$(curl -s -w "\n%{http_code}\n%{time_total}\n%{size_download}" \
+                    --max-time "$TIMEOUT" \
+                    --retry "$RETRIES" \
+                    --retry-delay 5 \
+                    -H "User-Agent: GitHub-Actions-Manual-Check/1.0" \
+                    -H "Accept: application/json" \
+                    -v \
+                    "$API_URL" 2>&1 || echo "CURL_ERROR")
+
+                  # Procesar respuesta
+                  if [[ "$RESPONSE" == "CURL_ERROR" ]]; then
+                    echo "❌ ERROR: Failed to connect to API"
+                    exit 1
+                  fi
+
+                  # Extraer métricas
+                  HTTP_CODE=$(echo "$RESPONSE" | grep -E "^[0-9]{3}$" | tail -1)
+                  RESPONSE_TIME=$(echo "$RESPONSE" | grep -E "^[0-9]+\.[0-9]+$" | tail -1)
+                  SIZE=$(echo "$RESPONSE" | grep -E "^[0-9]+$" | tail -1)
+
+                  echo ""
+                  echo "📊 Results:"
+                  echo "==========="
+                  echo "HTTP Status: $HTTP_CODE"
+                  echo "Response Time: ${RESPONSE_TIME}s"
+                  echo "Response Size: ${SIZE} bytes"
+                  echo ""
+
+                  # Evaluar resultado
+                  case "$HTTP_CODE" in
+                    200) 
+                      echo "✅ SUCCESS: API is healthy!"
+                      ;;
+                    4*|5*)
+                      echo "❌ ERROR: API returned HTTP $HTTP_CODE"
+                      exit 1
+                      ;;
+                    *)
+                      echo "❓ UNKNOWN: Unexpected response code $HTTP_CODE"
+                      ;;
+                  esac
+
+                  # Mostrar headers de debug si están disponibles
+                  echo ""
+                  echo "🔍 Debug Information:"
+                  echo "===================="
+                  echo "$RESPONSE" | grep -E "(HTTP/|Server:|Content-Type:|Date:)" || echo "No debug headers found"
+
+            - name: Create Manual Check Summary
+              if: always()
+              run: |
+                  echo "## 🔧 Manual Health Check Results" >> $GITHUB_STEP_SUMMARY
+                  echo "" >> $GITHUB_STEP_SUMMARY
+                  echo "**Executed by:** @${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+                  echo "**Timestamp:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")" >> $GITHUB_STEP_SUMMARY
+                  echo "" >> $GITHUB_STEP_SUMMARY
+                  echo "### Configuration" >> $GITHUB_STEP_SUMMARY
+                  echo "- **URL:** ${{ github.event.inputs.api_url || 'Default URL' }}" >> $GITHUB_STEP_SUMMARY
+                  echo "- **Timeout:** ${{ github.event.inputs.timeout }}s" >> $GITHUB_STEP_SUMMARY
+                  echo "- **Retries:** ${{ github.event.inputs.retries }}" >> $GITHUB_STEP_SUMMARY
+                  echo "" >> $GITHUB_STEP_SUMMARY
+                  echo "Check the job logs for detailed results." >> $GITHUB_STEP_SUMMARY

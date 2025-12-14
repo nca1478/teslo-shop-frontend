@@ -1,0 +1,143 @@
+name: API Health Check
+
+on:
+    schedule:
+        # Ejecutar cada 10 minutos
+        - cron: "*/10 * * * *"
+
+    # Permitir ejecución manual desde GitHub UI
+    workflow_dispatch:
+
+jobs:
+    health-check:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Health Check - Production API
+              id: health-check-prod
+              continue-on-error: true
+              run: |
+                  echo "🔍 Checking production API health..."
+
+                  # Configurar variables
+                  API_URL="${{ secrets.HEALTH_CHECK_URL }}"
+                  TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+                  # Verificar que la URL esté configurada
+                  if [[ -z "$API_URL" ]]; then
+                    echo "❌ ERROR: HEALTH_CHECK_URL secret not configured"
+                    echo "Please add HEALTH_CHECK_URL to repository secrets"
+                    exit 1
+                  fi
+
+                  echo "API_URL=$API_URL" >> $GITHUB_OUTPUT
+                  echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_OUTPUT
+
+                  # Hacer petición HTTP con timeout de 30 segundos
+                  RESPONSE=$(curl -s -w "\n%{http_code}\n%{time_total}" \
+                    --max-time 30 \
+                    --retry 2 \
+                    --retry-delay 5 \
+                    -H "User-Agent: GitHub-Actions-Health-Check/1.0" \
+                    -H "Accept: application/json" \
+                    "$API_URL" || echo "CURL_ERROR")
+
+                  # Extraer código de estado y tiempo de respuesta
+                  HTTP_CODE=$(echo "$RESPONSE" | tail -n 2 | head -n 1)
+                  RESPONSE_TIME=$(echo "$RESPONSE" | tail -n 1)
+                  BODY=$(echo "$RESPONSE" | head -n -2)
+
+                  echo "HTTP_CODE=$HTTP_CODE" >> $GITHUB_OUTPUT
+                  echo "RESPONSE_TIME=$RESPONSE_TIME" >> $GITHUB_OUTPUT
+
+                  # Evaluar resultado
+                  if [[ "$RESPONSE" == "CURL_ERROR" ]]; then
+                    echo "❌ CURL ERROR: Failed to connect to API"
+                    echo "STATUS=ERROR" >> $GITHUB_OUTPUT
+                    echo "MESSAGE=Connection failed" >> $GITHUB_OUTPUT
+                    exit 1
+                  elif [[ "$HTTP_CODE" == "200" ]]; then
+                    echo "✅ SUCCESS: API is healthy (HTTP $HTTP_CODE) - Response time: ${RESPONSE_TIME}s"
+                    echo "STATUS=SUCCESS" >> $GITHUB_OUTPUT
+                    echo "MESSAGE=API is healthy" >> $GITHUB_OUTPUT
+                  elif [[ "$HTTP_CODE" =~ ^[45][0-9][0-9]$ ]]; then
+                    echo "⚠️  WARNING: API returned HTTP $HTTP_CODE - Response time: ${RESPONSE_TIME}s"
+                    echo "STATUS=WARNING" >> $GITHUB_OUTPUT
+                    echo "MESSAGE=API returned HTTP $HTTP_CODE" >> $GITHUB_OUTPUT
+                  else
+                    echo "❓ UNKNOWN: Unexpected response - HTTP $HTTP_CODE"
+                    echo "STATUS=UNKNOWN" >> $GITHUB_OUTPUT
+                    echo "MESSAGE=Unexpected response" >> $GITHUB_OUTPUT
+                  fi
+
+                  # Mostrar respuesta si es JSON válido
+                  if echo "$BODY" | jq . >/dev/null 2>&1; then
+                    echo "📄 Response body:"
+                    echo "$BODY" | jq .
+                  fi
+
+            - name: Health Check - Staging API (Optional)
+              id: health-check-staging
+              continue-on-error: true
+              if: vars.STAGING_HEALTH_CHECK_URL != ''
+              run: |
+                  echo "🔍 Checking staging API health..."
+
+                  API_URL="${{ vars.STAGING_HEALTH_CHECK_URL }}"
+
+                  RESPONSE=$(curl -s -w "\n%{http_code}\n%{time_total}" \
+                    --max-time 30 \
+                    --retry 2 \
+                    --retry-delay 5 \
+                    -H "User-Agent: GitHub-Actions-Health-Check/1.0" \
+                    -H "Accept: application/json" \
+                    "$API_URL" || echo "CURL_ERROR")
+
+                  HTTP_CODE=$(echo "$RESPONSE" | tail -n 2 | head -n 1)
+                  RESPONSE_TIME=$(echo "$RESPONSE" | tail -n 1)
+
+                  if [[ "$RESPONSE" == "CURL_ERROR" ]]; then
+                    echo "❌ STAGING ERROR: Failed to connect"
+                  elif [[ "$HTTP_CODE" == "200" ]]; then
+                    echo "✅ STAGING SUCCESS: HTTP $HTTP_CODE - ${RESPONSE_TIME}s"
+                  else
+                    echo "⚠️  STAGING WARNING: HTTP $HTTP_CODE - ${RESPONSE_TIME}s"
+                  fi
+
+            - name: Create Health Check Summary
+              if: always()
+              run: |
+                  echo "## 🏥 API Health Check Report" >> $GITHUB_STEP_SUMMARY
+                  echo "" >> $GITHUB_STEP_SUMMARY
+                  echo "**Timestamp:** ${{ steps.health-check-prod.outputs.TIMESTAMP }}" >> $GITHUB_STEP_SUMMARY
+                  echo "" >> $GITHUB_STEP_SUMMARY
+
+                  # Production API Status
+                  echo "### Production API" >> $GITHUB_STEP_SUMMARY
+                  echo "- **URL:** ${{ steps.health-check-prod.outputs.API_URL }}" >> $GITHUB_STEP_SUMMARY
+                  echo "- **Status:** ${{ steps.health-check-prod.outputs.STATUS || 'FAILED' }}" >> $GITHUB_STEP_SUMMARY
+                  echo "- **HTTP Code:** ${{ steps.health-check-prod.outputs.HTTP_CODE || 'N/A' }}" >> $GITHUB_STEP_SUMMARY
+                  echo "- **Response Time:** ${{ steps.health-check-prod.outputs.RESPONSE_TIME || 'N/A' }}s" >> $GITHUB_STEP_SUMMARY
+                  echo "- **Message:** ${{ steps.health-check-prod.outputs.MESSAGE || 'Check failed' }}" >> $GITHUB_STEP_SUMMARY
+                  echo "" >> $GITHUB_STEP_SUMMARY
+
+                  # Status icon
+                  case "${{ steps.health-check-prod.outputs.STATUS }}" in
+                    "SUCCESS") echo "🟢 **Overall Status: HEALTHY**" >> $GITHUB_STEP_SUMMARY ;;
+                    "WARNING") echo "🟡 **Overall Status: DEGRADED**" >> $GITHUB_STEP_SUMMARY ;;
+                    "ERROR"|*) echo "🔴 **Overall Status: DOWN**" >> $GITHUB_STEP_SUMMARY ;;
+                  esac
+
+            # Opcional: Notificar en caso de fallo
+            - name: Notify on Failure
+              if: failure() && github.event_name == 'schedule'
+              run: |
+                  echo "🚨 Health check failed! Consider setting up notifications."
+                  echo "You can integrate with:"
+                  echo "- Slack webhook"
+                  echo "- Discord webhook" 
+                  echo "- Email notifications"
+                  echo "- Custom webhook endpoint"
