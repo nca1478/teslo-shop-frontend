@@ -2,7 +2,7 @@
 
 import type { Address, Size } from "@/interfaces";
 import { prisma } from "@/lib/prisma";
-import { auth } from "@/auth.config";
+import { auth } from "@/auth";
 
 interface ProductToOrder {
     productId: string;
