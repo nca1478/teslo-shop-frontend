@@ -27,3 +27,14 @@ export type {
     SetUserAddressResponse,
     DeleteUserAddressResponse,
 } from "./addresses.service";
+
+// Orders Service
+export { ordersService, OrdersService } from "./orders.service";
+export type {
+    ProductToOrder,
+    OrderItem,
+    OrderAddress,
+    PlaceOrderRequest,
+    Order,
+    PlaceOrderResponse,
+} from "./orders.service";

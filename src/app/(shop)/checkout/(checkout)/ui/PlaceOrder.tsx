@@ -115,7 +115,7 @@ export const PlaceOrder = () => {
                 <button
                     //href="/orders/123"
                     onClick={onPlaceOrder}
-                    className={clsx({
+                    className={clsx("cursor-pointer", {
                         "btn-primary": !isPlacingOrder,
                         "btn-disabled": isPlacingOrder,
                     })}
