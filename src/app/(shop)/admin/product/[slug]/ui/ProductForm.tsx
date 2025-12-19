@@ -3,6 +3,7 @@
 import clsx from "clsx";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 import { Category, Product, ProductImage as ProductWithImage } from "@/interfaces";
 import { createUpdateProduct, deleteProductImage } from "@/actions";
 import { ProductImage } from "@/components";
@@ -28,8 +29,25 @@ interface FormInputs {
     images?: FileList;
 }
 
+interface PreviewImage {
+    file: File;
+    url: string;
+    id: string;
+}
+
 export const ProductForm = ({ product, categories }: Props) => {
     const router = useRouter();
+    const [previewImages, setPreviewImages] = useState<PreviewImage[]>([]);
+
+    // Limpiar URLs de objeto cuando el componente se desmonte
+    useEffect(() => {
+        return () => {
+            previewImages.forEach((preview) => {
+                URL.revokeObjectURL(preview.url);
+            });
+        };
+    }, [previewImages]);
+
     const {
         handleSubmit,
         register,
@@ -66,6 +84,78 @@ export const ProductForm = ({ product, categories }: Props) => {
         setValue("sizes", Array.from(sizes));
     };
 
+    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files;
+        if (!files) return;
+
+        // Validar el tamaño total de las imágenes
+        const maxSizePerImage = 2 * 1024 * 1024; // 2MB por imagen
+        const maxTotalSize = 8 * 1024 * 1024; // 8MB total
+
+        let totalSize = 0;
+        const validFiles: File[] = [];
+
+        // Calcular tamaño actual de las vistas previas
+        previewImages.forEach((preview) => {
+            totalSize += preview.file.size;
+        });
+
+        // Validar cada archivo nuevo
+        Array.from(files).forEach((file) => {
+            if (file.size > maxSizePerImage) {
+                alert(`La imagen "${file.name}" es demasiado grande. Máximo 2MB por imagen.`);
+                return;
+            }
+
+            if (totalSize + file.size > maxTotalSize) {
+                alert(`No se puede agregar "${file.name}". El tamaño total excedería 8MB.`);
+                return;
+            }
+
+            totalSize += file.size;
+            validFiles.push(file);
+        });
+
+        if (validFiles.length === 0) {
+            event.target.value = "";
+            return;
+        }
+
+        // Crear nuevas vistas previas solo con archivos válidos
+        const newPreviews: PreviewImage[] = [];
+        validFiles.forEach((file, index) => {
+            const url = URL.createObjectURL(file);
+            newPreviews.push({
+                file,
+                url,
+                id: `preview-${Date.now()}-${index}`,
+            });
+        });
+
+        // Agregar las nuevas vistas previas a las existentes
+        setPreviewImages((prev) => [...prev, ...newPreviews]);
+
+        // Limpiar el input para permitir seleccionar los mismos archivos nuevamente si es necesario
+        event.target.value = "";
+    };
+
+    const removePreviewImage = (previewId: string) => {
+        setPreviewImages((prev) => {
+            const imageToRemove = prev.find((img) => img.id === previewId);
+            if (imageToRemove) {
+                URL.revokeObjectURL(imageToRemove.url);
+            }
+            return prev.filter((img) => img.id !== previewId);
+        });
+    };
+
+    const clearAllPreviews = () => {
+        previewImages.forEach((preview) => {
+            URL.revokeObjectURL(preview.url);
+        });
+        setPreviewImages([]);
+    };
+
     const onSubmit = async (data: FormInputs) => {
         const formData = new FormData();
         const { images, ...productToSave } = data;
@@ -85,12 +175,10 @@ export const ProductForm = ({ product, categories }: Props) => {
         formData.append("categoryId", productToSave.categoryId);
         formData.append("gender", productToSave.gender);
 
-        // si vienen images, agregarlas al formData
-        if (images) {
-            for (let i = 0; i < images.length; i++) {
-                formData.append("images", images[i]);
-            }
-        }
+        // Agregar todas las imágenes de vista previa al formData
+        previewImages.forEach((preview) => {
+            formData.append("images", preview.file);
+        });
 
         const { ok, product: updatedProduct } = await createUpdateProduct(formData);
 
@@ -98,6 +186,12 @@ export const ProductForm = ({ product, categories }: Props) => {
             alert("Producto no se pudo actualizar");
             return;
         }
+
+        // Limpiar vistas previas después de guardar exitosamente
+        previewImages.forEach((preview) => {
+            URL.revokeObjectURL(preview.url);
+        });
+        setPreviewImages([]);
 
         // Revalidar los datos del servidor y navegar
         router.refresh();
@@ -251,18 +345,34 @@ export const ProductForm = ({ product, categories }: Props) => {
 
                     {/* Fotos */}
                     <div className="flex flex-col mb-2">
-                        <span>Fotos</span>
+                        <div className="flex justify-between items-center mb-2">
+                            <span>Fotos</span>
+                            {previewImages.length > 0 && (
+                                <button
+                                    type="button"
+                                    onClick={clearAllPreviews}
+                                    className="text-red-600 text-sm hover:text-red-800"
+                                >
+                                    Limpiar todas ({previewImages.length})
+                                </button>
+                            )}
+                        </div>
                         <input
                             type="file"
                             multiple
                             className="p-2 border rounded-md bg-gray-200"
                             accept="image/png, image/jpeg, image/avif"
-                            {...register("images")}
+                            onChange={handleImageChange}
                         />
+                        <p className="text-xs text-gray-600 mt-1">
+                            Puedes seleccionar múltiples imágenes. Máximo 2MB por imagen y 8MB
+                            total.
+                        </p>
                     </div>
 
                     {/* Imagenes del producto */}
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        {/* Imágenes existentes del producto */}
                         {product.ProductImage?.map((image) => (
                             <div key={image.id} className="relative">
                                 <ProductImage
@@ -279,6 +389,25 @@ export const ProductForm = ({ product, categories }: Props) => {
                                     className="btn-danger w-full rounded-b-xl text-xs sm:text-sm py-1 sm:py-2"
                                 >
                                     Eliminar
+                                </button>
+                            </div>
+                        ))}
+
+                        {/* Vista previa de nuevas imágenes */}
+                        {previewImages.map((preview) => (
+                            <div key={preview.id} className="relative">
+                                <img
+                                    src={preview.url}
+                                    alt="Vista previa"
+                                    className="rounded-t-xl shadow-md w-full h-[300px] object-cover"
+                                />
+
+                                <button
+                                    type="button"
+                                    onClick={() => removePreviewImage(preview.id)}
+                                    className="btn-danger w-full rounded-b-xl text-xs sm:text-sm py-1 sm:py-2"
+                                >
+                                    Quitar
                                 </button>
                             </div>
                         ))}

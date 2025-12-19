@@ -17,6 +17,9 @@ interface Props {
 }
 
 export const ProductMobileSlideshow = ({ images, title, className }: Props) => {
+    // Si no hay imágenes, usar placeholder
+    const displayImages = images.length > 0 ? images : ["placeholder.png"];
+
     return (
         <div className={className}>
             <Swiper
@@ -32,7 +35,7 @@ export const ProductMobileSlideshow = ({ images, title, className }: Props) => {
                 modules={[FreeMode, Autoplay, Pagination]}
                 className="mySwiper2"
             >
-                {images.map((image, index) => (
+                {displayImages.map((image, index) => (
                     <SwiperSlide key={index}>
                         <ProductImage
                             src={image}

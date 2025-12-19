@@ -11,7 +11,11 @@ interface Props {
 }
 
 export const ProductGridItem = ({ product }: Props) => {
-    const [displayImage, setDisplayImage] = useState(product.images[0]);
+    // Manejar productos sin imágenes usando placeholder
+    const primaryImage = product.images.length > 0 ? product.images[0] : "placeholder.png";
+    const secondaryImage = product.images.length > 1 ? product.images[1] : primaryImage;
+
+    const [displayImage, setDisplayImage] = useState(primaryImage);
 
     return (
         <div className="rounded-md overflow-hidden fade-in">
@@ -22,8 +26,8 @@ export const ProductGridItem = ({ product }: Props) => {
                     className="w-full object-cover rounded"
                     width={500}
                     height={500}
-                    onMouseEnter={() => setDisplayImage(product.images[1])}
-                    onMouseLeave={() => setDisplayImage(product.images[0])}
+                    onMouseEnter={() => setDisplayImage(secondaryImage)}
+                    onMouseLeave={() => setDisplayImage(primaryImage)}
                 />
             </Link>
 

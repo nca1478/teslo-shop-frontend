@@ -23,6 +23,9 @@ interface Props {
 export const ProductSlideshow = ({ images, title, className }: Props) => {
     const [thumbsSwiper, setThumbsSwiper] = useState<SwiperObject>();
 
+    // Si no hay imágenes, usar placeholder
+    const displayImages = images.length > 0 ? images : ["placeholder.png"];
+
     return (
         <div className={className}>
             <Swiper
@@ -45,7 +48,7 @@ export const ProductSlideshow = ({ images, title, className }: Props) => {
                 modules={[FreeMode, Navigation, Thumbs, Autoplay, Pagination]}
                 className="mySwiper2"
             >
-                {images.map((image, index) => (
+                {displayImages.map((image, index) => (
                     <SwiperSlide key={index}>
                         <ProductImage
                             src={image}
@@ -66,7 +69,7 @@ export const ProductSlideshow = ({ images, title, className }: Props) => {
                 modules={[FreeMode, Navigation, Thumbs]}
                 className="mySwiper"
             >
-                {images.map((image, index) => (
+                {displayImages.map((image, index) => (
                     <SwiperSlide key={index}>
                         <ProductImage
                             src={image}
