@@ -1,12 +1,15 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
-import { v2 as cloudinary } from "cloudinary";
+import { productsService } from "@/lib/services";
+import { getAuthToken } from "@/lib/session";
 import { revalidatePath } from "next/cache";
 
-cloudinary.config(process.env.CLOUDINARY_URL ?? "");
-
-export const deleteProductImage = async (imageId: number, imageUrl: string) => {
+export const deleteProductImage = async (
+    imageId: number,
+    imageUrl: string,
+    productId?: string,
+    productSlug?: string
+) => {
     if (!imageUrl.startsWith("http")) {
         return {
             ok: false,
@@ -14,27 +17,32 @@ export const deleteProductImage = async (imageId: number, imageUrl: string) => {
         };
     }
 
-    const imageName = imageUrl.split("/").pop()?.split(".")[0] ?? "";
-
     try {
-        await cloudinary.uploader.destroy(imageName);
-        const deletedImage = await prisma.productImage.delete({
-            where: {
-                id: imageId,
-            },
-            include: {
-                product: {
-                    select: {
-                        slug: true,
-                    },
-                },
-            },
-        });
+        // Obtener token de autenticación
+        const token = await getAuthToken();
+        if (!token) {
+            return {
+                ok: false,
+                error: "Token de autenticación no encontrado",
+            };
+        }
 
-        // Revalidar los paths
+        // Si no se proporciona productId, extraerlo de la URL o usar un método alternativo
+        if (!productId) {
+            return {
+                ok: false,
+                error: "ID del producto requerido",
+            };
+        }
+
+        // Usar el servicio del backend para eliminar la imagen
+        await productsService.deleteProductImage(productId, imageUrl, token);
+
+        // Revalidar los paths específicos
         revalidatePath(`/admin/products`);
-        revalidatePath(`/admin/product/${deletedImage.product.slug}`);
-        revalidatePath(`/product/${deletedImage.product.slug}`);
+        if (productSlug) {
+            revalidatePath(`/admin/product/${productSlug}`);
+        }
 
         return { ok: true };
     } catch (error) {

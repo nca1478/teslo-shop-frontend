@@ -114,6 +114,20 @@ export class ProductsService {
         const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
         return httpClient.delete<void>(`${this.basePath}/${id}`, headers);
     }
+
+    async deleteProductImage(productId: string, imageUrl: string, token: string): Promise<void> {
+        try {
+            const headers = { Authorization: `Bearer ${token}` };
+            await httpClient.delete<void>(
+                `${this.basePath}/${productId}/images`,
+                { imageUrl },
+                headers
+            );
+        } catch (error) {
+            console.error("Error deleting product image:", error);
+            throw error;
+        }
+    }
 }
 
 export const productsService = new ProductsService();

@@ -83,9 +83,14 @@ export class HttpClient {
         });
     }
 
-    async delete<T>(endpoint: string, headers?: Record<string, string>): Promise<T> {
+    async delete<T>(
+        endpoint: string,
+        data?: unknown,
+        headers?: Record<string, string>
+    ): Promise<T> {
         return this.request<T>(endpoint, {
             method: "DELETE",
+            body: data ? JSON.stringify(data) : undefined,
             headers,
         });
     }

@@ -105,14 +105,20 @@ export const ProductForm = ({ product, categories }: Props) => {
     };
 
     const onDeleteProductImage = async (image: ProductWithImage) => {
-        const { ok, error } = await deleteProductImage(image.id, image.url);
+        const { ok, error } = await deleteProductImage(
+            image.id,
+            image.url,
+            product.id,
+            product.slug
+        );
 
         if (!ok) {
             alert(error);
             return;
         }
 
-        return;
+        // Recargar la página para mostrar los cambios
+        router.refresh();
     };
 
     return (

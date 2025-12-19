@@ -8,19 +8,23 @@ export const getProductBySlug = async (slug: string) => {
 
         if (!product) return null;
 
-        // verificar si el producto tiene imágenes
-        const images = product.images.length > 0 ? product.images : ["placeholder.png"];
+        // No agregar placeholder automáticamente - dejar que el formulario maneje imágenes vacías
+        const images = product.images || [];
 
         return {
             ...product,
             images,
             inStock: product.stock, // Mapear stock a inStock para compatibilidad
             // Convertir images array a ProductImage objects para compatibilidad con el formulario
-            ProductImage: images.map((url, index) => ({
-                id: index + 1, // ID temporal para el formulario
-                url,
-                productId: product.id,
-            })),
+            // Solo crear ProductImage objects si hay imágenes reales
+            ProductImage:
+                images.length > 0
+                    ? images.map((url, index) => ({
+                          id: index + 1, // ID temporal para el formulario
+                          url,
+                          productId: product.id,
+                      }))
+                    : [],
             createdAt:
                 typeof product.createdAt === "string"
                     ? new Date(product.createdAt)
