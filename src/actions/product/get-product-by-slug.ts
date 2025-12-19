@@ -1,31 +1,29 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
+import { productsService } from "@/lib/services";
 
 export const getProductBySlug = async (slug: string) => {
     try {
-        const product = await prisma.product.findFirst({
-            include: {
-                ProductImage: true,
-            },
-            where: {
-                slug,
-            },
-        });
+        const product = await productsService.getProductBySlug(slug);
 
         if (!product) return null;
 
         // verificar si el producto tiene imágenes
-        const images =
-            product.ProductImage.length > 0
-                ? product.ProductImage.map((image) => image.url)
-                : ["placeholder.png"];
+        const images = product.images.length > 0 ? product.images : ["placeholder.png"];
 
         return {
             ...product,
             images,
+            inStock: product.stock, // Mapear stock a inStock para compatibilidad
+            createdAt: new Date(product.createdAt),
+            updatedAt: new Date(product.updatedAt),
         };
     } catch (error) {
+        // Si el producto no se encuentra, devolver null en lugar de lanzar error
+        if (error instanceof Error && error.message.includes("404")) {
+            return null;
+        }
+
         if (error instanceof Error) {
             throw new Error("Error al obtener el producto por slug", {
                 cause: error,

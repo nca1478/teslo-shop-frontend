@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import clsx from "clsx";
 import Link from "next/link";
 import { IoInformationOutline } from "react-icons/io5";
-import { apiClient } from "@/lib/api";
+import { authService } from "@/lib/services";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 
@@ -31,26 +31,16 @@ export const LoginForm = () => {
         setIsLoading(true);
 
         try {
-            const response = await apiClient.login({
+            const response = await authService.login({
                 email: data.email,
                 password: data.password,
             });
 
             // Guardar la sesión en el servidor
-            const saveResponse = await fetch("/api/auth/save-session", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    token: response.token,
-                    user: response.user,
-                }),
+            await authService.saveSession({
+                token: response.token,
+                user: response.user,
             });
-
-            if (!saveResponse.ok) {
-                throw new Error("Failed to save session");
-            }
 
             // Actualizar el contexto inmediatamente
             loginContext(response.user);
@@ -58,7 +48,7 @@ export const LoginForm = () => {
             // Redirigir
             router.push("/");
         } catch (error) {
-            console.error("💥 Login error:", error);
+            console.error("Login error:", error);
 
             if (error instanceof Error) {
                 if (error.message.includes("Invalid credentials")) {

@@ -1,6 +1,6 @@
 "use server";
 
-import { apiClient } from "@/lib/api";
+import { productsService } from "@/lib/services";
 
 interface PaginationOptions {
     page?: number;
@@ -16,7 +16,7 @@ export const getPaginatedProductsWithImages = async ({
     if (isNaN(Number(page)) || page < 1) page = 1;
 
     try {
-        const response = await apiClient.getProducts({
+        const response = await productsService.getProducts({
             page,
             limit: take,
             gender,

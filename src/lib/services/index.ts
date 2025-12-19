@@ -1,0 +1,17 @@
+// HTTP Client
+export { httpClient, HttpClient } from "../http-client";
+export type { ApiResponse } from "../http-client";
+
+// Auth Service
+export { authService, AuthService } from "./auth.service";
+export type { LoginRequest, LoginResponse, RegisterRequest } from "./auth.service";
+
+// Products Service
+export { productsService, ProductsService } from "./products.service";
+export type {
+    GetProductsRequest,
+    Product,
+    GetProductsResponse,
+    CreateProductRequest,
+    UpdateProductRequest,
+} from "./products.service";

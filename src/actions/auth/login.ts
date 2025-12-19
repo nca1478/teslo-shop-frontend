@@ -1,6 +1,6 @@
 "use server";
 
-import { apiClient } from "@/lib/api";
+import { authService } from "@/lib/services";
 import { setSession } from "@/lib/session";
 
 export async function authenticate(prevState: string | undefined, formData: FormData) {
@@ -12,7 +12,7 @@ export async function authenticate(prevState: string | undefined, formData: Form
             return "InvalidCredentials";
         }
 
-        const response = await apiClient.login({ email, password });
+        const response = await authService.login({ email, password });
 
         // Guardar el token y datos del usuario en cookies seguras
         await setSession(response.token, response.user);
@@ -36,7 +36,7 @@ export async function authenticate(prevState: string | undefined, formData: Form
 
 export const login = async (email: string, password: string) => {
     try {
-        const response = await apiClient.login({ email, password });
+        const response = await authService.login({ email, password });
 
         // Guardar el token y datos del usuario en cookies seguras
         await setSession(response.token, response.user);

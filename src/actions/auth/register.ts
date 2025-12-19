@@ -1,6 +1,6 @@
 "use server";
 
-import { apiClient } from "@/lib/api";
+import { authService } from "@/lib/services";
 import { setSession } from "@/lib/session";
 
 export const registerUser = async (fullName: string, email: string, password: string) => {
@@ -9,7 +9,7 @@ export const registerUser = async (fullName: string, email: string, password: st
             throw new Error("Todos los campos son obligatorios");
         }
 
-        const response = await apiClient.register({
+        const response = await authService.register({
             fullName,
             email,
             password,
