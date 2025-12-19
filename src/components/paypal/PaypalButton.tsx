@@ -38,7 +38,7 @@ export const PayPalButton = ({ orderId, amount }: Props) => {
     }
 
     const createOrder = async (
-        data: CreateOrderData,
+        _data: CreateOrderData,
         actions: CreateOrderActions
     ): Promise<string> => {
         try {
@@ -64,7 +64,7 @@ export const PayPalButton = ({ orderId, amount }: Props) => {
         }
     };
 
-    const onApprove = async (data: OnApproveData, actions: OnApproveActions): Promise<void> => {
+    const onApprove = async (_data: OnApproveData, actions: OnApproveActions): Promise<void> => {
         try {
             const details = await actions.order?.capture();
             if (!details) {

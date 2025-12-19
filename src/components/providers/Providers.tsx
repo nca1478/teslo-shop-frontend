@@ -24,7 +24,7 @@ export const Providers = ({ children }: Props) => {
     };
 
     return (
-        <PayPalScriptProvider options={paypalOptions} deferLoading={true}>
+        <PayPalScriptProvider options={paypalOptions}>
             <AuthProvider>{children}</AuthProvider>
         </PayPalScriptProvider>
     );

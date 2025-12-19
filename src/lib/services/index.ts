@@ -57,3 +57,11 @@ export type {
     ChangeUserRoleRequest,
     ChangeUserRoleResponse,
 } from "./users.service";
+
+// Payments Service
+export { paymentsService, PaymentsService } from "./payments.service";
+export type {
+    SetTransactionIdRequest,
+    PayPalCheckPaymentRequest,
+    PaymentResponse,
+} from "./payments.service";
