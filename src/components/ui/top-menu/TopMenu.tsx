@@ -45,6 +45,12 @@ export const TopMenu = () => {
                 >
                     Niños
                 </Link>
+                <Link
+                    href="/gender/unisex"
+                    className="m-2 p-2 rounded-md transition-all hover:bg-gray-100"
+                >
+                    Unisex
+                </Link>
             </div>
 
             {/* Search, Cart, Menu */}

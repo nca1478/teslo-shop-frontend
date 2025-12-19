@@ -1,15 +1,19 @@
 export interface Product {
     id: string;
-    description: string;
-    images: string[];
-    inStock: number;
-    price: number;
-    sizes: Size[];
-    slug: string;
-    tags: string[];
     title: string;
-    // type: Type;
-    gender: Gender;
+    price: number;
+    description: string;
+    slug: string;
+    stock: number;
+    sizes: string[];
+    gender: string;
+    tags: string[];
+    images: string[];
+    categoryId: string;
+    userId: string;
+    createdAt: Date;
+    updatedAt: Date;
+    inStock?: number;
 }
 
 export interface CartProduct {

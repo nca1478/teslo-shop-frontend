@@ -1,12 +1,11 @@
 "use server";
 
-import { Gender } from "@/generated/prisma";
-import { prisma } from "@/lib/prisma";
+import { apiClient } from "@/lib/api";
 
 interface PaginationOptions {
     page?: number;
     take?: number;
-    gender?: Gender;
+    gender?: string;
 }
 
 export const getPaginatedProductsWithImages = async ({
@@ -17,39 +16,21 @@ export const getPaginatedProductsWithImages = async ({
     if (isNaN(Number(page)) || page < 1) page = 1;
 
     try {
-        // 1. Obtener los productos
-        const products = await prisma.product.findMany({
-            take: take,
-            skip: (page - 1) * take,
-            include: {
-                ProductImage: {
-                    take: 2,
-                    select: {
-                        url: true,
-                    },
-                },
-            },
-            // filtrar por género, null: muestra todos los productos
-            where: { gender },
-            orderBy: {
-                title: "asc",
-            },
+        const response = await apiClient.getProducts({
+            page,
+            limit: take,
+            gender,
         });
 
-        // 2. Obtener el total de paginas
-        const totalCount = await prisma.product.count({ where: { gender } });
-        const totalPages = Math.ceil(totalCount / take);
-
-        // 3. Parsear la respuesta (para compatibilidad con interfaz Product)
         return {
-            products: products.map((product) => {
-                return {
-                    ...product,
-                    images: product.ProductImage.map((image) => image.url),
-                };
-            }),
-            currentPage: page,
-            totalPages,
+            products: response.products.map((product) => ({
+                ...product,
+                inStock: product.stock,
+                createdAt: new Date(product.createdAt),
+                updatedAt: new Date(product.updatedAt),
+            })),
+            currentPage: response.page,
+            totalPages: response.totalPages,
         };
     } catch (error) {
         console.log(error);

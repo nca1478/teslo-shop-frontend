@@ -27,6 +27,39 @@ export interface RegisterRequest {
     fullName: string;
 }
 
+export interface GetProductsRequest {
+    page?: number;
+    limit?: number;
+    gender?: string;
+    category?: string;
+    search?: string;
+}
+
+export interface Product {
+    id: string;
+    title: string;
+    price: number;
+    description: string;
+    slug: string;
+    stock: number;
+    sizes: string[];
+    gender: string;
+    tags: string[];
+    images: string[];
+    categoryId: string;
+    userId: string;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+export interface GetProductsResponse {
+    products: Product[];
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+}
+
 class ApiClient {
     private baseUrl: string;
 
@@ -60,6 +93,7 @@ class ApiClient {
         }
     }
 
+    // auth endpoints
     async login(credentials: LoginRequest): Promise<LoginResponse> {
         return this.request<LoginResponse>("/api/auth/login", {
             method: "POST",
@@ -71,6 +105,24 @@ class ApiClient {
         return this.request<LoginResponse>("/api/auth/register", {
             method: "POST",
             body: JSON.stringify(userData),
+        });
+    }
+
+    // products endpoints
+    async getProducts(params: GetProductsRequest = {}): Promise<GetProductsResponse> {
+        const searchParams = new URLSearchParams();
+
+        if (params.page) searchParams.append("page", params.page.toString());
+        if (params.limit) searchParams.append("limit", params.limit.toString());
+        if (params.gender) searchParams.append("gender", params.gender);
+        if (params.category) searchParams.append("category", params.category);
+        if (params.search) searchParams.append("search", params.search);
+
+        const queryString = searchParams.toString();
+        const endpoint = `/api/products${queryString ? `?${queryString}` : ""}`;
+
+        return this.request<GetProductsResponse>(endpoint, {
+            method: "GET",
         });
     }
 }
