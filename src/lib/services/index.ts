@@ -47,3 +47,13 @@ export type {
     PlaceOrderResponse,
     GetPaginatedOrdersResponse,
 } from "./orders.service";
+
+// Users Service
+export { usersService, UsersService } from "./users.service";
+export type {
+    User as ApiUser,
+    GetPaginatedUsersRequest,
+    GetPaginatedUsersResponse,
+    ChangeUserRoleRequest,
+    ChangeUserRoleResponse,
+} from "./users.service";

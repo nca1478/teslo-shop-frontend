@@ -1,13 +1,14 @@
 "use server";
 
-import { getSession } from "@/lib/session";
-import { prisma } from "@/lib/prisma";
+import { getSession, getAuthToken } from "@/lib/session";
+import { usersService } from "@/lib/services";
 import { revalidatePath } from "next/cache";
 
 export const changeUserRole = async (userId: string, role: string) => {
     const user = await getSession();
+    const token = await getAuthToken();
 
-    if (!user || !user.roles.includes("admin")) {
+    if (!user || !user.roles.includes("admin") || !token) {
         return {
             ok: false,
             message: "Debe de estar autenticado como Administrador",
@@ -17,14 +18,7 @@ export const changeUserRole = async (userId: string, role: string) => {
     try {
         const newRole = role === "admin" ? "admin" : "user";
 
-        await prisma.user.update({
-            where: {
-                id: userId,
-            },
-            data: {
-                role: newRole,
-            },
-        });
+        await usersService.changeUserRole(userId, { role: newRole }, token);
 
         revalidatePath("/admin/users");
 
@@ -32,7 +26,7 @@ export const changeUserRole = async (userId: string, role: string) => {
             ok: true,
         };
     } catch (error) {
-        console.log(error);
+        console.error("Error changing user role:", error);
 
         return {
             ok: false,

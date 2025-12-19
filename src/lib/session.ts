@@ -6,7 +6,7 @@ const USER_DATA_COOKIE_NAME = "user-data";
 export interface User {
     id: string;
     email: string;
-    fullName: string;
+    name: string;
     roles: string[];
 }
 

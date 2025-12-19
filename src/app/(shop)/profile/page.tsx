@@ -14,8 +14,6 @@ export default async function ProfilePage() {
             <Title title="Perfil" />
 
             <pre className="mb-4 p-4">{JSON.stringify(user, null, 2)}</pre>
-
-            <h3 className="text-3xl mb-10">Roles: {user.roles.join(", ")}</h3>
         </div>
     );
 }

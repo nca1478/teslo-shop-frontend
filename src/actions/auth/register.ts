@@ -3,14 +3,14 @@
 import { authService } from "@/lib/services";
 import { setSession } from "@/lib/session";
 
-export const registerUser = async (fullName: string, email: string, password: string) => {
+export const registerUser = async (name: string, email: string, password: string) => {
     try {
-        if (!fullName || !email || !password) {
+        if (!name || !email || !password) {
             throw new Error("Todos los campos son obligatorios");
         }
 
         const response = await authService.register({
-            fullName,
+            name,
             email,
             password,
         });

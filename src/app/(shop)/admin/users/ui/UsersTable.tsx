@@ -48,7 +48,7 @@ export const UsersTable = ({ users }: Props) => {
                             <select
                                 value={user.role}
                                 onChange={(e) => changeUserRole(user.id, e.target.value)}
-                                className="text-sm text-gray-900 w-full p-2"
+                                className="text-sm text-gray-900 w-full p-2 cursor-pointer"
                             >
                                 <option value="admin">Admin</option>
                                 <option value="user">User</option>

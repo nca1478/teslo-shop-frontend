@@ -9,7 +9,7 @@ export interface LoginResponse {
     user: {
         id: string;
         email: string;
-        fullName: string;
+        name: string;
         roles: string[];
     };
     token: string;
@@ -18,7 +18,7 @@ export interface LoginResponse {
 export interface RegisterRequest {
     email: string;
     password: string;
-    fullName: string;
+    name: string;
 }
 
 export interface SaveSessionRequest {
@@ -26,7 +26,7 @@ export interface SaveSessionRequest {
     user: {
         id: string;
         email: string;
-        fullName: string;
+        name: string;
         roles: string[];
     };
 }

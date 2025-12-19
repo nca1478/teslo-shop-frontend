@@ -9,7 +9,7 @@ import { registerUser } from "@/actions";
 import { useAuth } from "@/contexts/AuthContext";
 
 type FormInputs = {
-    fullName: string;
+    name: string;
     email: string;
     password: string;
 };
@@ -28,10 +28,10 @@ export const RegisterForm = () => {
     const onSubmit: SubmitHandler<FormInputs> = async (data) => {
         setErrorMessage("");
 
-        const { fullName, email, password } = data;
+        const { name, email, password } = data;
 
         // Server action
-        const resp = await registerUser(fullName, email, password);
+        const resp = await registerUser(name, email, password);
 
         if (!resp.ok) {
             setErrorMessage(resp.message);
@@ -54,11 +54,11 @@ export const RegisterForm = () => {
             <label htmlFor="name">Nombre completo</label>
             <input
                 className={clsx("px-5 py-2 border bg-gray-200 rounded mb-5", {
-                    "border-red-500": errors.fullName,
+                    "border-red-500": errors.name,
                 })}
                 type="text"
                 autoFocus
-                {...register("fullName", { required: true })}
+                {...register("name", { required: true })}
             />
 
             <label htmlFor="email">Correo electrónico</label>

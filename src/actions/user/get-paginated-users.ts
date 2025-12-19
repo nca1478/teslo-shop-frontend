@@ -1,7 +1,8 @@
 "use server";
 
-import { getSession } from "@/lib/session";
-import { prisma } from "@/lib/prisma";
+import { getSession, getAuthToken } from "@/lib/session";
+import { usersService } from "@/lib/services";
+import { User } from "@/interfaces";
 
 interface PaginationOptions {
     page?: number;
@@ -13,8 +14,9 @@ export const getPaginatedUsers = async ({ page = 1, take = 5 }: PaginationOption
     if (page < 1) page = 1;
 
     const user = await getSession();
+    const token = await getAuthToken();
 
-    if (!user || !user.roles.includes("admin")) {
+    if (!user || !user.roles.includes("admin") || !token) {
         return {
             ok: false,
             message: "Acceso denegado - Solo para Administradores",
@@ -22,28 +24,43 @@ export const getPaginatedUsers = async ({ page = 1, take = 5 }: PaginationOption
     }
 
     try {
-        const users = await prisma.user.findMany({
-            take,
-            skip: (page - 1) * take,
-            orderBy: {
-                name: "asc",
+        const response = await usersService.getPaginatedUsers(
+            {
+                page,
+                limit: take,
             },
-        });
+            token
+        );
 
-        const totalCount = await prisma.user.count();
-        const totalPages = Math.ceil(totalCount / take);
+        const users: User[] = response.users.map((user) => ({
+            id: user.id,
+            name: user.name, // Now both API and frontend use 'name'
+            email: user.email,
+            emailVerified: user.emailVerified,
+            role: user.role,
+            image: user.image,
+            password: "",
+        }));
 
         return {
             ok: true,
             users,
-            currentPage: page,
-            totalPages,
+            currentPage: response.page,
+            totalPages: response.totalPages,
         };
     } catch (error) {
+        console.error("Error fetching paginated users:", error);
+
         if (error instanceof Error) {
-            throw new Error("No se pudo cargar los usuarios", { cause: error });
+            return {
+                ok: false,
+                message: error.message || "No se pudo cargar los usuarios",
+            };
         } else {
-            throw new Error("No se pudo cargar los usuarios");
+            return {
+                ok: false,
+                message: "No se pudo cargar los usuarios",
+            };
         }
     }
 };
