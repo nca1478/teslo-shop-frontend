@@ -1,14 +1,20 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
+import { addressesService } from "@/lib/services";
+import { getAuthToken } from "@/lib/session";
 
-export const deleteUserAddress = async (userId: string) => {
+export const deleteUserAddress = async () => {
     try {
-        await prisma.userAddress.delete({
-            where: { userId },
-        });
+        const token = await getAuthToken();
 
-        return { ok: true };
+        if (!token) {
+            return {
+                ok: false,
+                message: "No se encontró token de autenticación",
+            };
+        }
+
+        return await addressesService.deleteUserAddress(token);
     } catch (error) {
         console.log(error);
 

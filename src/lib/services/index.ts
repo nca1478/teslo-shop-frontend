@@ -18,3 +18,12 @@ export type {
 
 // Countries Service
 export { countriesService, CountriesService } from "./countries.service";
+
+// Addresses Service
+export { addressesService, AddressesService } from "./addresses.service";
+export type {
+    UserAddress,
+    SetUserAddressRequest,
+    SetUserAddressResponse,
+    DeleteUserAddressResponse,
+} from "./addresses.service";

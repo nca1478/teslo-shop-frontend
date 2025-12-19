@@ -32,7 +32,20 @@ export class HttpClient {
                 throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
             }
 
-            return await response.json();
+            // Verificar si la respuesta tiene contenido
+            const contentType = response.headers.get("content-type");
+            const hasJsonContent = contentType && contentType.includes("application/json");
+
+            if (!hasJsonContent || response.status === 204) {
+                return {} as T;
+            }
+
+            const text = await response.text();
+            if (!text) {
+                return {} as T;
+            }
+
+            return JSON.parse(text);
         } catch (error) {
             console.error("API request failed:", error);
             throw error;

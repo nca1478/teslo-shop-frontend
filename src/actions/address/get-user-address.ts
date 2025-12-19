@@ -1,12 +1,17 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
+import { addressesService } from "@/lib/services";
+import { getAuthToken } from "@/lib/session";
 
-export const getUserAddress = async (userId: string) => {
+export const getUserAddress = async () => {
     try {
-        const address = await prisma.userAddress.findUnique({
-            where: { userId },
-        });
+        const token = await getAuthToken();
+
+        if (!token) {
+            return null;
+        }
+
+        const address = await addressesService.getUserAddress(token);
 
         if (!address) return null;
 

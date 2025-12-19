@@ -1,59 +1,26 @@
 "use server";
 
 import type { Address } from "@/interfaces";
-import { prisma } from "@/lib/prisma";
+import { addressesService } from "@/lib/services";
+import { getAuthToken } from "@/lib/session";
 
-export const setUserAddress = async (address: Address, userId: string) => {
+export const setUserAddress = async (address: Address) => {
     try {
-        const newAddress = await createOrReplaceAddress(address, userId);
+        const token = await getAuthToken();
 
-        return {
-            ok: true,
-            address: newAddress,
-        };
+        if (!token) {
+            return {
+                ok: false,
+                message: "No se encontró token de autenticación",
+            };
+        }
+
+        return await addressesService.setUserAddress(address, token);
     } catch (error) {
         console.log(error);
         return {
             ok: false,
             message: "No se pudo grabar la dirección",
         };
-    }
-};
-
-const createOrReplaceAddress = async (address: Address, userId: string) => {
-    try {
-        const storedAddress = await prisma.userAddress.findUnique({
-            where: { userId },
-        });
-
-        const addressToSave = {
-            userId: userId,
-            address: address.address,
-            address2: address.address2,
-            city: address.city,
-            countryId: address.country,
-            firstName: address.firstName,
-            lastName: address.lastName,
-            phone: address.phone,
-            postalCode: address.postalCode,
-        };
-
-        if (!storedAddress) {
-            const newAddress = await prisma.userAddress.create({
-                data: addressToSave,
-            });
-
-            return newAddress;
-        }
-
-        const updatedAddress = await prisma.userAddress.update({
-            where: { userId },
-            data: addressToSave,
-        });
-
-        return updatedAddress;
-    } catch (error) {
-        console.log(error);
-        throw new Error("No se pudo grabar la dirección");
     }
 };

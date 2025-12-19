@@ -53,9 +53,9 @@ export const AddressForm = ({ countries, userStoredAddress = {} }: Props) => {
         setAddress(restAddress); // guarda en el store
 
         if (rememberAddress && user) {
-            await setUserAddress(restAddress, user.id); // guardar en la db
+            await setUserAddress(restAddress); // guardar en la db
         } else if (user) {
-            await deleteUserAddress(user.id); // eliminar de la db
+            await deleteUserAddress(); // eliminar de la db
         }
 
         router.push("/checkout"); // si sale bien, abre el page checkout
@@ -187,7 +187,7 @@ export const AddressForm = ({ countries, userStoredAddress = {} }: Props) => {
                 <button
                     type="submit"
                     // className="btn-primary flex w-full sm:w-1/2 justify-center "
-                    className={clsx({
+                    className={clsx("cursor-pointer", {
                         "btn-primary": isValid,
                         "btn-disabled": !isValid,
                     })}

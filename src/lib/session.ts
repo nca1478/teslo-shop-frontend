@@ -41,6 +41,18 @@ export async function getSession(): Promise<User | null> {
     }
 }
 
+export async function getAuthToken(): Promise<string | null> {
+    try {
+        const cookieStore = await cookies();
+        return cookieStore.get(SESSION_COOKIE_NAME)?.value || null;
+    } catch (error) {
+        if (process.env.NODE_ENV === "development") {
+            console.warn("Token retrieval failed:", error);
+        }
+        return null;
+    }
+}
+
 export async function setSession(token: string, user: User): Promise<void> {
     const cookieStore = await cookies();
 
