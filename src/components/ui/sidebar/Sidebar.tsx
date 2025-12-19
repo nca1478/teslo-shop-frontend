@@ -12,23 +12,42 @@ import {
     IoShirtOutline,
     IoTicketOutline,
 } from "react-icons/io5";
-import { useSession, signOut } from "next-auth/react";
+import { useAuth } from "@/contexts/AuthContext";
 import { useUIStore } from "@/store";
-import { logout } from "@/actions";
+import { useRouter } from "next/navigation";
 
 export const Sidebar = () => {
-    const { data: session } = useSession();
+    const router = useRouter();
+    const { user, logout: logoutContext } = useAuth();
 
     const isSideMenuOpen = useUIStore((state) => state.isSideMenuOpen);
     const closeSideMenu = useUIStore((state) => state.closeSideMenu);
 
-    const isAuthenticated = !!session?.user;
-    const isAdmin = session?.user.role === "admin";
+    const isAuthenticated = !!user;
+    const isAdmin = user?.roles.includes("admin");
 
-    const handleLogout = () => {
-        logout();
-        signOut({ callbackUrl: "/" }); // logout client side, hace re-render del componente
-        closeSideMenu();
+    const handleLogout = async () => {
+        try {
+            // Actualizar el contexto inmediatamente
+            logoutContext();
+            closeSideMenu();
+
+            // Llamar a la API para limpiar las cookies del servidor
+            const response = await fetch("/api/auth/logout", {
+                method: "POST",
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to logout");
+            }
+
+            // Redirigir al home
+            router.push("/");
+        } catch (error) {
+            console.error("Error during logout:", error);
+            // Fallback: redirigir al home de todas formas
+            router.push("/");
+        }
     };
 
     return (

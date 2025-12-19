@@ -1,6 +1,6 @@
 "use server";
 
-import { auth } from "@/auth";
+import { getSession } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 
 interface PaginationOptions {
@@ -12,9 +12,9 @@ export const getPaginatedUsers = async ({ page = 1, take = 5 }: PaginationOption
     if (isNaN(Number(page))) page = 1;
     if (page < 1) page = 1;
 
-    const session = await auth();
+    const user = await getSession();
 
-    if (session?.user.role !== "admin") {
+    if (!user || !user.roles.includes("admin")) {
         return {
             ok: false,
             message: "Acceso denegado - Solo para Administradores",

@@ -1,12 +1,12 @@
 "use server";
 
-import { auth } from "@/auth";
+import { getSession } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 
 export const getOrdersByUser = async () => {
-    const session = await auth();
+    const user = await getSession();
 
-    if (!session?.user) {
+    if (!user) {
         return {
             ok: false,
             message: "Debe de estar autenticado",
@@ -15,7 +15,7 @@ export const getOrdersByUser = async () => {
 
     const orders = await prisma.order.findMany({
         where: {
-            userId: session.user.id,
+            userId: user.id,
         },
         include: {
             OrderAddress: {

@@ -3,7 +3,7 @@
 import clsx from "clsx";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useSession } from "next-auth/react";
+import { useAuth } from "@/contexts/AuthContext";
 import { Address, Country } from "@/interfaces";
 import { useAddressStore } from "@/store";
 import { deleteUserAddress, setUserAddress } from "@/actions";
@@ -44,18 +44,18 @@ export const AddressForm = ({ countries, userStoredAddress = {} }: Props) => {
     const address = useAddressStore((state) => state.address);
     const router = useRouter();
 
-    // obtener datos del usuario. si no hay sessión, entonces redirige a la vista de login
-    const { data: session } = useSession({ required: true });
+    // obtener datos del usuario
+    const { user } = useAuth();
 
     const onSubmit = async (data: FormInputs) => {
         const { rememberAddress, ...restAddress } = data;
 
         setAddress(restAddress); // guarda en el store
 
-        if (rememberAddress) {
-            await setUserAddress(restAddress, session!.user.id); // guardar en la db
-        } else {
-            await deleteUserAddress(session!.user.id); // eliminar de la db
+        if (rememberAddress && user) {
+            await setUserAddress(restAddress, user.id); // guardar en la db
+        } else if (user) {
+            await deleteUserAddress(user.id); // eliminar de la db
         }
 
         router.push("/checkout"); // si sale bien, abre el page checkout

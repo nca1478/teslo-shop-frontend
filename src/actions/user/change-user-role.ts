@@ -1,13 +1,13 @@
 "use server";
 
-import { auth } from "@/auth";
+import { getSession } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
 export const changeUserRole = async (userId: string, role: string) => {
-    const session = await auth();
+    const user = await getSession();
 
-    if (session?.user.role !== "admin") {
+    if (!user || !user.roles.includes("admin")) {
         return {
             ok: false,
             message: "Debe de estar autenticado como Administrador",

@@ -2,19 +2,18 @@ import { Title } from "@/components";
 import { AddressForm } from "./ui/AddressForm";
 import { getCountries, getUserAddress } from "@/actions";
 import { Country } from "@/interfaces";
-import { auth } from "@/auth";
-import { unauthorized } from "next/navigation";
+import { getSession } from "@/lib/session";
+import { redirect } from "next/navigation";
 
 export default async function AddressPage() {
     const countries: Country[] = await getCountries();
-    const session = await auth();
+    const user = await getSession();
 
-    if (!session?.user) {
-        // return <h3 className="text-5xl-500">Error 500 - No hay sesión de usuario</h3>;
-        unauthorized();
+    if (!user) {
+        redirect("/auth/login");
     }
 
-    const userAddress = (await getUserAddress(session?.user.id)) ?? undefined;
+    const userAddress = (await getUserAddress(user.id)) ?? undefined;
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { id, userId, ...filteredUserAddress } = userAddress || {}; // Excluir id y userId

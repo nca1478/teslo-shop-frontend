@@ -1,47 +1,44 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
-import bcryptjs from "bcryptjs";
+import { apiClient } from "@/lib/api";
+import { setSession } from "@/lib/session";
 
-export const registerUser = async (name: string, email: string, password: string) => {
+export const registerUser = async (fullName: string, email: string, password: string) => {
     try {
-        if (!name || !email || !password) {
+        if (!fullName || !email || !password) {
             throw new Error("Todos los campos son obligatorios");
         }
 
-        const existingUser = await prisma.user.findUnique({
-            where: { email: email.toLowerCase() },
+        const response = await apiClient.register({
+            fullName,
+            email,
+            password,
         });
 
-        if (existingUser) {
-            throw new Error("El usuario ya existe");
-        }
-
-        // Crear el usuario
-        const user = await prisma.user.create({
-            data: {
-                name: name,
-                email: email.toLowerCase(),
-                password: bcryptjs.hashSync(password),
-            },
-            select: {
-                id: true,
-                name: true,
-                email: true,
-            },
-        });
+        // Guardar el token y datos del usuario en cookies seguras
+        await setSession(response.token, response.user);
 
         return {
             ok: true,
-            user: user,
-            message: "Usuario creado",
+            user: response.user,
+            message: "Usuario creado exitosamente",
         };
     } catch (error) {
-        console.log(error);
+        console.error("Register error:", error);
+
+        let message = "No se pudo crear el usuario";
+
+        if (error instanceof Error) {
+            if (error.message.includes("already exists")) {
+                message = "El usuario ya existe";
+            } else if (error.message.includes("validation")) {
+                message = "Datos inválidos";
+            }
+        }
 
         return {
             ok: false,
-            message: "No se pudo crear el usuario",
+            message,
         };
     }
 };

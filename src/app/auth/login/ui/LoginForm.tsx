@@ -1,37 +1,107 @@
 "use client";
 
-import { useActionState, useEffect } from "react";
-import { useFormStatus } from "react-dom";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import clsx from "clsx";
 import Link from "next/link";
 import { IoInformationOutline } from "react-icons/io5";
-import { authenticate } from "@/actions";
+import { apiClient } from "@/lib/api";
+import { useAuth } from "@/contexts/AuthContext";
+import { useRouter } from "next/navigation";
+
+type FormInputs = {
+    email: string;
+    password: string;
+};
 
 export const LoginForm = () => {
-    // const router = useRouter();
-    const [state, dispatch] = useActionState(authenticate, undefined);
+    const router = useRouter();
+    const { login: loginContext } = useAuth();
+    const [errorMessage, setErrorMessage] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
-    useEffect(() => {
-        if (state === "Success") {
-            // router.replace("/"); // redireccionar
-            window.location.replace("/"); // fuerza recarga y refresca la sesión
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<FormInputs>();
+
+    const onSubmit = async (data: FormInputs) => {
+        setErrorMessage("");
+        setIsLoading(true);
+
+        try {
+            console.log("🔐 Attempting login...");
+
+            // Llamar directamente al API client
+            const response = await apiClient.login({
+                email: data.email,
+                password: data.password,
+            });
+
+            console.log("✅ Login successful, user:", response.user);
+
+            // Guardar la sesión en el servidor
+            const saveResponse = await fetch("/api/auth/save-session", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    token: response.token,
+                    user: response.user,
+                }),
+            });
+
+            if (!saveResponse.ok) {
+                throw new Error("Failed to save session");
+            }
+
+            console.log("🍪 Session saved");
+
+            // Actualizar el contexto inmediatamente
+            loginContext(response.user);
+            console.log("🎉 Context updated");
+
+            // Redirigir
+            router.push("/");
+        } catch (error) {
+            console.error("💥 Login error:", error);
+
+            if (error instanceof Error) {
+                if (error.message.includes("Invalid credentials")) {
+                    setErrorMessage("Credenciales no son correctas");
+                } else if (error.message.includes("not active")) {
+                    setErrorMessage("Usuario no activo");
+                } else {
+                    setErrorMessage("Error del servidor. Intenta de nuevo");
+                }
+            } else {
+                setErrorMessage("Error del servidor. Intenta de nuevo");
+            }
+        } finally {
+            setIsLoading(false);
         }
-    }, [state]);
+    };
 
     return (
-        <form action={dispatch} className="flex flex-col">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
             <label htmlFor="email">Correo electrónico</label>
             <input
-                className="px-5 py-2 border bg-gray-200 rounded mb-5"
+                className={clsx("px-5 py-2 border bg-gray-200 rounded mb-5", {
+                    "border-red-500": errors.email,
+                })}
                 type="email"
-                name="email"
+                {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
             />
 
-            <label htmlFor="email">Contraseña</label>
+            <label htmlFor="password">Contraseña</label>
             <input
-                className="px-5 py-2 border bg-gray-200 rounded mb-5"
+                className={clsx("px-5 py-2 border bg-gray-200 rounded mb-5", {
+                    "border-red-500": errors.password,
+                })}
                 type="password"
-                name="password"
+                {...register("password", { required: true, minLength: 6 })}
             />
 
             <div
@@ -39,16 +109,25 @@ export const LoginForm = () => {
                 aria-live="polite"
                 aria-atomic="true"
             >
-                {state === "CredentialsSignin" && (
+                {errorMessage && (
                     <div className="flex flex-row mb-2">
                         <IoInformationOutline className="h-5 w-5 text-red-500" />
-                        <p className="text-sm text-red-500">Credenciales no son correctas</p>
+                        <p className="text-sm text-red-500">{errorMessage}</p>
                     </div>
                 )}
             </div>
 
             {/* Botón de Login */}
-            <LoginButton />
+            <button
+                type="submit"
+                className={clsx({
+                    "btn-primary": !isLoading,
+                    "btn-disabled": isLoading,
+                })}
+                disabled={isLoading}
+            >
+                {isLoading ? "Ingresando..." : "Ingresar"}
+            </button>
 
             {/* divisor line */}
             <div className="flex items-center my-5">
@@ -63,20 +142,3 @@ export const LoginForm = () => {
         </form>
     );
 };
-
-function LoginButton() {
-    const { pending } = useFormStatus();
-
-    return (
-        <button
-            type="submit"
-            className={clsx({
-                "btn-primary": !pending,
-                "btn-disabled": pending,
-            })}
-            disabled={pending}
-        >
-            Ingresar
-        </button>
-    );
-}

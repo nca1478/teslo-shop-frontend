@@ -2,7 +2,7 @@
 
 import type { Address, Size } from "@/interfaces";
 import { prisma } from "@/lib/prisma";
-import { auth } from "@/auth";
+import { getSession } from "@/lib/session";
 
 interface ProductToOrder {
     productId: string;
@@ -11,11 +11,10 @@ interface ProductToOrder {
 }
 
 export const placeOrder = async (productIds: ProductToOrder[], address: Address) => {
-    const session = await auth();
-    const userId = session?.user.id;
+    const user = await getSession();
 
     // Verificar sesión del usuario
-    if (!userId) {
+    if (!user) {
         return {
             ok: false,
             message: "No hay sesión de usuario",
@@ -100,7 +99,7 @@ export const placeOrder = async (productIds: ProductToOrder[], address: Address)
                     tax,
                     total,
                     itemsInOrder,
-                    userId,
+                    userId: user.id,
 
                     //relacion con OrdenItem (detalle de la orden)
                     OrderItem: {

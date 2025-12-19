@@ -1,7 +1,7 @@
 "use client";
 
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
-import { SessionProvider } from "next-auth/react";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 interface Props {
     children: React.ReactNode;
@@ -17,7 +17,7 @@ export const Providers = ({ children }: Props) => {
                 locale: "es_VE", // 'en_US': usa, 'es_ES': españa
             }}
         >
-            <SessionProvider>{children}</SessionProvider>;
+            <AuthProvider>{children}</AuthProvider>
         </PayPalScriptProvider>
     );
 };

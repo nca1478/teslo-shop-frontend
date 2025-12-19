@@ -4,15 +4,19 @@ import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import clsx from "clsx";
 import Link from "next/link";
-import { login, registerUser } from "@/actions";
+import { useRouter } from "next/navigation";
+import { registerUser } from "@/actions";
+import { useAuth } from "@/contexts/AuthContext";
 
 type FormInputs = {
-    name: string;
+    fullName: string;
     email: string;
     password: string;
 };
 
 export const RegisterForm = () => {
+    const router = useRouter();
+    const { refreshUser } = useAuth();
     const {
         register,
         handleSubmit,
@@ -24,21 +28,25 @@ export const RegisterForm = () => {
     const onSubmit: SubmitHandler<FormInputs> = async (data) => {
         setErrorMessage("");
 
-        const { name, email, password } = data;
+        const { fullName, email, password } = data;
 
         // Server action
-        const resp = await registerUser(name, email, password);
+        const resp = await registerUser(fullName, email, password);
 
         if (!resp.ok) {
             setErrorMessage(resp.message);
             return;
         }
 
-        // hacer login
-        await login(email.toLowerCase(), password);
-
-        // recarga vista (para actualizar menu)
-        window.location.replace("/");
+        // Refrescar el contexto de autenticación
+        refreshUser()
+            .then(() => {
+                router.replace("/");
+            })
+            .catch(() => {
+                // Fallback: recargar la página si hay error
+                window.location.replace("/");
+            });
     };
 
     return (
@@ -46,11 +54,11 @@ export const RegisterForm = () => {
             <label htmlFor="name">Nombre completo</label>
             <input
                 className={clsx("px-5 py-2 border bg-gray-200 rounded mb-5", {
-                    "border-red-500": errors.name,
+                    "border-red-500": errors.fullName,
                 })}
                 type="text"
                 autoFocus
-                {...register("name", { required: true })}
+                {...register("fullName", { required: true })}
             />
 
             <label htmlFor="email">Correo electrónico</label>

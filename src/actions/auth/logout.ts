@@ -1,7 +1,9 @@
 "use server";
 
-import { signOut } from "@/auth";
+import { clearSession } from "@/lib/session";
+import { redirect } from "next/navigation";
 
 export const logout = async () => {
-    await signOut();
+    await clearSession();
+    redirect("/");
 };
