@@ -72,18 +72,29 @@ export interface Order {
     total: number;
     itemsInOrder: number;
     isPaid: boolean;
-    paidAt?: Date;
+    paidAt?: Date | string;
     transactionId?: string;
     userId: string;
     orderItems: OrderItem[];
     orderAddress?: OrderAddress;
-    createdAt: Date;
-    updatedAt: Date;
+    OrderAddress?: OrderAddress;
+    createdAt: Date | string;
+    updatedAt: Date | string;
 }
 
 export interface PlaceOrderResponse {
     ok: boolean;
     order?: Order;
+    message?: string;
+}
+
+export interface GetPaginatedOrdersResponse {
+    ok: boolean;
+    orders?: Order[];
+    total?: number;
+    page?: number;
+    limit?: number;
+    totalPages?: number;
     message?: string;
 }
 
@@ -154,6 +165,63 @@ export class OrdersService {
         } catch (error) {
             console.log(error);
             return [];
+        }
+    }
+
+    async getAllOrders(
+        token: string,
+        page: number = 1,
+        limit: number = 10
+    ): Promise<GetPaginatedOrdersResponse> {
+        try {
+            const headers = { Authorization: `Bearer ${token}` };
+            const queryParams = new URLSearchParams({
+                page: page.toString(),
+                limit: limit.toString(),
+            });
+
+            const result = await httpClient.get<{
+                orders: Order[];
+                total: number;
+                page: number;
+                limit: number;
+                totalPages: number;
+            }>(`${this.basePath}?${queryParams}`, headers);
+
+            // Verificar si la respuesta tiene la estructura esperada
+            if (Array.isArray(result)) {
+                // Si el backend devuelve directamente un array (sin paginación)
+                return {
+                    ok: true,
+                    orders: result,
+                    total: result.length,
+                    page: page,
+                    limit: limit,
+                    totalPages: 1,
+                };
+            }
+
+            // Si tiene la estructura de paginación esperada
+            return {
+                ok: true,
+                orders: result.orders || [],
+                total: result.total || 0,
+                page: result.page || page,
+                limit: result.limit || limit,
+                totalPages: result.totalPages || 0,
+            };
+        } catch (error) {
+            console.log(error);
+            let message = "Error al obtener las órdenes";
+
+            if (error instanceof Error) {
+                message = error.message;
+            }
+
+            return {
+                ok: false,
+                message,
+            };
         }
     }
 }

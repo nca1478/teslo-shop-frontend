@@ -41,4 +41,5 @@ export type {
     PlaceOrderRequest,
     Order,
     PlaceOrderResponse,
+    GetPaginatedOrdersResponse,
 } from "./orders.service";

@@ -5,12 +5,26 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { IoCardOutline } from "react-icons/io5";
 
-import { Title } from "@/components";
+import { Title, Pagination } from "@/components";
 import { getPaginatedOrders } from "@/actions";
 import { extractTimeFromDate, singleDateFormat } from "@/utils";
 
-export default async function OrdersPage() {
-    const { ok, orders = [] } = await getPaginatedOrders();
+interface Props {
+    searchParams: Promise<{ page?: string }>;
+}
+
+export default async function OrdersPage({ searchParams }: Props) {
+    const { page } = await searchParams;
+    const pageParam = page ? parseInt(page) : 1;
+
+    const {
+        ok,
+        orders = [],
+        totalPages = 0,
+    } = await getPaginatedOrders({
+        page: pageParam,
+        take: 10,
+    });
 
     if (!ok) {
         redirect("/auth/login");
@@ -72,7 +86,7 @@ export default async function OrdersPage() {
                                     {order.id.split("-").at(-1)}
                                 </td>
                                 <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                    {order.OrderAddress?.firstName} {order.OrderAddress?.lastName}
+                                    {order.orderAddress?.firstName} {order.orderAddress?.lastName}
                                 </td>
                                 <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                     {singleDateFormat(order.createdAt)}
@@ -103,6 +117,8 @@ export default async function OrdersPage() {
                     </tbody>
                 </table>
             </div>
+
+            {totalPages > 0 && <Pagination totalPages={totalPages} />}
         </>
     );
 }
