@@ -82,7 +82,7 @@ export default async function ProductsPage({ searchParams }: Props) {
                                 <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                     <Link href={`/product/${product.slug}`}>
                                         <ProductImage
-                                            src={product.ProductImage[0]?.url}
+                                            src={product.images[0]}
                                             width={80}
                                             height={80}
                                             alt={product.title}

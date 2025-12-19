@@ -46,7 +46,7 @@ export interface CreateProductRequest {
     categoryId: string;
 }
 
-export interface UpdateProductRequest extends Partial<CreateProductRequest> {}
+export type UpdateProductRequest = Partial<CreateProductRequest>;
 
 export class ProductsService {
     private readonly basePath = "/api/products";

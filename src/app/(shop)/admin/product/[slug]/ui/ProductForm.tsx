@@ -39,9 +39,15 @@ export const ProductForm = ({ product, categories }: Props) => {
         watch,
     } = useForm<FormInputs>({
         defaultValues: {
-            ...product,
-            tags: product.tags?.join(", "),
+            title: product.title || "",
+            slug: product.slug || "",
+            description: product.description || "",
+            price: product.price || 0,
+            inStock: product.stock || 0,
             sizes: product.sizes ?? [],
+            tags: product.tags?.join(", ") || "",
+            gender: (product.gender as "men" | "women" | "kids" | "unisex") || "men",
+            categoryId: product.categoryId || "",
             images: undefined,
         },
     });
@@ -174,7 +180,7 @@ export const ProductForm = ({ product, categories }: Props) => {
                         <option value="">[Seleccione]</option>
                         <option value="men">Men</option>
                         <option value="women">Women</option>
-                        <option value="kid">Kid</option>
+                        <option value="kids">Kids</option>
                         <option value="unisex">Unisex</option>
                     </select>
                 </div>

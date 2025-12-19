@@ -1,6 +1,6 @@
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = unknown> {
     data?: T;
     message?: string;
     error?: string;
@@ -46,7 +46,7 @@ export class HttpClient {
         });
     }
 
-    async post<T>(endpoint: string, data?: any, headers?: Record<string, string>): Promise<T> {
+    async post<T>(endpoint: string, data?: unknown, headers?: Record<string, string>): Promise<T> {
         return this.request<T>(endpoint, {
             method: "POST",
             body: data ? JSON.stringify(data) : undefined,
@@ -54,7 +54,7 @@ export class HttpClient {
         });
     }
 
-    async put<T>(endpoint: string, data?: any, headers?: Record<string, string>): Promise<T> {
+    async put<T>(endpoint: string, data?: unknown, headers?: Record<string, string>): Promise<T> {
         return this.request<T>(endpoint, {
             method: "PUT",
             body: data ? JSON.stringify(data) : undefined,
@@ -62,7 +62,7 @@ export class HttpClient {
         });
     }
 
-    async patch<T>(endpoint: string, data?: any, headers?: Record<string, string>): Promise<T> {
+    async patch<T>(endpoint: string, data?: unknown, headers?: Record<string, string>): Promise<T> {
         return this.request<T>(endpoint, {
             method: "PATCH",
             body: data ? JSON.stringify(data) : undefined,
