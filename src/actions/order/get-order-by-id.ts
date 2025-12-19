@@ -1,52 +1,26 @@
 "use server";
 
-import { getSession } from "@/lib/session";
-import { prisma } from "@/lib/prisma";
+import { ordersService } from "@/lib/services";
+import { getAuthToken } from "@/lib/session";
 
 export const getOrderById = async (id: string) => {
-    const user = await getSession();
-
-    if (!user) {
-        return {
-            ok: false,
-            message: "Debe de estar autenticado",
-        };
-    }
-
     try {
-        const order = await prisma.order.findFirst({
-            where: {
-                id,
-            },
-            include: {
-                OrderAddress: true,
-                OrderItem: {
-                    select: {
-                        price: true,
-                        quantity: true,
-                        size: true,
+        const token = await getAuthToken();
 
-                        product: {
-                            select: {
-                                title: true,
-                                slug: true,
-                                ProductImage: {
-                                    select: { url: true },
-                                    take: 1,
-                                },
-                            },
-                        },
-                    },
-                },
-            },
-        });
+        if (!token) {
+            return {
+                ok: false,
+                message: "Debe de estar autenticado",
+            };
+        }
 
-        if (!order) throw `El id ${id} no existe`;
+        const order = await ordersService.getOrderById(id, token);
 
-        if (!user.roles.includes("admin")) {
-            if (user.id !== order.userId) {
-                throw `${id} no es del usuario logueado`;
-            }
+        if (!order) {
+            return {
+                ok: false,
+                message: "Orden no existe",
+            };
         }
 
         return {
@@ -57,7 +31,7 @@ export const getOrderById = async (id: string) => {
         console.log(error);
         return {
             ok: false,
-            message: "Orden no existe",
+            message: "Error al obtener la orden",
         };
     }
 };

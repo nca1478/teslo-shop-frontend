@@ -7,10 +7,27 @@ export interface ProductToOrder {
     size: Size;
 }
 
-export interface OrderItem {
+export interface ProductImage {
+    id: number;
+    url: string;
     productId: string;
+}
+
+export interface OrderItemProduct {
+    id: string;
+    title: string;
+    slug: string;
+    ProductImage: ProductImage[];
+}
+
+export interface OrderItem {
+    id: string;
     quantity: number;
+    price: number;
     size: string;
+    productId: string;
+    orderId: string;
+    product?: OrderItemProduct;
 }
 
 export interface PlaceOrderAddressDto {
@@ -24,8 +41,14 @@ export interface PlaceOrderAddressDto {
     countryId: string;
 }
 
+export interface PlaceOrderItemDto {
+    productId: string;
+    quantity: number;
+    size: string;
+}
+
 export interface PlaceOrderRequest {
-    items: OrderItem[];
+    items: PlaceOrderItemDto[];
     address: PlaceOrderAddressDto;
 }
 
@@ -52,6 +75,7 @@ export interface Order {
     paidAt?: Date;
     transactionId?: string;
     userId: string;
+    orderItems: OrderItem[];
     orderAddress?: OrderAddress;
     createdAt: Date;
     updatedAt: Date;

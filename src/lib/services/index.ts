@@ -33,7 +33,10 @@ export { ordersService, OrdersService } from "./orders.service";
 export type {
     ProductToOrder,
     OrderItem,
+    OrderItemProduct,
+    ProductImage,
     OrderAddress,
+    PlaceOrderItemDto,
     PlaceOrderAddressDto,
     PlaceOrderRequest,
     Order,
