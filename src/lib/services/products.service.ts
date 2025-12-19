@@ -21,8 +21,8 @@ export interface Product {
     images: string[];
     categoryId: string;
     userId: string;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: Date | string;
+    updatedAt: Date | string;
 }
 
 export interface GetProductsResponse {
@@ -52,18 +52,24 @@ export class ProductsService {
     private readonly basePath = "/api/products";
 
     async getProducts(params: GetProductsRequest = {}): Promise<GetProductsResponse> {
-        const searchParams = new URLSearchParams();
+        try {
+            const searchParams = new URLSearchParams();
 
-        if (params.page) searchParams.append("page", params.page.toString());
-        if (params.limit) searchParams.append("limit", params.limit.toString());
-        if (params.gender) searchParams.append("gender", params.gender);
-        if (params.category) searchParams.append("category", params.category);
-        if (params.search) searchParams.append("search", params.search);
+            if (params.page) searchParams.append("page", params.page.toString());
+            if (params.limit) searchParams.append("limit", params.limit.toString());
+            if (params.gender) searchParams.append("gender", params.gender);
+            if (params.category) searchParams.append("category", params.category);
+            if (params.search) searchParams.append("search", params.search);
 
-        const queryString = searchParams.toString();
-        const endpoint = `${this.basePath}${queryString ? `?${queryString}` : ""}`;
+            const queryString = searchParams.toString();
+            const endpoint = `${this.basePath}${queryString ? `?${queryString}` : ""}`;
 
-        return httpClient.get<GetProductsResponse>(endpoint);
+            const result = await httpClient.get<GetProductsResponse>(endpoint);
+            return result;
+        } catch (error) {
+            console.error("Error fetching products:", error);
+            throw error;
+        }
     }
 
     async getProductBySlug(slug: string): Promise<Product> {
@@ -74,18 +80,34 @@ export class ProductsService {
         return httpClient.get<Product>(`${this.basePath}/${id}`);
     }
 
-    async createProduct(productData: CreateProductRequest, token?: string): Promise<Product> {
-        const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
-        return httpClient.post<Product>(this.basePath, productData, headers);
+    async createProduct(productData: CreateProductRequest, token: string): Promise<Product> {
+        try {
+            const headers = { Authorization: `Bearer ${token}` };
+            const result = await httpClient.post<Product>(this.basePath, productData, headers);
+            return result;
+        } catch (error) {
+            console.error("Error creating product:", error);
+            throw error;
+        }
     }
 
     async updateProduct(
         id: string,
         productData: UpdateProductRequest,
-        token?: string
+        token: string
     ): Promise<Product> {
-        const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
-        return httpClient.patch<Product>(`${this.basePath}/${id}`, productData, headers);
+        try {
+            const headers = { Authorization: `Bearer ${token}` };
+            const result = await httpClient.patch<Product>(
+                `${this.basePath}/${id}`,
+                productData,
+                headers
+            );
+            return result;
+        } catch (error) {
+            console.error("Error updating product:", error);
+            throw error;
+        }
     }
 
     async deleteProduct(id: string, token?: string): Promise<void> {

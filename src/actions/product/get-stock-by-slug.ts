@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
+import { productsService } from "@/lib/services";
 
 // import { sleep } from "@/utils";
 
@@ -9,14 +9,9 @@ export const getStockBySlug = async (slug: string): Promise<number> => {
         // ralentizar para probar el skeleton (loading animation)
         // await sleep(1);
 
-        const product = await prisma.product.findFirst({
-            where: {
-                slug,
-            },
-            select: { inStock: true },
-        });
+        const product = await productsService.getProductBySlug(slug);
 
-        return product?.inStock ?? 0;
+        return product?.stock ?? 0;
     } catch (error) {
         if (error instanceof Error) {
             throw new Error("Error al obtener el producto por slug", {

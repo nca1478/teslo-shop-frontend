@@ -26,8 +26,14 @@ export const getPaginatedProductsWithImages = async ({
             products: response.products.map((product) => ({
                 ...product,
                 inStock: product.stock,
-                createdAt: new Date(product.createdAt),
-                updatedAt: new Date(product.updatedAt),
+                createdAt:
+                    typeof product.createdAt === "string"
+                        ? new Date(product.createdAt)
+                        : product.createdAt,
+                updatedAt:
+                    typeof product.updatedAt === "string"
+                        ? new Date(product.updatedAt)
+                        : product.updatedAt,
             })),
             currentPage: response.page,
             totalPages: response.totalPages,

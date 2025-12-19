@@ -3,7 +3,8 @@
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { v2 as cloudinary } from "cloudinary";
-import { prisma } from "@/lib/prisma";
+import { productsService } from "@/lib/services";
+import { getAuthToken } from "@/lib/session";
 import { Gender } from "@/generated/prisma";
 import { Size } from "@/interfaces";
 
@@ -52,73 +53,70 @@ export const createUpdateProduct = async (formData: FormData) => {
     const { id, ...rest } = product;
 
     try {
-        const prismaTx = await prisma.$transaction(async (tx) => {
-            let product;
-            const tagsArray = rest.tags.split(",").map((tag) => tag.trim().toLowerCase());
+        // Obtener token de autenticación
+        const token = await getAuthToken();
+        if (!token) {
+            return {
+                ok: false,
+                message: "Token de autenticación no encontrado",
+            };
+        }
 
-            if (id) {
-                // Actualizar
-                product = await tx.product.update({
-                    where: { id },
-                    data: {
-                        ...rest,
-                        sizes: {
-                            set: rest.sizes as Size[],
-                        },
-                        tags: {
-                            set: tagsArray,
-                        },
-                    },
-                });
-            } else {
-                // Crear
-                product = await prisma.product.create({
-                    data: {
-                        ...rest,
-                        sizes: {
-                            set: rest.sizes as Size[],
-                        },
-                        tags: {
-                            set: tagsArray,
-                        },
-                    },
-                });
+        // Cargar y subir las imágenes primero
+        let images: string[] = [];
+        if (formData.getAll("images")) {
+            const uploadedImages = await uploadImages(formData.getAll("images") as File[]);
+            if (!uploadedImages) {
+                throw new Error("Error al subir las imágenes");
             }
+            images = uploadedImages.filter((img) => img !== null) as string[];
+        }
 
-            // Cargar y guardar las imágenes
-            if (formData.getAll("images")) {
-                const images = await uploadImages(formData.getAll("images") as File[]);
+        const tagsArray = rest.tags.split(",").map((tag) => tag.trim().toLowerCase());
 
-                if (!images) {
-                    throw new Error("Error al subir las imágenes");
-                }
+        const productData = {
+            title: rest.title,
+            description: rest.description,
+            price: rest.price,
+            slug: rest.slug,
+            stock: rest.inStock,
+            sizes: rest.sizes,
+            gender: rest.gender,
+            tags: tagsArray,
+            images: images,
+            categoryId: rest.categoryId,
+        };
 
-                // guardar en la base de datos
-                await prisma.productImage.createMany({
-                    data: images.map((image) => ({
-                        url: image!,
-                        productId: product.id,
-                    })),
-                });
-            }
+        let resultProduct;
 
-            return { product };
-        });
+        if (id) {
+            // Actualizar producto existente
+            resultProduct = await productsService.updateProduct(id, productData, token);
+        } else {
+            // Crear nuevo producto
+            resultProduct = await productsService.createProduct(productData, token);
+        }
 
         // revalidar los paths
         revalidatePath("/admin/products");
-        revalidatePath(`/admin/product/${product.slug}`);
-        revalidatePath(`/products/${product.slug}`);
+        revalidatePath(`/admin/product/${resultProduct.slug}`);
+        revalidatePath(`/products/${resultProduct.slug}`);
 
         return {
             ok: true,
-            product: prismaTx.product,
+            product: resultProduct,
         };
     } catch (error) {
         console.log(error);
+        let message = "Revisar los logs, no se pudo actualizar/crear";
+
+        if (error instanceof Error) {
+            message = error.message;
+        }
+
         return {
             ok: false,
-            message: "Revisar los logs, no se pudo actualizar/crear",
+            message,
         };
     }
 };

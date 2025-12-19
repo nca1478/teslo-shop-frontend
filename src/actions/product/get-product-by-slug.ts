@@ -15,8 +15,14 @@ export const getProductBySlug = async (slug: string) => {
             ...product,
             images,
             inStock: product.stock, // Mapear stock a inStock para compatibilidad
-            createdAt: new Date(product.createdAt),
-            updatedAt: new Date(product.updatedAt),
+            createdAt:
+                typeof product.createdAt === "string"
+                    ? new Date(product.createdAt)
+                    : product.createdAt,
+            updatedAt:
+                typeof product.updatedAt === "string"
+                    ? new Date(product.updatedAt)
+                    : product.updatedAt,
         };
     } catch (error) {
         // Si el producto no se encuentra, devolver null en lugar de lanzar error
