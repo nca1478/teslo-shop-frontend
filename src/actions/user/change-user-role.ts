@@ -15,6 +15,14 @@ export const changeUserRole = async (userId: string, role: string) => {
         };
     }
 
+    // Prevent user from changing their own role
+    if (userId === user.id) {
+        return {
+            ok: false,
+            message: "No puedes cambiar tu propio rol",
+        };
+    }
+
     try {
         const newRole = role === "admin" ? "admin" : "user";
 
