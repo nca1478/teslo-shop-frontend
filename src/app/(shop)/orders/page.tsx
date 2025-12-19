@@ -67,7 +67,7 @@ export default async function OrdersPage() {
 
                                 {/* Columna - Nombre completo */}
                                 <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                    {order.OrderAddress?.firstName} {order.OrderAddress?.lastName}
+                                    {order.orderAddress?.firstName} {order.orderAddress?.lastName}
                                 </td>
 
                                 {/* Columna - Estado */}

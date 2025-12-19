@@ -34,6 +34,7 @@ export type {
     ProductToOrder,
     OrderItem,
     OrderAddress,
+    PlaceOrderAddressDto,
     PlaceOrderRequest,
     Order,
     PlaceOrderResponse,

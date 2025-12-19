@@ -1,34 +1,31 @@
 "use server";
 
-import { getSession } from "@/lib/session";
-import { prisma } from "@/lib/prisma";
+import { ordersService } from "@/lib/services";
+import { getAuthToken } from "@/lib/session";
 
 export const getOrdersByUser = async () => {
-    const user = await getSession();
+    try {
+        const token = await getAuthToken();
 
-    if (!user) {
+        if (!token) {
+            return {
+                ok: false,
+                message: "Debe de estar autenticado",
+            };
+        }
+
+        const orders = await ordersService.getMyOrders(token);
+
+        return {
+            ok: true,
+            orders,
+        };
+    } catch (error) {
+        console.log(error);
+
         return {
             ok: false,
-            message: "Debe de estar autenticado",
+            message: "Error al obtener las órdenes",
         };
     }
-
-    const orders = await prisma.order.findMany({
-        where: {
-            userId: user.id,
-        },
-        include: {
-            OrderAddress: {
-                select: {
-                    firstName: true,
-                    lastName: true,
-                },
-            },
-        },
-    });
-
-    return {
-        ok: true,
-        orders,
-    };
 };

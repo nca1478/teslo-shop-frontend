@@ -13,7 +13,7 @@ export interface OrderItem {
     size: string;
 }
 
-export interface OrderAddress {
+export interface PlaceOrderAddressDto {
     firstName: string;
     lastName: string;
     address: string;
@@ -26,7 +26,20 @@ export interface OrderAddress {
 
 export interface PlaceOrderRequest {
     items: OrderItem[];
-    address: OrderAddress;
+    address: PlaceOrderAddressDto;
+}
+
+export interface OrderAddress {
+    id: string;
+    firstName: string;
+    lastName: string;
+    address: string;
+    address2?: string;
+    postalCode: string;
+    city: string;
+    phone: string;
+    countryId: string;
+    orderId: string;
 }
 
 export interface Order {
@@ -35,7 +48,11 @@ export interface Order {
     tax: number;
     total: number;
     itemsInOrder: number;
+    isPaid: boolean;
+    paidAt?: Date;
+    transactionId?: string;
     userId: string;
+    orderAddress?: OrderAddress;
     createdAt: Date;
     updatedAt: Date;
 }
