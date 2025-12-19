@@ -3,6 +3,7 @@ export * from "./orders/OrderStatus";
 
 // paypal
 export * from "./paypal/PaypalButton";
+export * from "./paypal/PayPalWrapper";
 
 // product
 export * from "./product/size-selector/SizeSelector";

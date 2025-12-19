@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { OrderStatus, PayPalButton, ProductImage, Title } from "@/components";
+import { OrderStatus, PayPalWrapper, ProductImage, Title } from "@/components";
 import { getOrderById } from "@/actions";
 import { currencyFormat } from "@/utils";
 
@@ -114,7 +114,7 @@ export default async function OrdersByIdPage({ params }: Props) {
                             {order!.isPaid ? (
                                 <OrderStatus isPaid={order!.isPaid} /> // Etiqueta de status de pago
                             ) : (
-                                <PayPalButton amount={order!.total} orderId={order!.id} /> // Botón
+                                <PayPalWrapper amount={order!.total} orderId={order!.id} /> // Botón
                             )}
                         </div>
                     </div>

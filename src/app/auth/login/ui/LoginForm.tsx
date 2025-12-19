@@ -31,15 +31,10 @@ export const LoginForm = () => {
         setIsLoading(true);
 
         try {
-            console.log("🔐 Attempting login...");
-
-            // Llamar directamente al API client
             const response = await apiClient.login({
                 email: data.email,
                 password: data.password,
             });
-
-            console.log("✅ Login successful, user:", response.user);
 
             // Guardar la sesión en el servidor
             const saveResponse = await fetch("/api/auth/save-session", {
@@ -57,11 +52,8 @@ export const LoginForm = () => {
                 throw new Error("Failed to save session");
             }
 
-            console.log("🍪 Session saved");
-
             // Actualizar el contexto inmediatamente
             loginContext(response.user);
-            console.log("🎉 Context updated");
 
             // Redirigir
             router.push("/");

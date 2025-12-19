@@ -20,10 +20,23 @@ export async function getSession(): Promise<User | null> {
             return null;
         }
 
-        const user = JSON.parse(userData);
-        return user;
+        // Validar que userData sea un JSON válido
+        try {
+            const user = JSON.parse(userData);
+            // Validar que el usuario tenga las propiedades requeridas
+            if (!user.id || !user.email) {
+                return null;
+            }
+            return user;
+        } catch (parseError) {
+            console.warn("Invalid user data in cookie:", parseError);
+            return null;
+        }
     } catch (error) {
-        console.error("Session verification failed:", error);
+        // Solo log en desarrollo para evitar spam en producción
+        if (process.env.NODE_ENV === "development") {
+            console.warn("Session verification failed:", error);
+        }
         return null;
     }
 }

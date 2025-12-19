@@ -19,16 +19,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const fetchUser = async () => {
         try {
-            const response = await fetch("/api/auth/session");
+            const response = await fetch("/api/auth/session", {
+                method: "GET",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
 
             if (response.ok) {
                 const userData = await response.json();
-                setUser(userData);
+                if (userData) {
+                    setUser(userData);
+                } else {
+                    setUser(null);
+                }
             } else {
+                // Para cualquier error HTTP, simplemente no hay usuario
                 setUser(null);
             }
         } catch (error) {
-            console.error("Error fetching user session:", error);
+            // Solo mostrar error si no es un problema de red común
+            if (error instanceof TypeError && error.message.includes("fetch")) {
+                console.warn(
+                    "Network error fetching user session - this is normal if not logged in"
+                );
+            } else {
+                console.error("Error fetching user session:", error);
+            }
             setUser(null);
         }
     };

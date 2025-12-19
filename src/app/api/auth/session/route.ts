@@ -6,7 +6,8 @@ export async function GET() {
         const user = await getSession();
 
         if (!user) {
-            return NextResponse.json(null, { status: 401 });
+            // Retornar 200 con null en lugar de 401 para evitar errores en consola
+            return NextResponse.json(null, { status: 200 });
         }
 
         return NextResponse.json(user);

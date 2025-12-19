@@ -14,6 +14,17 @@ const nextConfig: NextConfig = {
             },
         ],
     },
+
+    // Mejorar Fast Refresh
+    reactStrictMode: true,
+
+    // Configuración para desarrollo
+    ...(process.env.NODE_ENV === "development" && {
+        onDemandEntries: {
+            maxInactiveAge: 25 * 1000,
+            pagesBufferLength: 2,
+        },
+    }),
 };
 
 export default nextConfig;
