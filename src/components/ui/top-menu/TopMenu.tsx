@@ -80,7 +80,7 @@ export const TopMenu = () => {
 
                 {/* Abrir menu */}
                 <button
-                    className="m-2 p-2 rounded-md transition-all hover:bg-gray-100"
+                    className="m-2 p-2 rounded-md transition-all hover:bg-gray-100 cursor-pointer"
                     onClick={openSideMenu}
                 >
                     Menú

@@ -10,10 +10,6 @@
 !.yarn/releases
 !.yarn/versions
 
-# db
-/postgres
-/src/generated/prisma
-
 # testing
 /coverage
 

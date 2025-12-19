@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { Gender } from "@/generated/prisma";
 
 // Validación de datos del formulario
 export const productSchema = z.object({
@@ -23,5 +22,5 @@ export const productSchema = z.object({
     categoryId: z.uuid(),
     sizes: z.coerce.string().transform((val) => val.split(",")),
     tags: z.string(),
-    gender: z.enum(Gender),
+    gender: z.enum(["men", "women", "kids", "unisex"]),
 });

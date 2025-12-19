@@ -82,7 +82,7 @@ export const RegisterForm = () => {
             {/* Errores */}
             <span className="text-red-500 mb-4">{errorMessage}</span>
 
-            <button className="btn-primary">Crear cuenta</button>
+            <button className="btn-primary cursor-pointer">Crear cuenta</button>
 
             {/* divisor line */}
             <div className="flex items-center my-5">

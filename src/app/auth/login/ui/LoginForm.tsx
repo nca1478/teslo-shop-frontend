@@ -102,7 +102,7 @@ export const LoginForm = () => {
             {/* Botón de Login */}
             <button
                 type="submit"
-                className={clsx({
+                className={clsx("cursor-pointer", {
                     "btn-primary": !isLoading,
                     "btn-disabled": isLoading,
                 })}
