@@ -1,40 +1,13 @@
 "use server";
 
-import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { v2 as cloudinary } from "cloudinary";
 import { productsService } from "@/lib/services";
 import { getAuthToken } from "@/lib/session";
-import { Gender } from "@/generated/prisma";
-import { Size } from "@/interfaces";
+import { productSchema } from "./schema/product.schema";
 
 // configurar url cloudinary (subir imagenes)
 cloudinary.config(process.env.CLOUDINARY_URL ?? "");
-
-// Validación de datos del formulario
-const productSchema = z.object({
-    id: z.uuid().optional().nullable(),
-    title: z.string().min(3).max(255),
-    // slug: z.string().min(3).max(255),
-    slug: z.coerce
-        .string()
-        .min(3)
-        .max(255)
-        .transform((val) => val.toLowerCase().replace(/ /g, "_").trim()),
-    description: z.string(),
-    price: z.coerce
-        .number()
-        .min(0)
-        .transform((val) => Number(val.toFixed(2))),
-    inStock: z.coerce
-        .number()
-        .min(0)
-        .transform((val) => Number(val.toFixed(0))),
-    categoryId: z.uuid(),
-    sizes: z.coerce.string().transform((val) => val.split(",")),
-    tags: z.string(),
-    gender: z.enum(Gender),
-});
 
 export const createUpdateProduct = async (formData: FormData) => {
     const data = Object.fromEntries(formData);

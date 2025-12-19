@@ -34,7 +34,7 @@ export const getPaginatedUsers = async ({ page = 1, take = 5 }: PaginationOption
 
         const users: User[] = response.users.map((user) => ({
             id: user.id,
-            name: user.name, // Now both API and frontend use 'name'
+            name: user.name,
             email: user.email,
             emailVerified: user.emailVerified,
             role: user.role,
