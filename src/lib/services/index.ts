@@ -15,3 +15,6 @@ export type {
     CreateProductRequest,
     UpdateProductRequest,
 } from "./products.service";
+
+// Countries Service
+export { countriesService, CountriesService } from "./countries.service";

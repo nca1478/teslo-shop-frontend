@@ -1,15 +1,10 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
+import { countriesService } from "@/lib/services";
 
 export const getCountries = async () => {
     try {
-        const countries = await prisma.country.findMany({
-            orderBy: {
-                name: "asc",
-            },
-        });
-
+        const countries = await countriesService.getCountries();
         return countries;
     } catch (error) {
         console.log(error);
