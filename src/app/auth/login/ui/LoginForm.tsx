@@ -121,6 +121,10 @@ export const LoginForm = () => {
             <Link href="/auth/new-account" className="btn-secondary text-center">
                 Crear una nueva cuenta
             </Link>
+
+            <Link href="/" className="btn-secondary text-center mt-2">
+                ← Volver al inicio
+            </Link>
         </form>
     );
 };

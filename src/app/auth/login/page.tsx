@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { titleFont } from "@/config/fonts/fonts";
 import { LoginForm } from "./ui/LoginForm";
 
