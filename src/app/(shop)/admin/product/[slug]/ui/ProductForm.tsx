@@ -43,7 +43,7 @@ export const ProductForm = ({ product, categories }: Props) => {
             slug: product.slug || "",
             description: product.description || "",
             price: product.price || 0,
-            inStock: product.stock || 0,
+            inStock: product.inStock || product.stock || 0,
             sizes: product.sizes ?? [],
             tags: product.tags?.join(", ") || "",
             gender: (product.gender as "men" | "women" | "kids" | "unisex") || "men",
@@ -99,7 +99,9 @@ export const ProductForm = ({ product, categories }: Props) => {
             return;
         }
 
-        router.replace(`/admin/product/${updatedProduct?.slug}`);
+        // Revalidar los datos del servidor y navegar
+        router.refresh();
+        router.push(`/admin/product/${updatedProduct?.slug}`);
     };
 
     const onDeleteProductImage = async (image: ProductWithImage) => {

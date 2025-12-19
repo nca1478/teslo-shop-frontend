@@ -15,6 +15,12 @@ export const getProductBySlug = async (slug: string) => {
             ...product,
             images,
             inStock: product.stock, // Mapear stock a inStock para compatibilidad
+            // Convertir images array a ProductImage objects para compatibilidad con el formulario
+            ProductImage: images.map((url, index) => ({
+                id: index + 1, // ID temporal para el formulario
+                url,
+                productId: product.id,
+            })),
             createdAt:
                 typeof product.createdAt === "string"
                     ? new Date(product.createdAt)

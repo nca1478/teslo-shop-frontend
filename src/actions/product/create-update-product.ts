@@ -64,8 +64,13 @@ export const createUpdateProduct = async (formData: FormData) => {
 
         // Cargar y subir las imágenes primero
         let images: string[] = [];
-        if (formData.getAll("images")) {
-            const uploadedImages = await uploadImages(formData.getAll("images") as File[]);
+        const imageFiles = formData.getAll("images") as File[];
+
+        // Filtrar archivos vacíos
+        const validImageFiles = imageFiles.filter((file) => file instanceof File && file.size > 0);
+
+        if (validImageFiles.length > 0) {
+            const uploadedImages = await uploadImages(validImageFiles);
             if (!uploadedImages) {
                 throw new Error("Error al subir las imágenes");
             }

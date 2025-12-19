@@ -19,6 +19,10 @@ export type {
 // Countries Service
 export { countriesService, CountriesService } from "./countries.service";
 
+// Categories Service
+export { categoriesService, CategoriesService } from "./categories.service";
+export type { Category } from "./categories.service";
+
 // Addresses Service
 export { addressesService, AddressesService } from "./addresses.service";
 export type {
