@@ -68,7 +68,7 @@ export const Sidebar = () => {
             {/* Sidemenu */}
             <nav
                 className={clsx(
-                    "overflow-auto fixed p-5 right-0 top-0 w-[500px] h-screen bg-white z-20 shadow-2xl transform transition-all duration-300",
+                    "overflow-auto fixed p-4 sm:p-6 right-0 top-0 w-full max-w-sm sm:max-w-md h-screen bg-white z-20 shadow-2xl transform transition-all duration-300",
                     {
                         "translate-x-full": !isSideMenuOpen,
                     }
@@ -76,108 +76,161 @@ export const Sidebar = () => {
             >
                 {/* Close menu button */}
                 <IoCloseOutline
-                    size={50}
-                    className="absolute top-5 right-5 cursor-pointer"
+                    size={40}
+                    className="absolute top-4 right-4 cursor-pointer hover:bg-gray-100 rounded-full p-1 transition-colors"
                     onClick={closeSideMenu}
                 />
 
                 {/* Input */}
-                <div className="relative mt-14">
-                    <IoSearchOutline size={20} className="absolute top-2 left-2" />
+                <div className="relative mt-12 sm:mt-14">
+                    <IoSearchOutline size={20} className="absolute top-3 left-3 text-gray-400" />
                     <input
                         type="text"
-                        placeholder="Buscar"
-                        className="w-full bg-gray-50 rounded pl-10 py-1 pr-10 border-b-2 text-xl border-gray-200 focus:outline-none focus:border-blue-500"
+                        placeholder="Buscar productos..."
+                        className="w-full bg-gray-50 rounded-lg pl-10 pr-4 py-3 border border-gray-200 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                     />
                 </div>
 
-                {/* Menú */}
-
-                {/* Role: User y Admin */}
-                {isAuthenticated && (
-                    <>
-                        {/* Perfil */}
+                {/* Navigation Categories - Mobile only */}
+                <div className="mt-6 lg:hidden">
+                    <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">
+                        Categorías
+                    </h3>
+                    <div className="space-y-1">
                         <Link
-                            href="/profile"
-                            className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+                            href="/gender/men"
+                            className="flex items-center py-3 px-3 hover:bg-gray-100 rounded-lg transition-all text-gray-700"
                             onClick={closeSideMenu}
                         >
-                            <IoPersonOutline size={30} />
-                            <span className="ml-3 text-xl">Perfil</span>
+                            <span className="text-base">Hombres</span>
                         </Link>
-
-                        {/* Orders */}
                         <Link
-                            href="/orders"
-                            className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+                            href="/gender/women"
+                            className="flex items-center py-3 px-3 hover:bg-gray-100 rounded-lg transition-all text-gray-700"
                             onClick={closeSideMenu}
                         >
-                            <IoTicketOutline size={30} />
-                            <span className="ml-3 text-xl">Ordenes</span>
+                            <span className="text-base">Mujeres</span>
                         </Link>
-                    </>
-                )}
-
-                {/* Ingresar - Iniciar Sesión */}
-                {!isAuthenticated && (
-                    <Link
-                        href="/auth/login"
-                        className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
-                        onClick={closeSideMenu}
-                    >
-                        <IoLogInOutline size={30} />
-                        <span className="ml-3 text-xl">Ingresar</span>
-                    </Link>
-                )}
-
-                {/* Salir - Cerrar Sesión */}
-                {isAuthenticated && (
-                    <button
-                        className="w-full flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all cursor-pointer"
-                        onClick={handleLogout}
-                    >
-                        <IoLogOutOutline size={30} />
-                        <span className="ml-3 text-xl">Salir</span>
-                    </button>
-                )}
-
-                {/* Role: Admin */}
-                {isAdmin && (
-                    <>
-                        {/* Line Separator */}
-                        <div className="w-full h-px bg-gray-200 my-10" />
-
-                        {/* Productos */}
                         <Link
-                            href="/admin/products"
-                            className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+                            href="/gender/kids"
+                            className="flex items-center py-3 px-3 hover:bg-gray-100 rounded-lg transition-all text-gray-700"
                             onClick={closeSideMenu}
                         >
-                            <IoShirtOutline size={30} />
-                            <span className="ml-3 text-xl">Productos</span>
+                            <span className="text-base">Niños</span>
                         </Link>
-
-                        {/* Ordenes */}
                         <Link
-                            href="/admin/orders"
-                            className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+                            href="/gender/unisex"
+                            className="flex items-center py-3 px-3 hover:bg-gray-100 rounded-lg transition-all text-gray-700"
                             onClick={closeSideMenu}
                         >
-                            <IoTicketOutline size={30} />
-                            <span className="ml-3 text-xl">Ordenes</span>
+                            <span className="text-base">Unisex</span>
                         </Link>
+                    </div>
 
-                        {/* Usuarios */}
+                    {/* Separator */}
+                    <div className="w-full h-px bg-gray-200 my-6" />
+                </div>
+
+                {/* User Menu */}
+                <div className="mt-6 lg:mt-10">
+                    {/* Role: User y Admin */}
+                    {isAuthenticated && (
+                        <>
+                            <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">
+                                Mi Cuenta
+                            </h3>
+                            <div className="space-y-1">
+                                {/* Perfil */}
+                                <Link
+                                    href="/profile"
+                                    className="flex items-center py-3 px-3 hover:bg-gray-100 rounded-lg transition-all"
+                                    onClick={closeSideMenu}
+                                >
+                                    <IoPersonOutline size={24} className="text-gray-600" />
+                                    <span className="ml-3 text-base">Perfil</span>
+                                </Link>
+
+                                {/* Orders */}
+                                <Link
+                                    href="/orders"
+                                    className="flex items-center py-3 px-3 hover:bg-gray-100 rounded-lg transition-all"
+                                    onClick={closeSideMenu}
+                                >
+                                    <IoTicketOutline size={24} className="text-gray-600" />
+                                    <span className="ml-3 text-base">Mis Órdenes</span>
+                                </Link>
+                            </div>
+                        </>
+                    )}
+
+                    {/* Ingresar - Iniciar Sesión */}
+                    {!isAuthenticated && (
                         <Link
-                            href="/admin/users"
-                            className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+                            href="/auth/login"
+                            className="flex items-center py-3 px-3 hover:bg-gray-100 rounded-lg transition-all bg-blue-50 border border-blue-200"
                             onClick={closeSideMenu}
                         >
-                            <IoPeopleOutline size={30} />
-                            <span className="ml-3 text-xl">Usuarios</span>
+                            <IoLogInOutline size={24} className="text-blue-600" />
+                            <span className="ml-3 text-base font-medium text-blue-600">
+                                Iniciar Sesión
+                            </span>
                         </Link>
-                    </>
-                )}
+                    )}
+
+                    {/* Salir - Cerrar Sesión */}
+                    {isAuthenticated && (
+                        <button
+                            className="w-full flex items-center py-3 px-3 hover:bg-red-50 rounded-lg transition-all cursor-pointer mt-2"
+                            onClick={handleLogout}
+                        >
+                            <IoLogOutOutline size={24} className="text-red-600" />
+                            <span className="ml-3 text-base text-red-600">Cerrar Sesión</span>
+                        </button>
+                    )}
+
+                    {/* Role: Admin */}
+                    {isAdmin && (
+                        <>
+                            {/* Line Separator */}
+                            <div className="w-full h-px bg-gray-200 my-6" />
+
+                            <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">
+                                Administración
+                            </h3>
+                            <div className="space-y-1">
+                                {/* Productos */}
+                                <Link
+                                    href="/admin/products"
+                                    className="flex items-center py-3 px-3 hover:bg-gray-100 rounded-lg transition-all"
+                                    onClick={closeSideMenu}
+                                >
+                                    <IoShirtOutline size={24} className="text-gray-600" />
+                                    <span className="ml-3 text-base">Productos</span>
+                                </Link>
+
+                                {/* Ordenes */}
+                                <Link
+                                    href="/admin/orders"
+                                    className="flex items-center py-3 px-3 hover:bg-gray-100 rounded-lg transition-all"
+                                    onClick={closeSideMenu}
+                                >
+                                    <IoTicketOutline size={24} className="text-gray-600" />
+                                    <span className="ml-3 text-base">Órdenes</span>
+                                </Link>
+
+                                {/* Usuarios */}
+                                <Link
+                                    href="/admin/users"
+                                    className="flex items-center py-3 px-3 hover:bg-gray-100 rounded-lg transition-all"
+                                    onClick={closeSideMenu}
+                                >
+                                    <IoPeopleOutline size={24} className="text-gray-600" />
+                                    <span className="ml-3 text-base">Usuarios</span>
+                                </Link>
+                            </div>
+                        </>
+                    )}
+                </div>
             </nav>
         </div>
     );

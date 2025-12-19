@@ -1,9 +1,25 @@
-export const Spinner = () => {
+interface Props {
+    size?: "sm" | "md" | "lg" | "xl";
+    className?: string;
+    text?: string;
+}
+
+export const Spinner = ({ size = "md", className = "", text = "Cargando..." }: Props) => {
+    const sizeClasses = {
+        sm: "w-4 h-4",
+        md: "w-8 h-8",
+        lg: "w-12 h-12",
+        xl: "w-16 h-16",
+    };
+
     return (
-        <div className="flex w-full justify-center items-center" role="status">
+        <div
+            className={`flex flex-col items-center justify-center space-y-3 ${className}`}
+            role="status"
+        >
             <svg
                 aria-hidden="true"
-                className="inline w-10 h-10 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                className={`${sizeClasses[size]} text-gray-200 animate-spin fill-blue-600`}
                 viewBox="0 0 100 101"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -17,7 +33,10 @@ export const Spinner = () => {
                     fill="currentFill"
                 />
             </svg>
-            <span className="sr-only">Loading...</span>
+
+            {text && <span className="text-sm text-gray-600 font-medium">{text}</span>}
+
+            <span className="sr-only">{text}</span>
         </div>
     );
 };

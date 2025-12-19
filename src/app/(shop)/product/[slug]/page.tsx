@@ -36,42 +36,59 @@ export default async function ProductBySlugPage({ params }: Props) {
     }
 
     return (
-        <div className="mt-5 mb-20 grid md:grid-cols-3 gap-3">
-            <div className="col-span-1 md:col-span-2">
-                {/* Mobile Slideshow */}
-                <ProductMobileSlideshow
-                    title={product.title}
-                    images={product.images}
-                    className="block md:hidden"
-                />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
+                {/* Imágenes del producto */}
+                <div className="space-y-4">
+                    {/* Mobile Slideshow */}
+                    <ProductMobileSlideshow
+                        title={product.title}
+                        images={product.images}
+                        className="block lg:hidden"
+                    />
 
-                {/* Desktop Slideshow */}
-                <ProductSlideshow
-                    title={product.title}
-                    images={product.images}
-                    className="hidden md:block"
-                />
-            </div>
+                    {/* Desktop Slideshow */}
+                    <ProductSlideshow
+                        title={product.title}
+                        images={product.images}
+                        className="hidden lg:block"
+                    />
+                </div>
 
-            {/* Detalles */}
-            <div className="col-span-1 px-5">
-                {/* Titulo */}
-                <h1 className={`${titleFont.className} antialiased font-bold text-xl`}>
-                    {product.title}
-                </h1>
+                {/* Detalles del producto */}
+                <div className="space-y-6">
+                    <div>
+                        {/* Titulo */}
+                        <h1
+                            className={`${titleFont.className} antialiased font-bold text-2xl sm:text-3xl lg:text-4xl text-gray-900 leading-tight`}
+                        >
+                            {product.title}
+                        </h1>
 
-                {/* Precio */}
-                <p className="text-lg mb-5">${product.price}</p>
+                        {/* Precio */}
+                        <p className="text-2xl sm:text-3xl font-bold text-gray-900 mt-4">
+                            ${product.price}
+                        </p>
+                    </div>
 
-                {/* Stock */}
-                <StockLabel slug={product.slug} />
+                    {/* Stock */}
+                    <div>
+                        <StockLabel slug={product.slug} />
+                    </div>
 
-                {/* Agregar al carrito - client side */}
-                <AddToCart product={product} />
+                    {/* Agregar al carrito - client side */}
+                    <div className="bg-gray-50 rounded-lg p-4 sm:p-6">
+                        <AddToCart product={product} />
+                    </div>
 
-                {/* Descripción */}
-                <h3 className="font-bold text-sm">Descripción</h3>
-                <p className="font-light">{product.description}</p>
+                    {/* Descripción */}
+                    <div className="border-t border-gray-200 pt-6">
+                        <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                            Descripción del producto
+                        </h3>
+                        <p className="text-gray-700 leading-relaxed">{product.description}</p>
+                    </div>
+                </div>
             </div>
         </div>
     );

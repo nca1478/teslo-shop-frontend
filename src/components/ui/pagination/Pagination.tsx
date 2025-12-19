@@ -46,47 +46,59 @@ export const Pagination = ({ totalPages }: Props) => {
     };
 
     return (
-        <div className="flex text-center justify-center mt-10 mb-20">
-            <nav aria-label="Page navigation example">
-                <ul className="flex list-style-none">
+        <div className="flex justify-center mt-8 mb-12">
+            <nav aria-label="Navegación de páginas" className="flex items-center">
+                <div className="flex items-center space-x-1 sm:space-x-2">
                     {/* Botón Anterior */}
-                    <li className="page-item">
-                        <Link
-                            className="page-link relative block py-1.5 px-3 border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
-                            href={createPageUrl(currentPage - 1)}
-                        >
-                            <IoChevronBackOutline size={30} />
-                        </Link>
-                    </li>
+                    <Link
+                        className={clsx(
+                            "flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-lg border transition-all duration-200",
+                            currentPage <= 1
+                                ? "border-gray-200 text-gray-400 cursor-not-allowed"
+                                : "border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400"
+                        )}
+                        href={createPageUrl(currentPage - 1)}
+                        aria-label="Página anterior"
+                    >
+                        <IoChevronBackOutline size={16} className="sm:w-5 sm:h-5" />
+                    </Link>
 
                     {/* Botones de números */}
-                    {allPages.map((page, index) => (
-                        <li key={index} className="page-item">
+                    <div className="flex items-center space-x-1">
+                        {allPages.map((page, index) => (
                             <Link
+                                key={index}
                                 className={clsx(
-                                    "page-link relative block py-1.5 px-3 border-0 outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none",
-                                    {
-                                        "bg-black shadow-sm text-white hover:bg-gray-600 hover:text-white":
-                                            page === currentPage,
-                                    }
+                                    "flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-lg border text-sm sm:text-base font-medium transition-all duration-200",
+                                    page === currentPage
+                                        ? "bg-blue-600 border-blue-600 text-white shadow-sm"
+                                        : page === "..."
+                                        ? "border-transparent text-gray-500 cursor-default"
+                                        : "border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400"
                                 )}
                                 href={createPageUrl(page)}
+                                aria-label={page === "..." ? undefined : `Ir a página ${page}`}
+                                aria-current={page === currentPage ? "page" : undefined}
                             >
                                 {page}
                             </Link>
-                        </li>
-                    ))}
+                        ))}
+                    </div>
 
-                    {/* Boton de Siguiente */}
-                    <li className="page-item">
-                        <Link
-                            className="page-link relative block py-1.5 px-3 border-0 bg-transparent outline-none transition-all duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
-                            href={createPageUrl(currentPage + 1)}
-                        >
-                            <IoChevronForwardOutline size={30} />
-                        </Link>
-                    </li>
-                </ul>
+                    {/* Botón Siguiente */}
+                    <Link
+                        className={clsx(
+                            "flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-lg border transition-all duration-200",
+                            currentPage >= totalPages
+                                ? "border-gray-200 text-gray-400 cursor-not-allowed"
+                                : "border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400"
+                        )}
+                        href={createPageUrl(currentPage + 1)}
+                        aria-label="Página siguiente"
+                    >
+                        <IoChevronForwardOutline size={16} className="sm:w-5 sm:h-5" />
+                    </Link>
+                </div>
             </nav>
         </div>
     );

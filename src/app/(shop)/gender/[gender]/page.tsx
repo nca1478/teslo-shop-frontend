@@ -31,13 +31,25 @@ export default async function GenderPage({ params, searchParams }: Props) {
         unisex: "Todos",
     };
 
+    const subtitles: Record<Gender, string> = {
+        men: "Descubre la última moda masculina",
+        women: "Encuentra tu estilo perfecto",
+        kids: "Ropa cómoda y divertida para los más pequeños",
+        unisex: "Estilos para todos",
+    };
+
     return (
-        <>
-            <Title title={`Artículos para ${labels[gender]}`} className="mb-2" />
+        <div className="space-y-6">
+            <Title
+                title={`Artículos para ${labels[gender]}`}
+                subtitle={subtitles[gender]}
+                size="lg"
+                className="text-center sm:text-left"
+            />
 
             <ProductGrid products={products} />
 
             <Pagination totalPages={totalPages} />
-        </>
+        </div>
     );
 }

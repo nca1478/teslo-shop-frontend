@@ -21,12 +21,17 @@ export default async function HomePage({ searchParams }: Props) {
     }
 
     return (
-        <>
-            <Title title="Tienda" subtitle="Todos los productos" className="mb-2" />
+        <div className="space-y-6">
+            <Title
+                title="Tienda"
+                subtitle="Descubre todos nuestros productos"
+                size="lg"
+                className="text-center sm:text-left"
+            />
 
             <ProductGrid products={products} />
 
             <Pagination totalPages={totalPages} />
-        </>
+        </div>
     );
 }

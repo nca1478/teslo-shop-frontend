@@ -24,16 +24,20 @@ export const ProductMobileSlideshow = ({ images, title, className }: Props) => {
         <div className={className}>
             <Swiper
                 style={{
-                    width: "90vw",
-                    height: "500px",
+                    width: "100%",
+                    height: "400px",
                 }}
-                pagination={true}
-                navigation={true}
+                pagination={{
+                    clickable: true,
+                    dynamicBullets: true,
+                }}
+                navigation={false}
                 autoplay={{
-                    delay: 2500,
+                    delay: 3000,
+                    disableOnInteraction: false,
                 }}
                 modules={[FreeMode, Autoplay, Pagination]}
-                className="mySwiper2"
+                className="mySwiper2 rounded-lg overflow-hidden"
             >
                 {displayImages.map((image, index) => (
                     <SwiperSlide key={index}>
@@ -41,8 +45,8 @@ export const ProductMobileSlideshow = ({ images, title, className }: Props) => {
                             src={image}
                             alt={title}
                             width={600}
-                            height={500}
-                            className="object-fill"
+                            height={400}
+                            className="w-full h-full object-cover"
                             priority={index === 0}
                         />
                     </SwiperSlide>

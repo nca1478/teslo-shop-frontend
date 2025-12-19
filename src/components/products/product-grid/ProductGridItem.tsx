@@ -18,29 +18,36 @@ export const ProductGridItem = ({ product, index }: Props) => {
 
     const [displayImage, setDisplayImage] = useState(primaryImage);
 
-    // Dar prioridad a las primeras 6 imágenes (2 filas en móvil, 1 fila en desktop)
-    const shouldPrioritize = index < 6;
+    // Dar prioridad a las primeras 8 imágenes (2 filas en móvil, 1 fila en desktop)
+    const shouldPrioritize = index < 8;
 
     return (
-        <div className="rounded-md overflow-hidden fade-in">
-            <Link href={`/product/${product.slug}`}>
-                <ProductImage
-                    src={displayImage}
-                    alt={product.title}
-                    className="w-full object-cover rounded"
-                    width={500}
-                    height={500}
-                    onMouseEnter={() => setDisplayImage(secondaryImage)}
-                    onMouseLeave={() => setDisplayImage(primaryImage)}
-                    priority={shouldPrioritize}
-                />
+        <div className="group rounded-lg overflow-hidden fade-in bg-white shadow-sm hover:shadow-md transition-all duration-300">
+            <Link href={`/product/${product.slug}`} className="block">
+                <div className="relative aspect-square overflow-hidden bg-gray-100">
+                    <ProductImage
+                        src={displayImage}
+                        alt={product.title}
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        width={400}
+                        height={400}
+                        onMouseEnter={() => setDisplayImage(secondaryImage)}
+                        onMouseLeave={() => setDisplayImage(primaryImage)}
+                        priority={shouldPrioritize}
+                    />
+                </div>
             </Link>
 
-            <div className="p-4 flex flex-col">
-                <Link className="hover:text-blue-600" href={`/product/${product.slug}`}>
-                    {product.title}
+            <div className="p-3 sm:p-4">
+                <Link
+                    className="block hover:text-blue-600 transition-colors duration-200"
+                    href={`/product/${product.slug}`}
+                >
+                    <h3 className="text-sm sm:text-base font-medium text-gray-900 line-clamp-2 mb-1">
+                        {product.title}
+                    </h3>
                 </Link>
-                <span className="font-bold">${product.price}</span>
+                <p className="text-lg sm:text-xl font-bold text-gray-900">${product.price}</p>
             </div>
         </div>
     );

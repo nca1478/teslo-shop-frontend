@@ -10,27 +10,40 @@ export default function CartPage() {
     // redirect("/empty");
 
     return (
-        <div className="flex justify-center items-center mb-72 px-10 sm:px-0">
-            <div className="flex flex-col w-[1000px]">
-                <Title title="Carrito" />
+        <div className="flex justify-center items-start min-h-[60vh] px-4 sm:px-6 lg:px-0">
+            <div className="w-full max-w-6xl">
+                <Title title="Carrito de Compras" size="md" />
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-10 mt-6">
                     {/* Carrito */}
-                    <div className="flex flex-col mt-5">
-                        <span className="text-xl">Agregar más items</span>
-                        <Link href="/" className="underline mb-5">
-                            Continúa comprando
-                        </Link>
+                    <div className="lg:col-span-2">
+                        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6">
+                            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+                                <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2 sm:mb-0">
+                                    Productos en tu carrito
+                                </h2>
+                                <Link
+                                    href="/"
+                                    className="text-blue-600 hover:text-blue-800 underline text-sm sm:text-base transition-colors"
+                                >
+                                    Continuar comprando
+                                </Link>
+                            </div>
 
-                        {/* Productos en el carrito */}
-                        <ProductsInCart />
+                            {/* Productos en el carrito */}
+                            <ProductsInCart />
+                        </div>
                     </div>
 
                     {/* Checkout - Resumen de la orden */}
-                    <div className="bg-white rounded-xl shadow-xl p-7 h-fit">
-                        <h2 className="text-2xl mb-2">Resumen de orden</h2>
+                    <div className="lg:col-span-1">
+                        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6 sticky top-24">
+                            <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4">
+                                Resumen de orden
+                            </h2>
 
-                        <OrderSummary />
+                            <OrderSummary />
+                        </div>
                     </div>
                 </div>
             </div>
