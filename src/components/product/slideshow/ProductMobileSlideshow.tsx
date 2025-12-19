@@ -43,6 +43,7 @@ export const ProductMobileSlideshow = ({ images, title, className }: Props) => {
                             width={600}
                             height={500}
                             className="object-fill"
+                            priority={index === 0}
                         />
                     </SwiperSlide>
                 ))}

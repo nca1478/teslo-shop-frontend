@@ -56,6 +56,7 @@ export const ProductSlideshow = ({ images, title, className }: Props) => {
                             width={1024}
                             height={800}
                             className="rounded-l-lg object-fill"
+                            priority={index === 0}
                         />
                     </SwiperSlide>
                 ))}

@@ -9,6 +9,7 @@ interface Props {
     style?: React.StyleHTMLAttributes<HTMLImageElement>["style"];
     onMouseEnter?: () => void;
     onMouseLeave?: () => void;
+    priority?: boolean;
 }
 
 export const ProductImage = ({
@@ -20,6 +21,7 @@ export const ProductImage = ({
     style,
     onMouseEnter,
     onMouseLeave,
+    priority = false,
 }: Props) => {
     const localSrc = src
         ? src.startsWith("http")
@@ -39,6 +41,7 @@ export const ProductImage = ({
             style={style}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
+            priority={priority}
         ></Image>
     );
 };
