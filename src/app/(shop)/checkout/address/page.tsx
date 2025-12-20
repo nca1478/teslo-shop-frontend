@@ -16,12 +16,17 @@ export default async function AddressPage() {
     const userAddress = await getUserAddress();
 
     return (
-        <div className="flex flex-col sm:justify-center sm:items-center mb-72 px-10 sm:px-0">
-            <div className="w-full xl:w-[1000px] flex flex-col justify-center text-left">
-                <Title title="Dirección" subtitle="Dirección de entrega" />
-
-                <AddressForm countries={countries} userStoredAddress={userAddress ?? undefined} />
+        <div className="max-w-7xl mx-auto px-1 sm:px-1 lg:px-1">
+            <div className="mb-8">
+                <Title
+                    title="Dirección de entrega"
+                    subtitle="Completa la información de envío para tu pedido"
+                    size="md"
+                    className="text-center sm:text-left"
+                />
             </div>
+
+            <AddressForm countries={countries} userStoredAddress={userAddress ?? undefined} />
         </div>
     );
 }

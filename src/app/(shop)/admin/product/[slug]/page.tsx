@@ -21,12 +21,21 @@ export default async function ProductPage({ params }: Props) {
     }
 
     const title = `${slug === "new" ? "Nuevo" : "Editar"} producto`;
+    const subtitle =
+        slug === "new"
+            ? "Crear un nuevo producto en el inventario"
+            : "Modificar información del producto";
 
     return (
-        <>
-            <Title title={title} />
+        <div className="space-y-6">
+            <Title
+                title={title}
+                subtitle={subtitle}
+                size="md"
+                className="text-center sm:text-left"
+            />
 
             <ProductForm product={product ?? {}} categories={categories} />
-        </>
+        </div>
     );
 }

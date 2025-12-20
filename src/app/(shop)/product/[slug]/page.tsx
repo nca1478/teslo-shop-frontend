@@ -36,58 +36,56 @@ export default async function ProductBySlugPage({ params }: Props) {
     }
 
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
-                {/* Imágenes del producto */}
-                <div className="space-y-4">
-                    {/* Mobile Slideshow */}
-                    <ProductMobileSlideshow
-                        title={product.title}
-                        images={product.images}
-                        className="block lg:hidden"
-                    />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
+            {/* Imágenes del producto */}
+            <div className="space-y-4">
+                {/* Mobile Slideshow */}
+                <ProductMobileSlideshow
+                    title={product.title}
+                    images={product.images}
+                    className="block lg:hidden"
+                />
 
-                    {/* Desktop Slideshow */}
-                    <ProductSlideshow
-                        title={product.title}
-                        images={product.images}
-                        className="hidden lg:block"
-                    />
+                {/* Desktop Slideshow */}
+                <ProductSlideshow
+                    title={product.title}
+                    images={product.images}
+                    className="hidden lg:block"
+                />
+            </div>
+
+            {/* Detalles del producto */}
+            <div className="space-y-6">
+                <div>
+                    {/* Titulo */}
+                    <h1
+                        className={`${titleFont.className} antialiased font-bold text-2xl sm:text-3xl lg:text-4xl text-gray-900 leading-tight`}
+                    >
+                        {product.title}
+                    </h1>
+
+                    {/* Precio */}
+                    <p className="text-2xl sm:text-3xl font-bold text-gray-900 mt-4">
+                        ${product.price}
+                    </p>
                 </div>
 
-                {/* Detalles del producto */}
-                <div className="space-y-6">
-                    <div>
-                        {/* Titulo */}
-                        <h1
-                            className={`${titleFont.className} antialiased font-bold text-2xl sm:text-3xl lg:text-4xl text-gray-900 leading-tight`}
-                        >
-                            {product.title}
-                        </h1>
+                {/* Stock */}
+                <div>
+                    <StockLabel slug={product.slug} />
+                </div>
 
-                        {/* Precio */}
-                        <p className="text-2xl sm:text-3xl font-bold text-gray-900 mt-4">
-                            ${product.price}
-                        </p>
-                    </div>
+                {/* Agregar al carrito - client side */}
+                <div className="bg-white shadow-sm hover:shadow-md transition-all duration-300 rounded-lg p-4 sm:p-6">
+                    <AddToCart product={product} />
+                </div>
 
-                    {/* Stock */}
-                    <div>
-                        <StockLabel slug={product.slug} />
-                    </div>
-
-                    {/* Agregar al carrito - client side */}
-                    <div className="bg-gray-50 rounded-lg p-4 sm:p-6">
-                        <AddToCart product={product} />
-                    </div>
-
-                    {/* Descripción */}
-                    <div className="border-t border-gray-200 pt-6">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-3">
-                            Descripción del producto
-                        </h3>
-                        <p className="text-gray-700 leading-relaxed">{product.description}</p>
-                    </div>
+                {/* Descripción */}
+                <div className="border-t border-gray-200 pt-6">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                        Descripción del producto
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">{product.description}</p>
                 </div>
             </div>
         </div>

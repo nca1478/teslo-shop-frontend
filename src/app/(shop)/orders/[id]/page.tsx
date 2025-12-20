@@ -20,105 +20,176 @@ export default async function OrdersByIdPage({ params }: Props) {
     const address = order!.orderAddress;
 
     return (
-        <div className="flex justify-center items-center mb-72 px-10 sm:px-0">
-            <div className="flex flex-col w-[1000px]">
-                <Title title={`Orden #${id.split("-").pop()}`} />
+        <div className="space-y-6">
+            <Title
+                title={`Orden #${id.split("-").pop()}`}
+                subtitle="Detalles del pedido"
+                size="md"
+            />
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
-                    {/* Carrito */}
-                    <div className="flex flex-col mt-5">
-                        {/* Etiqueta de status de pago */}
-                        {/* <OrderStatus isPaid={order?.isPaid ?? false} /> */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+                {/* Productos de la orden */}
+                <div className="lg:col-span-2 space-y-6">
+                    {/* Estado de la orden */}
+                    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6">
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                            Estado del pedido
+                        </h3>
                         <OrderStatus isPaid={order!.isPaid} />
-
-                        {/* Items */}
-                        {order!.orderItems.map((item) => (
-                            <div
-                                key={(item.product?.slug || item.productId) + "-" + item.size}
-                                className="flex mb-5"
-                            >
-                                {/* Imagen del Producto */}
-                                <ProductImage
-                                    src={item.product?.ProductImage[0]?.url}
-                                    width={100}
-                                    height={100}
-                                    style={{
-                                        width: "100px",
-                                        height: "100px",
-                                    }}
-                                    alt={item.product?.title || "Producto"}
-                                    className="mr-5 rounded"
-                                />
-
-                                <div>
-                                    {/* Nombre Producto */}
-                                    <p>
-                                        {item.product?.title || "Producto no encontrado"} -{" "}
-                                        <span>{`(${item.size})`}</span>
-                                    </p>
-
-                                    {/* Precio * Cantidad */}
-                                    <p>
-                                        ${item.price} x {item.quantity} Und.
-                                    </p>
-
-                                    {/* Subtotal */}
-                                    <p className="font-bold">
-                                        Subtotal: {currencyFormat(item.price * item.quantity)}
-                                    </p>
-                                </div>
-                            </div>
-                        ))}
                     </div>
 
-                    {/* Checkout */}
-                    <div className="bg-white rounded-xl shadow-xl p-7">
-                        {/* Dirección de Entrega */}
-                        <h2 className="text-2xl mb-2">Dirección de entrega</h2>
-                        <div className="mb-10">
-                            <p className="text-xl">{`${address!.firstName} ${
-                                address!.lastName
-                            }`}</p>
-                            <p>{address!.address}</p>
-                            <p>{address!.address2}</p>
-                            <p>
-                                {address!.city}, {address!.countryId}
-                            </p>
-                            <p>{address!.postalCode}</p>
-                            <p>{address!.phone}</p>
+                    {/* Lista de productos */}
+                    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6">
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                            Productos ({order!.itemsInOrder}{" "}
+                            {order!.itemsInOrder === 1 ? "artículo" : "artículos"})
+                        </h3>
+
+                        <div className="space-y-4">
+                            {order!.orderItems.map((item) => (
+                                <div
+                                    key={(item.product?.slug || item.productId) + "-" + item.size}
+                                    className="flex flex-col sm:flex-row gap-4 p-4 border border-gray-100 rounded-lg hover:shadow-sm transition-shadow"
+                                >
+                                    {/* Imagen del Producto */}
+                                    <div className="shrink-0 mx-auto sm:mx-0">
+                                        <ProductImage
+                                            src={item.product?.ProductImage[0]?.url}
+                                            width={100}
+                                            height={100}
+                                            alt={item.product?.title || "Producto"}
+                                            className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-lg"
+                                        />
+                                    </div>
+
+                                    <div className="flex-1 min-w-0 text-center sm:text-left">
+                                        {/* Información del producto */}
+                                        <div className="mb-3">
+                                            <h4 className="font-medium text-gray-900 text-sm sm:text-base line-clamp-2">
+                                                {item.product?.title || "Producto no encontrado"}
+                                            </h4>
+                                            <p className="text-gray-600 text-sm mt-1">
+                                                Talla:{" "}
+                                                <span className="font-medium">{item.size}</span>
+                                            </p>
+                                        </div>
+
+                                        {/* Precio y cantidad */}
+                                        <div className="space-y-1 text-sm">
+                                            <div className="flex justify-between sm:justify-start sm:gap-4">
+                                                <span className="text-gray-600">
+                                                    Precio unitario:
+                                                </span>
+                                                <span className="font-medium">
+                                                    {currencyFormat(item.price)}
+                                                </span>
+                                            </div>
+                                            <div className="flex justify-between sm:justify-start sm:gap-4">
+                                                <span className="text-gray-600">Cantidad:</span>
+                                                <span className="font-medium">
+                                                    {item.quantity}{" "}
+                                                    {item.quantity === 1 ? "unidad" : "unidades"}
+                                                </span>
+                                            </div>
+                                            <div className="flex justify-between sm:justify-start sm:gap-4 pt-2 border-t border-gray-100">
+                                                <span className="text-gray-900 font-semibold">
+                                                    Subtotal:
+                                                </span>
+                                                <span className="font-bold text-gray-900">
+                                                    {currencyFormat(item.price * item.quantity)}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                {/* Información de entrega y resumen */}
+                <div className="lg:col-span-1 space-y-6">
+                    {/* Dirección de entrega */}
+                    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6">
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                            Dirección de entrega
+                        </h3>
+                        <div className="space-y-2 text-sm">
+                            <div>
+                                <p className="font-medium text-gray-900">
+                                    {`${address!.firstName} ${address!.lastName}`}
+                                </p>
+                            </div>
+                            <div className="text-gray-600">
+                                <p>{address!.address}</p>
+                                {address!.address2 && <p>{address!.address2}</p>}
+                                <p>
+                                    {address!.city}, {address!.countryId}
+                                </p>
+                                <p>CP: {address!.postalCode}</p>
+                                <p>Tel: {address!.phone}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Resumen de la orden */}
+                    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6">
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                            Resumen de orden
+                        </h3>
+
+                        <div className="space-y-3">
+                            <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                                <span className="text-gray-600">Cantidad</span>
+                                <span className="font-medium text-gray-900">
+                                    {order!.itemsInOrder === 1
+                                        ? "1 artículo"
+                                        : `${order!.itemsInOrder} artículos`}
+                                </span>
+                            </div>
+
+                            <div className="flex justify-between items-center py-2">
+                                <span className="text-gray-600">Subtotal</span>
+                                <span className="font-medium text-gray-900">
+                                    {currencyFormat(order!.subTotal)}
+                                </span>
+                            </div>
+
+                            <div className="flex justify-between items-center py-2">
+                                <span className="text-gray-600">Impuestos (15%)</span>
+                                <span className="font-medium text-gray-900">
+                                    {currencyFormat(order!.tax)}
+                                </span>
+                            </div>
+
+                            <div className="border-t border-gray-200 pt-4">
+                                <div className="flex justify-between items-center">
+                                    <span className="text-lg font-semibold text-gray-900">
+                                        Total:
+                                    </span>
+                                    <span className="text-xl font-bold text-gray-900">
+                                        {currencyFormat(order!.total)}
+                                    </span>
+                                </div>
+                            </div>
                         </div>
 
-                        {/* Divider */}
-                        <div className="w-full h-0.5 rounded bg-gray-200 mb-10" />
-
-                        {/* Resumen de la orden */}
-                        <h2 className="text-2xl mb-2">Resumen de orden</h2>
-                        <div className="grid grid-cols-2">
-                            <span>Cantidad</span>
-                            <span className="text-right">
-                                {order!.itemsInOrder === 1
-                                    ? "1 artículo"
-                                    : `${order!.itemsInOrder} artículos`}
-                            </span>
-
-                            <span>Subtotal</span>
-                            <span className="text-right">{currencyFormat(order!.subTotal)}</span>
-
-                            <span>Impuestos (15%)</span>
-                            <span className="text-right">{currencyFormat(order!.tax)}</span>
-
-                            <span className="mt-5 text-2xl">Total:</span>
-                            <span className="mt-5 text-2xl text-right">
-                                {currencyFormat(order!.total)}
-                            </span>
-                        </div>
-
-                        {/* Botón de Paypal */}
-                        <div className="mt-5 mb-2 w-full">
+                        {/* Estado de pago / Botón de PayPal */}
+                        <div className="mt-6 pt-6 border-t border-gray-200">
                             {order!.isPaid ? (
-                                <OrderStatus isPaid={order!.isPaid} /> // Etiqueta de status de pago
+                                <div>
+                                    <h4 className="text-sm font-medium text-gray-900 mb-3">
+                                        Estado del pago
+                                    </h4>
+                                    <OrderStatus isPaid={order!.isPaid} />
+                                </div>
                             ) : (
-                                <PayPalWrapper amount={order!.total} orderId={order!.id} /> // Botón
+                                <div>
+                                    <h4 className="text-sm font-medium text-gray-900 mb-3">
+                                        Completar pago
+                                    </h4>
+                                    <PayPalWrapper amount={order!.total} orderId={order!.id} />
+                                </div>
                             )}
                         </div>
                     </div>

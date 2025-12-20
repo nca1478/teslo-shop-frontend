@@ -29,3 +29,4 @@ export * from "./ui/footer/Footer";
 export * from "./ui/pagination/Pagination";
 export * from "./ui/unauthorized/PageUnauthorized";
 export * from "./ui/spinner/Spinner";
+export * from "./ui/table/ResponsiveTable";

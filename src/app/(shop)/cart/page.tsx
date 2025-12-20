@@ -37,7 +37,7 @@ export default function CartPage() {
 
                     {/* Checkout - Resumen de la orden */}
                     <div className="lg:col-span-1">
-                        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6 sticky top-24">
+                        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6">
                             <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4">
                                 Resumen de orden
                             </h2>

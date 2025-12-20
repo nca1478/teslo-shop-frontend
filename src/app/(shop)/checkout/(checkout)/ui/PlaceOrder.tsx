@@ -58,71 +58,115 @@ export const PlaceOrder = () => {
     }
 
     return (
-        <>
+        <div className="space-y-6">
             {/* Dirección de Entrega */}
-            <h2 className="text-2xl mb-2">Dirección de entrega</h2>
-            <div className="mb-10">
-                <p className="text-xl">
-                    {address.firstName} {address.lastName}
-                </p>
-                <p>{address.address}</p>
-                <p>{address?.address2}</p>
-                <p>{address.postalCode}</p>
-                <p>
-                    {address.city}, {address.country}
-                </p>
-                <p>{address.phone}</p>
+            <div>
+                <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4">
+                    Dirección de entrega
+                </h2>
+                <div className="bg-gray-50 rounded-lg p-4 space-y-2 text-sm">
+                    <p className="font-medium text-gray-900">
+                        {address.firstName} {address.lastName}
+                    </p>
+                    <p className="text-gray-700">{address.address}</p>
+                    {address?.address2 && <p className="text-gray-700">{address.address2}</p>}
+                    <p className="text-gray-700">{address.postalCode}</p>
+                    <p className="text-gray-700">
+                        {address.city}, {address.country}
+                    </p>
+                    <p className="text-gray-700">{address.phone}</p>
+                </div>
             </div>
 
             {/* Divider */}
-            <div className="w-full h-0.5 rounded bg-gray-200 mb-10" />
+            <div className="border-t border-gray-200" />
 
             {/* Resumen de la Orden */}
-            <h2 className="text-2xl mb-2">Resumen de orden</h2>
-            <div className="grid grid-cols-2">
-                <span>Cantidad</span>
-                <span className="text-right">
-                    {itemsInCart === 1 ? "1 artículo" : `${itemsInCart} artículos`}
-                </span>
+            <div>
+                <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4">
+                    Resumen de orden
+                </h2>
+                <div className="space-y-3">
+                    <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Cantidad</span>
+                        <span className="font-medium">
+                            {itemsInCart === 1 ? "1 artículo" : `${itemsInCart} artículos`}
+                        </span>
+                    </div>
 
-                <span>Subtotal</span>
-                <span className="text-right">{currencyFormat(subTotal)}</span>
+                    <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Subtotal</span>
+                        <span className="font-medium">{currencyFormat(subTotal)}</span>
+                    </div>
 
-                <span>Impuestos (15%)</span>
-                <span className="text-right">{currencyFormat(tax)}</span>
+                    <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Impuestos (15%)</span>
+                        <span className="font-medium">{currencyFormat(tax)}</span>
+                    </div>
 
-                <span className="mt-5 text-2xl">Total:</span>
-                <span className="mt-5 text-2xl text-right">{currencyFormat(total)}</span>
+                    <div className="border-t border-gray-200 pt-3">
+                        <div className="flex justify-between">
+                            <span className="text-lg font-semibold text-gray-900">Total:</span>
+                            <span className="text-lg font-bold text-gray-900">
+                                {currencyFormat(total)}
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div className="mt-5 mb-2 w-full">
+            {/* Botón y términos */}
+            <div className="space-y-4">
                 {/* Disclaimer */}
-                <p className="mb-5">
-                    <span className="text-xs">
+                <div className="text-xs text-gray-500 leading-relaxed">
+                    <p>
                         Al hacer clic en &quot;Colocar orden&quot;, aceptas nuestros{" "}
-                        <a href="#" className="underline">
-                            términos y condiciones{" "}
-                        </a>
+                        <a href="#" className="text-blue-600 hover:text-blue-800 underline">
+                            términos y condiciones
+                        </a>{" "}
                         y{" "}
-                        <a href="#" className="underline">
+                        <a href="#" className="text-blue-600 hover:text-blue-800 underline">
                             política de privacidad
                         </a>
-                    </span>
-                </p>
+                    </p>
+                </div>
 
-                <p className="text-red-500 mb-2">{errorMessage}</p>
+                {/* Error message */}
+                {errorMessage && (
+                    <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                        <p className="text-red-800 text-sm font-medium">{errorMessage}</p>
+                    </div>
+                )}
 
+                {/* Botón de orden */}
                 <button
-                    //href="/orders/123"
                     onClick={onPlaceOrder}
-                    className={clsx("cursor-pointer", {
-                        "btn-primary": !isPlacingOrder,
-                        "btn-disabled": isPlacingOrder,
-                    })}
+                    disabled={isPlacingOrder}
+                    className={clsx(
+                        "w-full py-3 px-6 rounded-lg font-medium transition-all duration-200",
+                        {
+                            "bg-blue-600 text-white hover:bg-blue-700 hover:scale-105 active:scale-95 shadow-sm":
+                                !isPlacingOrder,
+                            "bg-gray-300 text-gray-500 cursor-not-allowed": isPlacingOrder,
+                        }
+                    )}
                 >
-                    Colocar orden
+                    {isPlacingOrder ? (
+                        <div className="flex items-center justify-center">
+                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                            Procesando...
+                        </div>
+                    ) : (
+                        "Colocar orden"
+                    )}
                 </button>
+
+                {/* Información adicional */}
+                <div className="text-xs text-gray-500 text-center space-y-1">
+                    <p>✓ Envío gratuito en pedidos superiores a $50</p>
+                    <p>✓ Garantía de devolución de 30 días</p>
+                </div>
             </div>
-        </>
+        </div>
     );
 };

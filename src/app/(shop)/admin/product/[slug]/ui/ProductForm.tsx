@@ -216,204 +216,312 @@ export const ProductForm = ({ product, categories }: Props) => {
     };
 
     return (
-        <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="grid px-5 mb-16 grid-cols-1 sm:px-0 sm:grid-cols-2 gap-3"
-        >
-            {/* Textos */}
-            <div className="w-full">
-                {/* Titulo */}
-                <div className="flex flex-col mb-2">
-                    <span>Título</span>
-                    <input
-                        type="text"
-                        className="p-2 border rounded-md bg-gray-200"
-                        {...register("title", { required: true })}
-                    />
-                </div>
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    {/* Información básica del producto */}
+                    <div className="space-y-6">
+                        <div>
+                            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                                Información básica
+                            </h3>
 
-                {/* Slug */}
-                <div className="flex flex-col mb-2">
-                    <span>Slug</span>
-                    <input
-                        type="text"
-                        className="p-2 border rounded-md bg-gray-200"
-                        {...register("slug", { required: true })}
-                    />
-                </div>
-
-                {/* Descripción */}
-                <div className="flex flex-col mb-2">
-                    <span>Descripción</span>
-                    <textarea
-                        rows={5}
-                        className="p-2 border rounded-md bg-gray-200"
-                        {...register("description", { required: true })}
-                    ></textarea>
-                </div>
-
-                {/* Precio */}
-                <div className="flex flex-col mb-2">
-                    <span>Price</span>
-                    <input
-                        type="number"
-                        className="p-2 border rounded-md bg-gray-200"
-                        {...register("price", { required: true, min: 0 })}
-                    />
-                </div>
-
-                {/* Tags */}
-                <div className="flex flex-col mb-2">
-                    <span>Tags</span>
-                    <input
-                        type="text"
-                        className="p-2 border rounded-md bg-gray-200"
-                        {...register("tags", { required: true })}
-                    />
-                </div>
-
-                {/* Gender */}
-                <div className="flex flex-col mb-2">
-                    <span>Gender</span>
-                    <select
-                        className="p-2 border rounded-md bg-gray-200"
-                        {...register("gender", { required: true })}
-                    >
-                        <option value="">[Seleccione]</option>
-                        <option value="men">Men</option>
-                        <option value="women">Women</option>
-                        <option value="kids">Kids</option>
-                        <option value="unisex">Unisex</option>
-                    </select>
-                </div>
-
-                {/* Categoria */}
-                <div className="flex flex-col mb-2">
-                    <span>Categoria</span>
-                    <select
-                        className="p-2 border rounded-md bg-gray-200"
-                        {...register("categoryId", { required: true })}
-                    >
-                        <option value="">[Seleccione]</option>
-                        {categories.map((category) => (
-                            <option key={category.id} value={category.id}>
-                                {category.name}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-
-                <button className="btn-primary w-full">Guardar</button>
-            </div>
-
-            {/* Selector de tallas y fotos */}
-            <div className="w-full">
-                {/* Checkboxes */}
-                <div className="flex flex-col">
-                    {/* Existencia */}
-                    <div className="flex flex-col mb-2">
-                        <span>Existencia</span>
-                        <input
-                            type="number"
-                            className="p-2 border rounded-md bg-gray-200"
-                            {...register("inStock", { required: true, min: 0 })}
-                        />
-                    </div>
-
-                    {/* Tallas */}
-                    <div>
-                        <span className="font-bold">Tallas</span>
-                        <div className="flex flex-wrap">
-                            {sizes.map((size) => (
-                                // bg-blue-500 text-white <--- si está seleccionado
-                                <div
-                                    key={size}
-                                    onClick={() => onSizeChanged(size)}
-                                    className={clsx(
-                                        "p-2 border cursor-pointer rounded-md mr-2 mb-2 w-14 transition-all text-center",
-                                        {
-                                            "bg-blue-500 text-white":
-                                                getValues("sizes").includes(size),
-                                        }
-                                    )}
-                                >
-                                    <span>{size}</span>
+                            <div className="space-y-4">
+                                {/* Título */}
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Título del producto *
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                        placeholder="Ej: Camiseta básica de algodón"
+                                        {...register("title", {
+                                            required: "El título es requerido",
+                                        })}
+                                    />
                                 </div>
-                            ))}
+
+                                {/* Slug */}
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Slug (URL amigable) *
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                        placeholder="ej: camiseta-basica-algodon"
+                                        {...register("slug", { required: "El slug es requerido" })}
+                                    />
+                                    <p className="text-xs text-gray-500 mt-1">
+                                        Solo letras minúsculas, números y guiones
+                                    </p>
+                                </div>
+
+                                {/* Descripción */}
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Descripción *
+                                    </label>
+                                    <textarea
+                                        rows={4}
+                                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
+                                        placeholder="Describe las características del producto..."
+                                        {...register("description", {
+                                            required: "La descripción es requerida",
+                                        })}
+                                    />
+                                </div>
+
+                                {/* Precio y Stock en una fila */}
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Precio ($) *
+                                        </label>
+                                        <input
+                                            type="number"
+                                            step="0.01"
+                                            min="0"
+                                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                            placeholder="0.00"
+                                            {...register("price", {
+                                                required: "El precio es requerido",
+                                                min: {
+                                                    value: 0,
+                                                    message: "El precio debe ser mayor a 0",
+                                                },
+                                            })}
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Stock disponible *
+                                        </label>
+                                        <input
+                                            type="number"
+                                            min="0"
+                                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                            placeholder="0"
+                                            {...register("inStock", {
+                                                required: "El stock es requerido",
+                                                min: {
+                                                    value: 0,
+                                                    message: "El stock no puede ser negativo",
+                                                },
+                                            })}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Categorización */}
+                        <div>
+                            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                                Categorización
+                            </h3>
+
+                            <div className="space-y-4">
+                                {/* Género y Categoría en una fila */}
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Género *
+                                        </label>
+                                        <select
+                                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                            {...register("gender", {
+                                                required: "Selecciona un género",
+                                            })}
+                                        >
+                                            <option value="">Seleccionar género</option>
+                                            <option value="men">Hombres</option>
+                                            <option value="women">Mujeres</option>
+                                            <option value="kids">Niños</option>
+                                            <option value="unisex">Unisex</option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Categoría *
+                                        </label>
+                                        <select
+                                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                            {...register("categoryId", {
+                                                required: "Selecciona una categoría",
+                                            })}
+                                        >
+                                            <option value="">Seleccionar categoría</option>
+                                            {categories.map((category) => (
+                                                <option key={category.id} value={category.id}>
+                                                    {category.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                {/* Tags */}
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Etiquetas
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                        placeholder="camiseta, algodón, básica (separadas por comas)"
+                                        {...register("tags")}
+                                    />
+                                    <p className="text-xs text-gray-500 mt-1">
+                                        Separa las etiquetas con comas
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    {/* Fotos */}
-                    <div className="flex flex-col mb-2">
-                        <div className="flex justify-between items-center mb-2">
-                            <span>Fotos</span>
-                            {previewImages.length > 0 && (
-                                <button
-                                    type="button"
-                                    onClick={clearAllPreviews}
-                                    className="text-red-600 text-sm hover:text-red-800"
-                                >
-                                    Limpiar todas ({previewImages.length})
-                                </button>
-                            )}
+                    {/* Tallas e imágenes */}
+                    <div className="space-y-6">
+                        {/* Tallas disponibles */}
+                        <div>
+                            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                                Tallas disponibles
+                            </h3>
+                            <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+                                {sizes.map((size) => (
+                                    <button
+                                        key={size}
+                                        type="button"
+                                        onClick={() => onSizeChanged(size)}
+                                        className={clsx(
+                                            "p-3 border-2 rounded-lg font-medium transition-all text-center hover:scale-105",
+                                            {
+                                                "bg-blue-500 text-white border-blue-500":
+                                                    getValues("sizes").includes(size),
+                                                "bg-white text-gray-700 border-gray-300 hover:border-blue-300":
+                                                    !getValues("sizes").includes(size),
+                                            }
+                                        )}
+                                    >
+                                        {size}
+                                    </button>
+                                ))}
+                            </div>
+                            <p className="text-xs text-gray-500 mt-2">
+                                Selecciona las tallas disponibles para este producto
+                            </p>
                         </div>
-                        <input
-                            type="file"
-                            multiple
-                            className="p-2 border rounded-md bg-gray-200"
-                            accept="image/png, image/jpeg, image/avif"
-                            onChange={handleImageChange}
-                        />
-                        <p className="text-xs text-gray-600 mt-1">
-                            Puedes seleccionar múltiples imágenes. Máximo 2MB por imagen y 8MB
-                            total.
-                        </p>
-                    </div>
 
-                    {/* Imagenes del producto */}
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                        {/* Imágenes existentes del producto */}
-                        {product.ProductImage?.map((image) => (
-                            <div key={image.id} className="relative">
-                                <ProductImage
-                                    alt={product.title ?? ""}
-                                    src={image.url}
-                                    width={300}
-                                    height={300}
-                                    className="rounded-t-xl shadow-md w-full"
-                                />
-
-                                <button
-                                    type="button"
-                                    onClick={() => onDeleteProductImage(image)}
-                                    className="btn-danger w-full rounded-b-xl text-xs sm:text-sm py-1 sm:py-2"
-                                >
-                                    Eliminar
-                                </button>
+                        {/* Imágenes del producto */}
+                        <div>
+                            <div className="flex justify-between items-center mb-4">
+                                <h3 className="text-lg font-semibold text-gray-900">
+                                    Imágenes del producto
+                                </h3>
+                                {previewImages.length > 0 && (
+                                    <button
+                                        type="button"
+                                        onClick={clearAllPreviews}
+                                        className="text-red-600 text-sm hover:text-red-800 font-medium transition-colors"
+                                    >
+                                        Limpiar todas ({previewImages.length})
+                                    </button>
+                                )}
                             </div>
-                        ))}
 
-                        {/* Vista previa de nuevas imágenes */}
-                        {previewImages.map((preview) => (
-                            <div key={preview.id} className="relative">
-                                <img
-                                    src={preview.url}
-                                    alt="Vista previa"
-                                    className="rounded-t-xl shadow-md w-full h-[300px] object-cover"
-                                />
+                            <div className="space-y-4">
+                                <div>
+                                    <input
+                                        type="file"
+                                        multiple
+                                        className="w-full p-3 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-400 transition-colors file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                                        accept="image/png, image/jpeg, image/avif"
+                                        onChange={handleImageChange}
+                                    />
+                                    <div className="mt-2 text-xs text-gray-500 space-y-1">
+                                        <p>• Formatos soportados: PNG, JPEG, AVIF</p>
+                                        <p>• Máximo 2MB por imagen y 8MB total</p>
+                                        <p>• Puedes seleccionar múltiples imágenes a la vez</p>
+                                    </div>
+                                </div>
 
-                                <button
-                                    type="button"
-                                    onClick={() => removePreviewImage(preview.id)}
-                                    className="btn-danger w-full rounded-b-xl text-xs sm:text-sm py-1 sm:py-2"
-                                >
-                                    Quitar
-                                </button>
+                                {/* Grid de imágenes */}
+                                {((product.ProductImage?.length ?? 0) > 0 ||
+                                    previewImages.length > 0) && (
+                                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                                        {/* Imágenes existentes del producto */}
+                                        {product.ProductImage?.map((image) => (
+                                            <div key={image.id} className="relative group">
+                                                <div className="aspect-square overflow-hidden rounded-lg border border-gray-200">
+                                                    <ProductImage
+                                                        alt={product.title ?? ""}
+                                                        src={image.url}
+                                                        width={300}
+                                                        height={300}
+                                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                                                    />
+                                                </div>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => onDeleteProductImage(image)}
+                                                    className="absolute inset-x-0 bottom-0 bg-red-600 text-white text-xs py-2 rounded-b-lg hover:bg-red-700 transition-colors opacity-0 group-hover:opacity-100"
+                                                >
+                                                    Eliminar
+                                                </button>
+                                            </div>
+                                        ))}
+
+                                        {/* Vista previa de nuevas imágenes */}
+                                        {previewImages.map((preview) => (
+                                            <div key={preview.id} className="relative group">
+                                                <div className="aspect-square overflow-hidden rounded-lg border border-gray-200">
+                                                    <img
+                                                        src={preview.url}
+                                                        alt="Vista previa"
+                                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                                                    />
+                                                </div>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => removePreviewImage(preview.id)}
+                                                    className="absolute inset-x-0 bottom-0 bg-orange-600 text-white text-xs py-2 rounded-b-lg hover:bg-orange-700 transition-colors opacity-0 group-hover:opacity-100"
+                                                >
+                                                    Quitar
+                                                </button>
+                                                <div className="absolute top-2 left-2 bg-green-600 text-white text-xs px-2 py-1 rounded">
+                                                    Nuevo
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
-                        ))}
+                        </div>
                     </div>
                 </div>
-            </div>
-        </form>
+
+                {/* Botón de guardar */}
+                <div className="border-t border-gray-200 pt-6">
+                    <div className="flex flex-col sm:flex-row gap-4">
+                        <button
+                            type="submit"
+                            className="w-full sm:w-auto btn-primary px-8 py-3 font-medium"
+                        >
+                            {product.id ? "Actualizar producto" : "Crear producto"}
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => router.back()}
+                            className="w-full sm:w-auto px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                        >
+                            Cancelar
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
     );
 };
