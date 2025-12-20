@@ -1,6 +1,7 @@
 "use client";
 
 import clsx from "clsx";
+import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -158,6 +159,7 @@ export const ProductForm = ({ product, categories }: Props) => {
 
     const onSubmit = async (data: FormInputs) => {
         const formData = new FormData();
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { images, ...productToSave } = data;
 
         // agregar si existe (es update) si no (es create)
@@ -478,9 +480,11 @@ export const ProductForm = ({ product, categories }: Props) => {
                                         {previewImages.map((preview) => (
                                             <div key={preview.id} className="relative group">
                                                 <div className="aspect-square overflow-hidden rounded-lg border border-gray-200">
-                                                    <img
+                                                    <Image
                                                         src={preview.url}
                                                         alt="Vista previa"
+                                                        width={200}
+                                                        height={200}
                                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
                                                     />
                                                 </div>
