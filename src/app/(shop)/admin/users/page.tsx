@@ -34,14 +34,18 @@ export default async function UsersPage({ searchParams }: Props) {
     }
 
     return (
-        <>
-            <Title title="Usuarios" />
+        <div className="space-y-6">
+            <Title
+                title="Gestión de Usuarios"
+                subtitle="Administrar usuarios del sistema"
+                size="md"
+            />
 
             <div className="mb-10">
                 <UsersTable users={users} currentUser={currentUser} />
             </div>
 
             <Pagination totalPages={totalPages} />
-        </>
+        </div>
     );
 }

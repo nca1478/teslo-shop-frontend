@@ -14,12 +14,6 @@ import {
 export default async function OrdersPage() {
     const { orders = [] } = await getOrdersByUser();
 
-    // redirige al login si no hay sesión activa
-    // esto ya se controla con el callback authorized de auth.config.tss - rutas protegidas
-    // if (!ok) {
-    //     redirect("/auth/login");
-    // }
-
     return (
         <div className="space-y-6">
             {/* Titulo */}

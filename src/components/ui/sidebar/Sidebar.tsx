@@ -14,7 +14,6 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { useUIStore } from "@/store";
 import { useRouter } from "next/navigation";
-import { SearchInput } from "@/components";
 
 export const Sidebar = () => {
     const router = useRouter();
@@ -81,17 +80,8 @@ export const Sidebar = () => {
                     onClick={closeSideMenu}
                 />
 
-                {/* Search Input */}
-                <div className="mt-12 sm:mt-14">
-                    <SearchInput
-                        showInSidebar={true}
-                        placeholder="Buscar productos..."
-                        className="w-full"
-                    />
-                </div>
-
                 {/* Navigation Categories - Mobile only */}
-                <div className="mt-6 lg:hidden">
+                <div className="mt-12 sm:mt-14 lg:hidden">
                     <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">
                         Categorías
                     </h3>
