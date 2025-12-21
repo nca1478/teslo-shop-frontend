@@ -68,7 +68,7 @@ export const Sidebar = () => {
             {/* Sidemenu */}
             <nav
                 className={clsx(
-                    "overflow-auto fixed p-4 sm:p-6 right-0 top-0 w-full max-w-sm sm:max-w-md h-screen bg-white z-20 shadow-2xl transform transition-all duration-300",
+                    "overflow-auto fixed p-4 sm:p-6 right-0 top-0 w-full max-w-sm sm:max-w-xs h-screen bg-white z-20 shadow-2xl transform transition-all duration-300",
                     {
                         "translate-x-full": !isSideMenuOpen,
                     }

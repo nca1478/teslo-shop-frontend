@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { IoSearchOutline, IoCloseOutline } from "react-icons/io5";
 import { useSearchStore, useUIStore } from "@/store";
 import { searchProducts } from "@/actions";
@@ -21,88 +21,31 @@ export const SearchInput = ({
     const router = useRouter();
     const inputRef = useRef<HTMLInputElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
+    const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     // Store hooks
     const {
-        searchTerm,
         showSearchInput,
         isSearching,
-        setSearchTerm,
         setSearchResults,
         setIsSearching,
-        toggleSearchInput,
         setShowSearchInput,
         clearSearch,
     } = useSearchStore();
 
     const closeSideMenu = useUIStore((state) => state.closeSideMenu);
 
-    const [localSearchTerm, setLocalSearchTerm] = useState(searchTerm);
+    const [localSearchTerm, setLocalSearchTerm] = useState("");
 
-    // Sincronizar localSearchTerm con searchTerm del store
-    useEffect(() => {
-        setLocalSearchTerm(searchTerm);
-    }, [searchTerm]);
-
-    // Manejar click fuera del componente y focus
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (
-                !showInSidebar &&
-                containerRef.current &&
-                !containerRef.current.contains(event.target as Node)
-            ) {
-                setShowSearchInput(false);
+    // Función para realizar búsqueda
+    const performSearch = useCallback(
+        async (searchTerm: string) => {
+            if (!searchTerm.trim()) {
+                setSearchResults([], 0, 1, 0);
+                setIsSearching(false);
+                return;
             }
-        };
 
-        const handleFocusOut = (event: FocusEvent) => {
-            if (
-                !showInSidebar &&
-                containerRef.current &&
-                !containerRef.current.contains(event.relatedTarget as Node)
-            ) {
-                // Pequeño delay para permitir clicks en botones dentro del componente
-                setTimeout(() => {
-                    setShowSearchInput(false);
-                }, 100);
-            }
-        };
-
-        if (showSearchInput && !showInSidebar) {
-            document.addEventListener("mousedown", handleClickOutside);
-            document.addEventListener("focusout", handleFocusOut);
-        }
-
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-            document.removeEventListener("focusout", handleFocusOut);
-        };
-    }, [showSearchInput, showInSidebar, setShowSearchInput]);
-
-    // Auto-focus cuando se abre el input
-    useEffect(() => {
-        if (showSearchInput && !showInSidebar && inputRef.current) {
-            inputRef.current.focus();
-        }
-    }, [showSearchInput, showInSidebar]);
-
-    // Debounce search
-    useEffect(() => {
-        const timeoutId = setTimeout(() => {
-            if (localSearchTerm !== searchTerm) {
-                setSearchTerm(localSearchTerm);
-            }
-        }, 300);
-
-        return () => clearTimeout(timeoutId);
-    }, [localSearchTerm, searchTerm, setSearchTerm]);
-
-    // Perform search when searchTerm changes
-    useEffect(() => {
-        let isCancelled = false;
-
-        const performSearch = async () => {
             setIsSearching(true);
             try {
                 const result = await searchProducts({
@@ -111,70 +54,81 @@ export const SearchInput = ({
                     limit: 12,
                 });
 
-                // Solo actualizar si la búsqueda no fue cancelada
-                if (!isCancelled) {
-                    if (result.ok) {
-                        setSearchResults(
-                            result.products,
-                            result.total,
-                            result.page,
-                            result.totalPages
-                        );
-                    } else {
-                        setSearchResults([], 0, 1, 0);
-                    }
-                }
-            } catch (error) {
-                if (!isCancelled) {
-                    console.error("Search error:", error);
+                if (result.ok) {
+                    setSearchResults(result.products, result.total, result.page, result.totalPages);
+                } else {
                     setSearchResults([], 0, 1, 0);
                 }
+            } catch (error) {
+                console.error("Search error:", error);
+                setSearchResults([], 0, 1, 0);
             } finally {
-                if (!isCancelled) {
-                    setIsSearching(false);
-                }
+                setIsSearching(false);
+            }
+        },
+        [setSearchResults, setIsSearching]
+    );
+
+    // Manejar click fuera del componente
+    useEffect(() => {
+        if (!showSearchInput || showInSidebar) return;
+
+        const handleClickOutside = (event: MouseEvent) => {
+            if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+                setShowSearchInput(false);
             }
         };
 
-        if (searchTerm.trim()) {
-            performSearch();
-        } else {
-            // Si no hay término de búsqueda, limpiar resultados y loading inmediatamente
-            setSearchResults([], 0, 1, 0);
-            setIsSearching(false);
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, [showSearchInput, showInSidebar, setShowSearchInput]);
+
+    // Manejar cambios en el input con búsqueda inmediata
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setLocalSearchTerm(value);
+
+        // Cancelar búsqueda anterior si existe
+        if (searchTimeoutRef.current) {
+            clearTimeout(searchTimeoutRef.current);
+            searchTimeoutRef.current = null;
         }
 
-        // Cleanup function para cancelar la búsqueda si el componente se desmonta o cambia el searchTerm
-        return () => {
-            isCancelled = true;
-        };
-    }, [searchTerm, setSearchResults, setIsSearching]);
+        // Búsqueda inmediata
+        performSearch(value);
+    };
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setLocalSearchTerm(e.target.value);
+    // Manejar apertura del input de búsqueda
+    const handleToggleSearch = () => {
+        setShowSearchInput(true);
+        // Limpiar estado al abrir
+        setLocalSearchTerm("");
+        setSearchResults([], 0, 1, 0);
+        setIsSearching(false);
+
+        // Focus después del render
+        setTimeout(() => {
+            inputRef.current?.focus();
+        }, 0);
     };
 
     const handleClearSearch = () => {
         setLocalSearchTerm("");
-        setIsSearching(false); // Resetear inmediatamente el loading
+        setIsSearching(false);
         clearSearch();
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "Enter" && searchTerm.trim()) {
-            // Navigate to search page or products page with search
-            router.push(`/gender/unisex?search=${encodeURIComponent(searchTerm)}`);
+        if (e.key === "Enter" && localSearchTerm.trim()) {
+            router.push(`/gender/unisex?search=${encodeURIComponent(localSearchTerm)}`);
 
-            // Cerrar el input de búsqueda del navbar
             if (!showInSidebar) {
                 setShowSearchInput(false);
-            }
-
-            // Cerrar el sidebar si la búsqueda se realizó desde allí
-            if (showInSidebar) {
+            } else {
                 closeSideMenu();
             }
         }
+
         if (e.key === "Escape") {
             if (!showInSidebar) {
                 setShowSearchInput(false);
@@ -189,7 +143,7 @@ export const SearchInput = ({
             <div className={clsx("relative", className)} ref={containerRef}>
                 {!showSearchInput ? (
                     <button
-                        onClick={toggleSearchInput}
+                        onClick={handleToggleSearch}
                         className="p-2 rounded-md transition-all hover:bg-gray-100"
                         aria-label="Buscar productos"
                     >
