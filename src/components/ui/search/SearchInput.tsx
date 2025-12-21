@@ -28,7 +28,8 @@ export const SearchInput = ({ className, placeholder = "Buscar productos..." }: 
         clearSearch,
     } = useSearchStore();
 
-    const closeSideMenu = useUIStore((state) => state.closeSideMenu);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { closeSideMenu } = useUIStore();
 
     const [localSearchTerm, setLocalSearchTerm] = useState("");
 
