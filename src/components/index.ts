@@ -30,3 +30,6 @@ export * from "./ui/pagination/Pagination";
 export * from "./ui/unauthorized/PageUnauthorized";
 export * from "./ui/spinner/Spinner";
 export * from "./ui/table/ResponsiveTable";
+export * from "./ui/profile/ProfileForm";
+export * from "./ui/search/SearchInput";
+export * from "./ui/search/SearchResults";

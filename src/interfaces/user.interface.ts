@@ -7,3 +7,10 @@ export interface User {
     role: string;
     image?: string | null;
 }
+
+export interface UpdateUserProfileRequest {
+    name?: string;
+    email?: string;
+    password?: string;
+    image?: string;
+}

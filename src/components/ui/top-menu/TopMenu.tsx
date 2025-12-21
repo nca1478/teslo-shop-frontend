@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { IoCartOutline, IoSearchOutline } from "react-icons/io5";
+import { IoCartOutline } from "react-icons/io5";
 import { useCartStore, useUIStore } from "@/store";
 import { titleFont } from "@/config/fonts/fonts";
+import { SearchInput } from "@/components";
 
 export const TopMenu = () => {
     const openSideMenu = useUIStore((state) => state.openSideMenu);
@@ -65,13 +66,7 @@ export const TopMenu = () => {
 
                 {/* Search, Cart, Menu */}
                 <div className="flex items-center space-x-1 sm:space-x-2 shrink-0">
-                    <Link
-                        href="/search"
-                        className="p-2 rounded-md transition-all hover:bg-gray-100"
-                        aria-label="Buscar productos"
-                    >
-                        <IoSearchOutline className="w-5 h-5 sm:w-6 sm:h-6" />
-                    </Link>
+                    <SearchInput />
 
                     {/* Cart with responsive badge */}
                     {loaded && totalItemsInCart > 0 ? (

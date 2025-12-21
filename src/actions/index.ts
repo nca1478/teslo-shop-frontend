@@ -31,6 +31,11 @@ export * from "./product/get-stock-by-slug";
 export * from "./product/create-update-product";
 export * from "./product/delete-product-image";
 
+// products
+export * from "./products/search-products";
+
 // user
 export * from "./user/get-paginated-users";
 export * from "./user/change-user-role";
+export * from "./user/get-user-profile";
+export * from "./user/update-user-profile";

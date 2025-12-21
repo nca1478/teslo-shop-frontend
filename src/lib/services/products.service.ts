@@ -1,4 +1,5 @@
 import { httpClient } from "../http-client";
+import { SearchProductsRequest, SearchProductsResponse } from "../../interfaces";
 
 export interface GetProductsRequest {
     page?: number;
@@ -125,6 +126,25 @@ export class ProductsService {
             );
         } catch (error) {
             console.error("Error deleting product image:", error);
+            throw error;
+        }
+    }
+
+    async searchProducts(params: SearchProductsRequest = {}): Promise<SearchProductsResponse> {
+        try {
+            const searchParams = new URLSearchParams();
+
+            if (params.q) searchParams.append("q", params.q);
+            if (params.page) searchParams.append("page", params.page.toString());
+            if (params.limit) searchParams.append("limit", params.limit.toString());
+
+            const queryString = searchParams.toString();
+            const endpoint = `${this.basePath}/search${queryString ? `?${queryString}` : ""}`;
+
+            const result = await httpClient.get<SearchProductsResponse>(endpoint);
+            return result;
+        } catch (error) {
+            console.error("Error searching products:", error);
             throw error;
         }
     }

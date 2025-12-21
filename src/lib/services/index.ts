@@ -16,6 +16,10 @@ export type {
     UpdateProductRequest,
 } from "./products.service";
 
+// User Service
+export { userService, UserService } from "./user.service";
+export type { UserProfileResponse } from "./user.service";
+
 // Countries Service
 export { countriesService, CountriesService } from "./countries.service";
 

@@ -5,3 +5,4 @@ export * from "./paypal.interface";
 export * from "./user.interface";
 export * from "./category.interface";
 export * from "./product-image.interface";
+export * from "./search.interface";

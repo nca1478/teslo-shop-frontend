@@ -8,13 +8,13 @@ import {
     IoLogOutOutline,
     IoPeopleOutline,
     IoPersonOutline,
-    IoSearchOutline,
     IoShirtOutline,
     IoTicketOutline,
 } from "react-icons/io5";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUIStore } from "@/store";
 import { useRouter } from "next/navigation";
+import { SearchInput } from "@/components";
 
 export const Sidebar = () => {
     const router = useRouter();
@@ -81,13 +81,12 @@ export const Sidebar = () => {
                     onClick={closeSideMenu}
                 />
 
-                {/* Input */}
-                <div className="relative mt-12 sm:mt-14">
-                    <IoSearchOutline size={20} className="absolute top-3 left-3 text-gray-400" />
-                    <input
-                        type="text"
+                {/* Search Input */}
+                <div className="mt-12 sm:mt-14">
+                    <SearchInput
+                        showInSidebar={true}
                         placeholder="Buscar productos..."
-                        className="w-full bg-gray-50 rounded-lg pl-10 pr-4 py-3 border border-gray-200 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        className="w-full"
                     />
                 </div>
 

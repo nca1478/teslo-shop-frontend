@@ -1,5 +1,5 @@
 import { getSession } from "@/lib/session";
-import { Title } from "@/components";
+import { Title, ProfileForm } from "@/components";
 import { redirect } from "next/navigation";
 
 export default async function ProfilePage() {
@@ -9,11 +9,19 @@ export default async function ProfilePage() {
         redirect("/auth/login");
     }
 
-    return (
-        <div>
-            <Title title="Perfil" />
+    const title = "Mi Perfil";
+    const subtitle = "Actualiza tu información personal y configuración de cuenta";
 
-            <pre className="mb-4 p-4">{JSON.stringify(user, null, 2)}</pre>
+    return (
+        <div className="space-y-6">
+            <Title
+                title={title}
+                subtitle={subtitle}
+                size="md"
+                className="text-center sm:text-left"
+            />
+
+            <ProfileForm />
         </div>
     );
 }
