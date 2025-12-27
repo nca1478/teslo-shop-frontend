@@ -6,8 +6,10 @@ import { productsService } from "@/lib/services";
 import { getAuthToken } from "@/lib/session";
 import { productSchema } from "./schema/product.schema";
 
-// configurar url cloudinary (subir imagenes)
-cloudinary.config(process.env.CLOUDINARY_URL ?? "");
+// configurar cloudinary (subir imagenes)
+cloudinary.config({
+    cloudinary_url: process.env.CLOUDINARY_URL,
+});
 
 export const createUpdateProduct = async (formData: FormData) => {
     const data = Object.fromEntries(formData);
