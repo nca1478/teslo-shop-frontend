@@ -77,12 +77,12 @@ export const LoginForm = () => {
             )}
 
             {/* Forgot Password Link */}
-            {/* <Link
+            <Link
                 href="/auth/forgot-password"
                 className="text-sm text-blue-600 hover:text-blue-800 text-center block mt-2"
             >
                 ¿Olvidaste tu contraseña?
-            </Link> */}
+            </Link>
 
             {/* Login Button */}
             <button
