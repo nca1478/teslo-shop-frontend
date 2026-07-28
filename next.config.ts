@@ -8,6 +8,8 @@ const nextConfig: NextConfig = {
         },
     },
 
+    serverExternalPackages: ["cloudinary"],
+
     images: {
         remotePatterns: [
             {
