@@ -74,6 +74,18 @@ export class AuthService {
             throw new Error("Failed to save session");
         }
     }
+
+    async requestOtp(email: string): Promise<{ ok: boolean }> {
+        return httpClient.post<{ ok: boolean }>(`${this.basePath}/forgot-password`, { email });
+    }
+
+    async verifyOtp(email: string, otp: string): Promise<{ verified: boolean }> {
+        return httpClient.post<{ verified: boolean }>(`${this.basePath}/verify-otp`, { email, otp });
+    }
+
+    async resetPassword(email: string, otp: string, password: string): Promise<{ ok: boolean }> {
+        return httpClient.post<{ ok: boolean }>(`${this.basePath}/reset-password`, { email, otp, password });
+    }
 }
 
 export const authService = new AuthService();
