@@ -76,7 +76,13 @@ export const LoginForm = () => {
                 </div>
             )}
 
-
+            {/* Forgot Password Link */}
+            {/* <Link
+                href="/auth/forgot-password"
+                className="text-sm text-blue-600 hover:text-blue-800 text-center block mt-2"
+            >
+                ¿Olvidaste tu contraseña?
+            </Link> */}
 
             {/* Login Button */}
             <button
