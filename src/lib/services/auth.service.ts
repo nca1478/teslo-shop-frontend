@@ -1,4 +1,4 @@
-import { httpClient } from "../http-client";
+import { httpClient } from '../http-client';
 
 export interface LoginRequest {
     email: string;
@@ -32,7 +32,7 @@ export interface SaveSessionRequest {
 }
 
 export class AuthService {
-    private readonly basePath = "/api/auth";
+    private readonly basePath = '/api/auth';
 
     async login(credentials: LoginRequest): Promise<LoginResponse> {
         return httpClient.post<LoginResponse>(`${this.basePath}/login`, credentials);
@@ -62,16 +62,16 @@ export class AuthService {
     }
 
     async saveSession(sessionData: SaveSessionRequest): Promise<void> {
-        const response = await fetch("/api/auth/save-session", {
-            method: "POST",
+        const response = await fetch('/api/auth/save-session', {
+            method: 'POST',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify(sessionData),
         });
 
         if (!response.ok) {
-            throw new Error("Failed to save session");
+            throw new Error('Failed to save session');
         }
     }
 
@@ -80,11 +80,18 @@ export class AuthService {
     }
 
     async verifyOtp(email: string, otp: string): Promise<{ verified: boolean }> {
-        return httpClient.post<{ verified: boolean }>(`${this.basePath}/verify-otp`, { email, otp });
+        return httpClient.post<{ verified: boolean }>(`${this.basePath}/verify-otp`, {
+            email,
+            otp,
+        });
     }
 
     async resetPassword(email: string, otp: string, password: string): Promise<{ ok: boolean }> {
-        return httpClient.post<{ ok: boolean }>(`${this.basePath}/reset-password`, { email, otp, password });
+        return httpClient.post<{ ok: boolean }>(`${this.basePath}/reset-password`, {
+            email,
+            otp,
+            password,
+        });
     }
 }
 

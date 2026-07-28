@@ -1,8 +1,8 @@
-"use server";
+'use server';
 
-import type { Address } from "@/interfaces";
-import { addressesService } from "@/lib/services";
-import { getAuthToken } from "@/lib/session";
+import type { Address } from '@/interfaces';
+import { addressesService } from '@/lib/services';
+import { getAuthToken } from '@/lib/session';
 
 export const setUserAddress = async (address: Address) => {
     try {
@@ -11,7 +11,7 @@ export const setUserAddress = async (address: Address) => {
         if (!token) {
             return {
                 ok: false,
-                message: "No se encontró token de autenticación",
+                message: 'No se encontró token de autenticación',
             };
         }
 
@@ -20,7 +20,7 @@ export const setUserAddress = async (address: Address) => {
         console.log(error);
         return {
             ok: false,
-            message: "No se pudo grabar la dirección",
+            message: 'No se pudo grabar la dirección',
         };
     }
 };

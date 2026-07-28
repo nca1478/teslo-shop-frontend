@@ -1,11 +1,11 @@
-"use server";
+'use server';
 
-import { productsService } from "@/lib/services";
-import { SearchProductsRequest } from "@/interfaces";
+import { productsService } from '@/lib/services';
+import { SearchProductsRequest } from '@/interfaces';
 
 export const searchProducts = async (params: SearchProductsRequest) => {
     try {
-        if (!params.q || params.q.trim() === "") {
+        if (!params.q || params.q.trim() === '') {
             return {
                 ok: true,
                 products: [],
@@ -22,11 +22,11 @@ export const searchProducts = async (params: SearchProductsRequest) => {
             ...response,
         };
     } catch (error) {
-        console.error("Search products error:", error);
+        console.error('Search products error:', error);
 
         return {
             ok: false,
-            message: "No se pudo realizar la búsqueda",
+            message: 'No se pudo realizar la búsqueda',
             products: [],
             total: 0,
             page: 1,

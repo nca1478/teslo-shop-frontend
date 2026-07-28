@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { useCartStore } from "@/store";
-import { currencyFormat } from "@/utils";
-import { ProductImage } from "@/components";
+import { useEffect, useState } from 'react';
+import { useCartStore } from '@/store';
+import { currencyFormat } from '@/utils';
+import { ProductImage } from '@/components';
 
 export const ProductsInCart = () => {
     const [loaded, setLoaded] = useState(false);
@@ -58,7 +58,7 @@ export const ProductsInCart = () => {
                                     Talla: <span className="font-medium">{product.size}</span>
                                 </p>
                                 <p className="text-gray-600 text-sm">
-                                    Cantidad:{" "}
+                                    Cantidad:{' '}
                                     <span className="font-medium">{product.quantity} Und.</span>
                                 </p>
                             </div>

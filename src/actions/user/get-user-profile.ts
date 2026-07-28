@@ -1,7 +1,7 @@
-"use server";
+'use server';
 
-import { userService } from "@/lib/services";
-import { getSession, getAuthToken } from "@/lib/session";
+import { userService } from '@/lib/services';
+import { getSession, getAuthToken } from '@/lib/session';
 
 export const getUserProfile = async () => {
     try {
@@ -11,7 +11,7 @@ export const getUserProfile = async () => {
         if (!session || !token) {
             return {
                 ok: false,
-                message: "No hay sesión activa",
+                message: 'No hay sesión activa',
             };
         }
 
@@ -22,15 +22,15 @@ export const getUserProfile = async () => {
             user: userProfile,
         };
     } catch (error) {
-        console.error("Get user profile error:", error);
+        console.error('Get user profile error:', error);
 
-        let message = "No se pudo obtener el perfil del usuario";
+        let message = 'No se pudo obtener el perfil del usuario';
 
         if (error instanceof Error) {
-            if (error.message.includes("Unauthorized")) {
-                message = "Sesión expirada";
-            } else if (error.message.includes("not found")) {
-                message = "Usuario no encontrado";
+            if (error.message.includes('Unauthorized')) {
+                message = 'Sesión expirada';
+            } else if (error.message.includes('not found')) {
+                message = 'Usuario no encontrado';
             }
         }
 

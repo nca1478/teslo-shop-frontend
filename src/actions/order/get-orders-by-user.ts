@@ -1,7 +1,7 @@
-"use server";
+'use server';
 
-import { ordersService } from "@/lib/services";
-import { getAuthToken } from "@/lib/session";
+import { ordersService } from '@/lib/services';
+import { getAuthToken } from '@/lib/session';
 
 export const getOrdersByUser = async () => {
     try {
@@ -10,7 +10,7 @@ export const getOrdersByUser = async () => {
         if (!token) {
             return {
                 ok: false,
-                message: "Debe de estar autenticado",
+                message: 'Debe de estar autenticado',
             };
         }
 
@@ -25,7 +25,7 @@ export const getOrdersByUser = async () => {
 
         return {
             ok: false,
-            message: "Error al obtener las órdenes",
+            message: 'Error al obtener las órdenes',
         };
     }
 };

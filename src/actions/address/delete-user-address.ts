@@ -1,7 +1,7 @@
-"use server";
+'use server';
 
-import { addressesService } from "@/lib/services";
-import { getAuthToken } from "@/lib/session";
+import { addressesService } from '@/lib/services';
+import { getAuthToken } from '@/lib/session';
 
 export const deleteUserAddress = async () => {
     try {
@@ -10,7 +10,7 @@ export const deleteUserAddress = async () => {
         if (!token) {
             return {
                 ok: false,
-                message: "No se encontró token de autenticación",
+                message: 'No se encontró token de autenticación',
             };
         }
 
@@ -20,7 +20,7 @@ export const deleteUserAddress = async () => {
 
         return {
             ok: false,
-            message: "No se pudo eliminar la direccion",
+            message: 'No se pudo eliminar la direccion',
         };
     }
 };

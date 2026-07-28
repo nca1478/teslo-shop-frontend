@@ -1,5 +1,5 @@
-import { titleFont } from "@/config/fonts/fonts";
-import { ResetPasswordForm } from "./ui/ResetPasswordForm";
+import { titleFont } from '@/config/fonts/fonts';
+import { ResetPasswordForm } from './ui/ResetPasswordForm';
 
 interface Props {
     searchParams: Promise<{ email?: string; otp?: string }>;
@@ -18,7 +18,8 @@ export default async function ResetPasswordPage({ searchParams }: Props) {
                         Enlace inválido
                     </h1>
                     <p className="text-gray-600 text-sm mb-6 text-center sm:text-left">
-                        No se han proporcionado los datos necesarios. Por favor, solicita un nuevo código.
+                        No se han proporcionado los datos necesarios. Por favor, solicita un nuevo
+                        código.
                     </p>
                     <a
                         href="/auth/forgot-password"

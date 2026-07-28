@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import clsx from "clsx";
-import Link from "next/link";
-import { IoInformationOutline } from "react-icons/io5";
-import { useResetPasswordForm } from "../hooks/useResetPasswordForm";
+import clsx from 'clsx';
+import Link from 'next/link';
+import { IoInformationOutline } from 'react-icons/io5';
+import { useResetPasswordForm } from '../hooks/useResetPasswordForm';
 
 interface Props {
     email: string;
@@ -44,46 +44,50 @@ export const ResetPasswordForm = ({ email, otp }: Props) => {
                 <input
                     id="password"
                     className={clsx(
-                        "px-3 py-2.5 sm:px-4 sm:py-3 border bg-gray-200 rounded-lg transition-colors duration-200 text-sm touch-target",
+                        'px-3 py-2.5 sm:px-4 sm:py-3 border bg-gray-200 rounded-lg transition-colors duration-200 text-sm touch-target',
                         {
-                            "border-red-500 focus:border-red-500 focus:ring-red-200": errors.password,
-                            "border-gray-300 focus:border-blue-500 focus:ring-blue-200":
+                            'border-red-500 focus:border-red-500 focus:ring-red-200':
+                                errors.password,
+                            'border-gray-300 focus:border-blue-500 focus:ring-blue-200':
                                 !errors.password,
-                        }
+                        },
                     )}
                     type="password"
                     placeholder="••••••••"
-                    {...register("password", {
-                        required: "La contraseña es requerida",
+                    {...register('password', {
+                        required: 'La contraseña es requerida',
                         minLength: {
                             value: 6,
-                            message: "Debe tener al menos 6 caracteres",
+                            message: 'Debe tener al menos 6 caracteres',
                         },
                     })}
                 />
             </div>
 
             <div className="flex flex-col">
-                <label htmlFor="confirmPassword" className="text-sm font-medium text-gray-700 mb-1.5">
+                <label
+                    htmlFor="confirmPassword"
+                    className="text-sm font-medium text-gray-700 mb-1.5"
+                >
                     Confirmar contraseña
                 </label>
                 <input
                     id="confirmPassword"
                     className={clsx(
-                        "px-3 py-2.5 sm:px-4 sm:py-3 border bg-gray-200 rounded-lg transition-colors duration-200 text-sm touch-target",
+                        'px-3 py-2.5 sm:px-4 sm:py-3 border bg-gray-200 rounded-lg transition-colors duration-200 text-sm touch-target',
                         {
-                            "border-red-500 focus:border-red-500 focus:ring-red-200":
+                            'border-red-500 focus:border-red-500 focus:ring-red-200':
                                 errors.confirmPassword,
-                            "border-gray-300 focus:border-blue-500 focus:ring-blue-200":
+                            'border-gray-300 focus:border-blue-500 focus:ring-blue-200':
                                 !errors.confirmPassword,
-                        }
+                        },
                     )}
                     type="password"
                     placeholder="••••••••"
-                    {...register("confirmPassword", {
-                        required: "Confirma tu contraseña",
+                    {...register('confirmPassword', {
+                        required: 'Confirma tu contraseña',
                         validate: (value: string) =>
-                            value === watch("password") || "Las contraseñas no coinciden",
+                            value === watch('password') || 'Las contraseñas no coinciden',
                     })}
                 />
             </div>
@@ -99,15 +103,15 @@ export const ResetPasswordForm = ({ email, otp }: Props) => {
                 <button
                     type="submit"
                     className={clsx(
-                        "w-full py-2.5 text-sm font-medium rounded-lg transition-all duration-200 touch-target cursor-pointer",
+                        'w-full py-2.5 text-sm font-medium rounded-lg transition-all duration-200 touch-target cursor-pointer',
                         {
-                            "btn-primary": !isLoading,
-                            "btn-disabled": isLoading,
-                        }
+                            'btn-primary': !isLoading,
+                            'btn-disabled': isLoading,
+                        },
                     )}
                     disabled={isLoading}
                 >
-                    {isLoading ? "Restableciendo..." : "Restablecer contraseña"}
+                    {isLoading ? 'Restableciendo...' : 'Restablecer contraseña'}
                 </button>
 
                 <Link

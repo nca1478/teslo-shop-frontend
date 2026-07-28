@@ -1,6 +1,6 @@
-"use server";
+'use server';
 
-import { categoriesService } from "@/lib/services";
+import { categoriesService } from '@/lib/services';
 
 export const getCategories = async () => {
     try {

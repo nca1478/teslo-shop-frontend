@@ -1,11 +1,11 @@
 export const revalidate = 10080; // 7 días | ojo: no funciona
 
-import { getProductBySlug } from "@/actions";
-import { ProductMobileSlideshow, ProductSlideshow, StockLabel } from "@/components";
-import { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { AddToCart } from "./ui/AddToCart";
-import { titleFont } from "@/config/fonts/fonts";
+import { getProductBySlug } from '@/actions';
+import { ProductMobileSlideshow, ProductSlideshow, StockLabel } from '@/components';
+import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { AddToCart } from './ui/AddToCart';
+import { titleFont } from '@/config/fonts/fonts';
 
 interface Props {
     params: Promise<{ slug: string }>;
@@ -17,11 +17,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const product = await getProductBySlug(slug);
 
     return {
-        title: product?.title ?? "Producto no encontrado",
-        description: product?.description ?? "",
+        title: product?.title ?? 'Producto no encontrado',
+        description: product?.description ?? '',
         openGraph: {
-            title: product?.title ?? "Producto no encontrado",
-            description: product?.description ?? "",
+            title: product?.title ?? 'Producto no encontrado',
+            description: product?.description ?? '',
             images: [`/products/${product?.images[1]}`],
         },
     };

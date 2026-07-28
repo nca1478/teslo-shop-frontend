@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { changeUserRole } from "@/actions";
-import { User } from "@/interfaces";
-import { User as SessionUser } from "@/lib/session";
+import { changeUserRole } from '@/actions';
+import { User } from '@/interfaces';
+import { User as SessionUser } from '@/lib/session';
 import {
     ResponsiveTable,
     MobileCardContainer,
     MobileCardItem,
     MobileCardField,
-} from "@/components/ui/table/ResponsiveTable";
+} from '@/components/ui/table/ResponsiveTable';
 
 interface Props {
     users: User[];
@@ -19,7 +19,7 @@ export const UsersTable = ({ users, currentUser }: Props) => {
     const handleRoleChange = async (userId: string, newRole: string) => {
         // Prevent user from changing their own role
         if (userId === currentUser.id) {
-            alert("No puedes cambiar tu propio rol");
+            alert('No puedes cambiar tu propio rol');
             return;
         }
 
@@ -27,11 +27,11 @@ export const UsersTable = ({ users, currentUser }: Props) => {
             const result = await changeUserRole(userId, newRole);
 
             if (!result.ok) {
-                alert(result.message || "Error al cambiar el rol");
+                alert(result.message || 'Error al cambiar el rol');
             }
         } catch (error) {
-            console.error("Error changing role:", error);
-            alert("Error inesperado al cambiar el rol");
+            console.error('Error changing role:', error);
+            alert('Error inesperado al cambiar el rol');
         }
     };
 
@@ -90,11 +90,11 @@ export const UsersTable = ({ users, currentUser }: Props) => {
                                         disabled={isCurrentUser}
                                         className={`text-sm w-full p-2 rounded-md border border-gray-300 ${
                                             isCurrentUser
-                                                ? "bg-gray-100 cursor-not-allowed opacity-60"
-                                                : "cursor-pointer hover:border-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                ? 'bg-gray-100 cursor-not-allowed opacity-60'
+                                                : 'cursor-pointer hover:border-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent'
                                         }`}
                                         title={
-                                            isCurrentUser ? "No puedes cambiar tu propio rol" : ""
+                                            isCurrentUser ? 'No puedes cambiar tu propio rol' : ''
                                         }
                                     >
                                         <option value="admin">Admin</option>
@@ -140,11 +140,11 @@ export const UsersTable = ({ users, currentUser }: Props) => {
                                         disabled={isCurrentUser}
                                         className={`text-sm w-full max-w-[120px] p-2 rounded-md border border-gray-300 ${
                                             isCurrentUser
-                                                ? "bg-gray-100 cursor-not-allowed opacity-60"
-                                                : "cursor-pointer hover:border-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                ? 'bg-gray-100 cursor-not-allowed opacity-60'
+                                                : 'cursor-pointer hover:border-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent'
                                         }`}
                                         title={
-                                            isCurrentUser ? "No puedes cambiar tu propio rol" : ""
+                                            isCurrentUser ? 'No puedes cambiar tu propio rol' : ''
                                         }
                                     >
                                         <option value="admin">Admin</option>

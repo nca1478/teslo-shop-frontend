@@ -1,7 +1,7 @@
-import { redirect } from "next/navigation";
-import { OrderStatus, PayPalWrapper, ProductImage, Title } from "@/components";
-import { getOrderById } from "@/actions";
-import { currencyFormat } from "@/utils";
+import { redirect } from 'next/navigation';
+import { OrderStatus, PayPalWrapper, ProductImage, Title } from '@/components';
+import { getOrderById } from '@/actions';
+import { currencyFormat } from '@/utils';
 
 interface Props {
     params: Promise<{ id: string }>;
@@ -14,7 +14,7 @@ export default async function OrdersByIdPage({ params }: Props) {
     const { ok, order } = await getOrderById(id);
 
     if (!ok) {
-        redirect("/");
+        redirect('/');
     }
 
     const address = order!.orderAddress;
@@ -22,7 +22,7 @@ export default async function OrdersByIdPage({ params }: Props) {
     return (
         <div className="space-y-6">
             <Title
-                title={`Orden #${id.split("-").pop()}`}
+                title={`Orden #${id.split('-').pop()}`}
                 subtitle="Detalles del pedido"
                 size="md"
             />
@@ -41,14 +41,14 @@ export default async function OrdersByIdPage({ params }: Props) {
                     {/* Lista de productos */}
                     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                            Productos ({order!.itemsInOrder}{" "}
-                            {order!.itemsInOrder === 1 ? "artículo" : "artículos"})
+                            Productos ({order!.itemsInOrder}{' '}
+                            {order!.itemsInOrder === 1 ? 'artículo' : 'artículos'})
                         </h3>
 
                         <div className="space-y-4">
                             {order!.orderItems.map((item) => (
                                 <div
-                                    key={(item.product?.slug || item.productId) + "-" + item.size}
+                                    key={(item.product?.slug || item.productId) + '-' + item.size}
                                     className="flex flex-col sm:flex-row gap-4 p-4 border border-gray-100 rounded-lg hover:shadow-sm transition-shadow"
                                 >
                                     {/* Imagen del Producto */}
@@ -57,7 +57,7 @@ export default async function OrdersByIdPage({ params }: Props) {
                                             src={item.product?.ProductImage[0]?.url}
                                             width={100}
                                             height={100}
-                                            alt={item.product?.title || "Producto"}
+                                            alt={item.product?.title || 'Producto'}
                                             className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-lg"
                                         />
                                     </div>
@@ -66,10 +66,10 @@ export default async function OrdersByIdPage({ params }: Props) {
                                         {/* Información del producto */}
                                         <div className="mb-3">
                                             <h4 className="font-medium text-gray-900 text-sm sm:text-base line-clamp-2">
-                                                {item.product?.title || "Producto no encontrado"}
+                                                {item.product?.title || 'Producto no encontrado'}
                                             </h4>
                                             <p className="text-gray-600 text-sm mt-1">
-                                                Talla:{" "}
+                                                Talla:{' '}
                                                 <span className="font-medium">{item.size}</span>
                                             </p>
                                         </div>
@@ -87,8 +87,8 @@ export default async function OrdersByIdPage({ params }: Props) {
                                             <div className="flex justify-between sm:justify-start sm:gap-4">
                                                 <span className="text-gray-600">Cantidad:</span>
                                                 <span className="font-medium">
-                                                    {item.quantity}{" "}
-                                                    {item.quantity === 1 ? "unidad" : "unidades"}
+                                                    {item.quantity}{' '}
+                                                    {item.quantity === 1 ? 'unidad' : 'unidades'}
                                                 </span>
                                             </div>
                                             <div className="flex justify-between sm:justify-start sm:gap-4 pt-2 border-t border-gray-100">
@@ -143,7 +143,7 @@ export default async function OrdersByIdPage({ params }: Props) {
                                 <span className="text-gray-600">Cantidad</span>
                                 <span className="font-medium text-gray-900">
                                     {order!.itemsInOrder === 1
-                                        ? "1 artículo"
+                                        ? '1 artículo'
                                         : `${order!.itemsInOrder} artículos`}
                                 </span>
                             </div>

@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useForm } from "react-hook-form";
-import { useState } from "react";
-import { resetPasswordAction } from "@/actions/auth/reset-password";
+import { useForm } from 'react-hook-form';
+import { useState } from 'react';
+import { resetPasswordAction } from '@/actions/auth/reset-password';
 
 interface ResetPasswordFormData {
     password: string;
@@ -20,7 +20,7 @@ export const useResetPasswordForm = (email: string, otp: string) => {
         formState: { errors },
         watch,
     } = useForm<ResetPasswordFormData>({
-        mode: "onBlur",
+        mode: 'onBlur',
     });
 
     const onSubmit = async (data: ResetPasswordFormData) => {
@@ -32,10 +32,10 @@ export const useResetPasswordForm = (email: string, otp: string) => {
             if (result.ok) {
                 setIsSuccess(true);
             } else {
-                setErrorMessage(result.message || "Error al restablecer la contraseña");
+                setErrorMessage(result.message || 'Error al restablecer la contraseña');
             }
         } catch {
-            setErrorMessage("Error al restablecer la contraseña");
+            setErrorMessage('Error al restablecer la contraseña');
         } finally {
             setIsLoading(false);
         }

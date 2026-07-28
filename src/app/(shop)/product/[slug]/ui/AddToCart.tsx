@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useCartStore } from "@/store";
-import { QuantitySelector, SizeSelector } from "@/components";
-import { CartProduct, Product, Size } from "@/interfaces";
+import { useState } from 'react';
+import { useCartStore } from '@/store';
+import { QuantitySelector, SizeSelector } from '@/components';
+import { CartProduct, Product, Size } from '@/interfaces';
 
 interface Props {
     product: Product;
@@ -97,14 +97,14 @@ export const AddToCart = ({ product }: Props) => {
                 <button
                     className={`w-full py-3 px-6 rounded-lg font-medium transition-all duration-200 ${
                         isOutOfStock
-                            ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                            : "btn-primary hover:scale-105 active:scale-95"
+                            ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                            : 'btn-primary hover:scale-105 active:scale-95'
                     }`}
                     onClick={addToCart}
                     disabled={isOutOfStock}
-                    title={isOutOfStock ? "Producto sin stock" : "Agregar al carrito"}
+                    title={isOutOfStock ? 'Producto sin stock' : 'Agregar al carrito'}
                 >
-                    {isOutOfStock ? "Sin stock disponible" : "Agregar al carrito"}
+                    {isOutOfStock ? 'Sin stock disponible' : 'Agregar al carrito'}
                 </button>
             </div>
 

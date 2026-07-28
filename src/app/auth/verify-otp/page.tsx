@@ -1,5 +1,5 @@
-import { titleFont } from "@/config/fonts/fonts";
-import { VerifyOtpForm } from "./ui/VerifyOtpForm";
+import { titleFont } from '@/config/fonts/fonts';
+import { VerifyOtpForm } from './ui/VerifyOtpForm';
 
 interface Props {
     searchParams: Promise<{ email?: string }>;
@@ -18,7 +18,8 @@ export default async function VerifyOtpPage({ searchParams }: Props) {
                         Enlace inválido
                     </h1>
                     <p className="text-gray-600 text-sm mb-6 text-center sm:text-left">
-                        No se ha proporcionado un correo electrónico. Por favor, solicita un nuevo código.
+                        No se ha proporcionado un correo electrónico. Por favor, solicita un nuevo
+                        código.
                     </p>
                     <a
                         href="/auth/forgot-password"

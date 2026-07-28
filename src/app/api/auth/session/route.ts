@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
-import { getSession } from "@/lib/session";
+import { NextResponse } from 'next/server';
+import { getSession } from '@/lib/session';
 
 export async function GET() {
     try {
@@ -12,7 +12,7 @@ export async function GET() {
 
         return NextResponse.json(user);
     } catch (error) {
-        console.error("Session API error:", error);
+        console.error('Session API error:', error);
         return NextResponse.json(null, { status: 500 });
     }
 }

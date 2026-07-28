@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import clsx from "clsx";
-import Link from "next/link";
-import { IoInformationOutline } from "react-icons/io5";
-import { useForgotPasswordForm } from "../hooks/useForgotPasswordForm";
+import clsx from 'clsx';
+import Link from 'next/link';
+import { IoInformationOutline } from 'react-icons/io5';
+import { useForgotPasswordForm } from '../hooks/useForgotPasswordForm';
 
 export const ForgotPasswordForm = () => {
     const { register, handleSubmit, errors, errorMessage, isLoading, onSubmit, isSuccess } =
@@ -39,19 +39,20 @@ export const ForgotPasswordForm = () => {
                 <input
                     id="email"
                     className={clsx(
-                        "px-3 py-2.5 sm:px-4 sm:py-3 border bg-gray-200 rounded-lg transition-colors duration-200 text-sm touch-target",
+                        'px-3 py-2.5 sm:px-4 sm:py-3 border bg-gray-200 rounded-lg transition-colors duration-200 text-sm touch-target',
                         {
-                            "border-red-500 focus:border-red-500 focus:ring-red-200": errors.email,
-                            "border-gray-300 focus:border-blue-500 focus:ring-blue-200": !errors.email,
-                        }
+                            'border-red-500 focus:border-red-500 focus:ring-red-200': errors.email,
+                            'border-gray-300 focus:border-blue-500 focus:ring-blue-200':
+                                !errors.email,
+                        },
                     )}
                     type="email"
                     placeholder="tu@email.com"
-                    {...register("email", {
-                        required: "El email es requerido",
+                    {...register('email', {
+                        required: 'El email es requerido',
                         pattern: {
                             value: /^\S+@\S+$/i,
-                            message: "Formato de email inválido",
+                            message: 'Formato de email inválido',
                         },
                     })}
                 />
@@ -68,15 +69,15 @@ export const ForgotPasswordForm = () => {
                 <button
                     type="submit"
                     className={clsx(
-                        "w-full py-2.5 text-sm font-medium rounded-lg transition-all duration-200 touch-target cursor-pointer",
+                        'w-full py-2.5 text-sm font-medium rounded-lg transition-all duration-200 touch-target cursor-pointer',
                         {
-                            "btn-primary": !isLoading,
-                            "btn-disabled": isLoading,
-                        }
+                            'btn-primary': !isLoading,
+                            'btn-disabled': isLoading,
+                        },
                     )}
                     disabled={isLoading}
                 >
-                    {isLoading ? "Enviando..." : "Enviar código"}
+                    {isLoading ? 'Enviando...' : 'Enviar código'}
                 </button>
 
                 <Link

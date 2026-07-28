@@ -1,6 +1,6 @@
-"use server";
+'use server';
 
-import { productsService } from "@/lib/services";
+import { productsService } from '@/lib/services';
 
 interface PaginationOptions {
     page?: number;
@@ -27,11 +27,11 @@ export const getPaginatedProductsWithImages = async ({
                 ...product,
                 inStock: product.stock,
                 createdAt:
-                    typeof product.createdAt === "string"
+                    typeof product.createdAt === 'string'
                         ? new Date(product.createdAt)
                         : product.createdAt,
                 updatedAt:
-                    typeof product.updatedAt === "string"
+                    typeof product.updatedAt === 'string'
                         ? new Date(product.updatedAt)
                         : product.updatedAt,
             })),
@@ -40,6 +40,6 @@ export const getPaginatedProductsWithImages = async ({
         };
     } catch (error) {
         console.log(error);
-        throw new Error("No se pudo cargar los productos");
+        throw new Error('No se pudo cargar los productos');
     }
 };

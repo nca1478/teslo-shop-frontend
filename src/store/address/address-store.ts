@@ -1,5 +1,5 @@
-import { create } from "zustand";
-import { createJSONStorage, devtools, persist } from "zustand/middleware";
+import { create } from 'zustand';
+import { createJSONStorage, devtools, persist } from 'zustand/middleware';
 
 interface State {
     address: {
@@ -12,7 +12,7 @@ interface State {
         city: string;
         phone: string;
     };
-    setAddress: (address: State["address"]) => void;
+    setAddress: (address: State['address']) => void;
     removeCurrentAddress: () => void;
 }
 
@@ -21,14 +21,14 @@ export const useAddressStore = create<State>()(
         persist(
             (set) => ({
                 address: {
-                    firstName: "",
-                    lastName: "",
-                    address: "",
-                    address2: "",
-                    postalCode: "",
-                    country: "",
-                    city: "",
-                    phone: "",
+                    firstName: '',
+                    lastName: '',
+                    address: '',
+                    address2: '',
+                    postalCode: '',
+                    country: '',
+                    city: '',
+                    phone: '',
                 },
 
                 // Métodos
@@ -39,22 +39,22 @@ export const useAddressStore = create<State>()(
                 removeCurrentAddress: () => {
                     set({
                         address: {
-                            firstName: "",
-                            lastName: "",
-                            address: "",
-                            address2: "",
-                            postalCode: "",
-                            country: "",
-                            phone: "",
-                            city: "",
+                            firstName: '',
+                            lastName: '',
+                            address: '',
+                            address2: '',
+                            postalCode: '',
+                            country: '',
+                            phone: '',
+                            city: '',
                         },
                     });
                 },
             }),
             {
-                name: "address-storage",
+                name: 'address-storage',
                 storage: createJSONStorage(() => localStorage),
-            }
-        )
-    )
+            },
+        ),
+    ),
 );

@@ -1,6 +1,6 @@
-"use server";
+'use server';
 
-import { countriesService } from "@/lib/services";
+import { countriesService } from '@/lib/services';
 
 export const getCountries = async () => {
     try {

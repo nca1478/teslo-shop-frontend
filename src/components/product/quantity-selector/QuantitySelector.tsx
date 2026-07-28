@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import { IoAddCircleOutline, IoRemoveCircleOutline } from "react-icons/io5";
+import { IoAddCircleOutline, IoRemoveCircleOutline } from 'react-icons/io5';
 
 interface Props {
     quantity: number;
     onQuantityChanged: (value: number) => void;
     showLabel?: boolean;
-    size?: "sm" | "md" | "lg";
+    size?: 'sm' | 'md' | 'lg';
 }
 
 export const QuantitySelector = ({
     quantity,
     onQuantityChanged,
     showLabel = true,
-    size = "md",
+    size = 'md',
 }: Props) => {
     const onValueChanged = (value: number) => {
         if (quantity + value < 1) return;
@@ -23,22 +23,22 @@ export const QuantitySelector = ({
 
     const sizeClasses = {
         sm: {
-            button: "w-8 h-8",
+            button: 'w-8 h-8',
             icon: 20,
-            text: "text-sm",
-            input: "w-12 h-8 text-sm",
+            text: 'text-sm',
+            input: 'w-12 h-8 text-sm',
         },
         md: {
-            button: "w-10 h-10",
+            button: 'w-10 h-10',
             icon: 24,
-            text: "text-base",
-            input: "w-16 h-10 text-base",
+            text: 'text-base',
+            input: 'w-16 h-10 text-base',
         },
         lg: {
-            button: "w-12 h-12",
+            button: 'w-12 h-12',
             icon: 28,
-            text: "text-lg",
-            input: "w-20 h-12 text-lg",
+            text: 'text-lg',
+            input: 'w-20 h-12 text-lg',
         },
     };
 
@@ -61,8 +61,8 @@ export const QuantitySelector = ({
                         transition-all duration-200 
                         ${
                             quantity <= 1
-                                ? "text-gray-300 cursor-not-allowed"
-                                : "text-gray-600 hover:text-red-600 hover:bg-red-50 active:scale-95"
+                                ? 'text-gray-300 cursor-not-allowed'
+                                : 'text-gray-600 hover:text-red-600 hover:bg-red-50 active:scale-95'
                         }
                         touch-target
                     `}

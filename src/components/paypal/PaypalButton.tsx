@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
+import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
 import {
     CreateOrderData,
     CreateOrderActions,
     OnApproveData,
     OnApproveActions,
-} from "@paypal/paypal-js";
-import { Spinner } from "../ui/spinner/Spinner";
-import { paypalCheckPayment, setTransactionId } from "@/actions";
+} from '@paypal/paypal-js';
+import { Spinner } from '../ui/spinner/Spinner';
+import { paypalCheckPayment, setTransactionId } from '@/actions';
 
 interface Props {
     orderId: string;
@@ -39,27 +39,27 @@ export const PayPalButton = ({ orderId, amount }: Props) => {
 
     const createOrder = async (
         _data: CreateOrderData,
-        actions: CreateOrderActions
+        actions: CreateOrderActions,
     ): Promise<string> => {
         try {
             const transactionId = await actions.order.create({
-                intent: "CAPTURE",
+                intent: 'CAPTURE',
                 purchase_units: [
                     {
                         invoice_id: orderId,
-                        amount: { currency_code: "USD", value: `${rountedAmount}` },
+                        amount: { currency_code: 'USD', value: `${rountedAmount}` },
                     },
                 ],
             });
 
             const order = await setTransactionId(orderId, transactionId);
             if (!order) {
-                throw new Error("No se pudo actualizar la orden");
+                throw new Error('No se pudo actualizar la orden');
             }
 
             return transactionId;
         } catch (error) {
-            console.error("Error creating PayPal order:", error);
+            console.error('Error creating PayPal order:', error);
             throw error;
         }
     };
@@ -68,12 +68,12 @@ export const PayPalButton = ({ orderId, amount }: Props) => {
         try {
             const details = await actions.order?.capture();
             if (!details) {
-                throw new Error("No se pudieron capturar los detalles del pago");
+                throw new Error('No se pudieron capturar los detalles del pago');
             }
 
             await paypalCheckPayment(details.id as string);
         } catch (error) {
-            console.error("Error processing PayPal payment:", error);
+            console.error('Error processing PayPal payment:', error);
             throw error;
         }
     };

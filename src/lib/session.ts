@@ -1,7 +1,7 @@
-import { cookies } from "next/headers";
+import { cookies } from 'next/headers';
 
-const SESSION_COOKIE_NAME = "auth-token";
-const USER_DATA_COOKIE_NAME = "user-data";
+const SESSION_COOKIE_NAME = 'auth-token';
+const USER_DATA_COOKIE_NAME = 'user-data';
 
 export interface User {
     id: string;
@@ -29,13 +29,13 @@ export async function getSession(): Promise<User | null> {
             }
             return user;
         } catch (parseError) {
-            console.warn("Invalid user data in cookie:", parseError);
+            console.warn('Invalid user data in cookie:', parseError);
             return null;
         }
     } catch (error) {
         // Solo log en desarrollo para evitar spam en producción
-        if (process.env.NODE_ENV === "development") {
-            console.warn("Session verification failed:", error);
+        if (process.env.NODE_ENV === 'development') {
+            console.warn('Session verification failed:', error);
         }
         return null;
     }
@@ -46,8 +46,8 @@ export async function getAuthToken(): Promise<string | null> {
         const cookieStore = await cookies();
         return cookieStore.get(SESSION_COOKIE_NAME)?.value || null;
     } catch (error) {
-        if (process.env.NODE_ENV === "development") {
-            console.warn("Token retrieval failed:", error);
+        if (process.env.NODE_ENV === 'development') {
+            console.warn('Token retrieval failed:', error);
         }
         return null;
     }
@@ -59,19 +59,19 @@ export async function setSession(token: string, user: User): Promise<void> {
     // Guardar el token
     cookieStore.set(SESSION_COOKIE_NAME, token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
         maxAge: 60 * 60 * 24, // 24 hours
-        path: "/",
+        path: '/',
     });
 
     // Guardar los datos del usuario
     cookieStore.set(USER_DATA_COOKIE_NAME, JSON.stringify(user), {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
         maxAge: 60 * 60 * 24, // 24 hours
-        path: "/",
+        path: '/',
     });
 }
 

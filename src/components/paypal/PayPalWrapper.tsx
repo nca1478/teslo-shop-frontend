@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { PayPalButton } from "./PaypalButton";
+import { useEffect, useState } from 'react';
+import { PayPalButton } from './PaypalButton';
 
 interface Props {
     orderId: string;
@@ -17,7 +17,7 @@ export const PayPalWrapper = ({ orderId, amount }: Props) => {
         const checkPayPalAvailability = () => {
             const paypalClientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
 
-            if (!paypalClientId || paypalClientId === "") {
+            if (!paypalClientId || paypalClientId === '') {
                 setIsPayPalAvailable(false);
                 setIsLoading(false);
                 return;

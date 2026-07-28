@@ -1,7 +1,7 @@
-import { redirect } from "next/navigation";
-import { getCategories, getProductBySlug } from "@/actions";
-import { Title } from "@/components";
-import { ProductForm } from "./ui/ProductForm";
+import { redirect } from 'next/navigation';
+import { getCategories, getProductBySlug } from '@/actions';
+import { Title } from '@/components';
+import { ProductForm } from './ui/ProductForm';
 
 interface Props {
     params: Promise<{ slug: string }>;
@@ -12,19 +12,19 @@ export default async function ProductPage({ params }: Props) {
 
     // Si es un producto nuevo, no intentar buscar el producto
     const [product, categories] = await Promise.all([
-        slug === "new" ? Promise.resolve(null) : getProductBySlug(slug),
+        slug === 'new' ? Promise.resolve(null) : getProductBySlug(slug),
         getCategories(),
     ]);
 
-    if (!product && slug !== "new") {
-        redirect("/admin/products");
+    if (!product && slug !== 'new') {
+        redirect('/admin/products');
     }
 
-    const title = `${slug === "new" ? "Nuevo" : "Editar"} producto`;
+    const title = `${slug === 'new' ? 'Nuevo' : 'Editar'} producto`;
     const subtitle =
-        slug === "new"
-            ? "Crear un nuevo producto en el inventario"
-            : "Modificar información del producto";
+        slug === 'new'
+            ? 'Crear un nuevo producto en el inventario'
+            : 'Modificar información del producto';
 
     return (
         <div className="space-y-6">

@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { useState, useEffect, useRef, useCallback } from "react";
-import { IoSearchOutline, IoCloseOutline } from "react-icons/io5";
-import { useSearchStore, useUIStore } from "@/store";
-import { searchProducts } from "@/actions";
-import { useRouter } from "next/navigation";
-import clsx from "clsx";
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { IoSearchOutline, IoCloseOutline } from 'react-icons/io5';
+import { useSearchStore, useUIStore } from '@/store';
+import { searchProducts } from '@/actions';
+import { useRouter } from 'next/navigation';
+import clsx from 'clsx';
 
 interface Props {
     className?: string;
     placeholder?: string;
 }
 
-export const SearchInput = ({ className, placeholder = "Buscar productos..." }: Props) => {
+export const SearchInput = ({ className, placeholder = 'Buscar productos...' }: Props) => {
     const router = useRouter();
     const inputRef = useRef<HTMLInputElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -31,7 +31,7 @@ export const SearchInput = ({ className, placeholder = "Buscar productos..." }: 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { closeSideMenu } = useUIStore();
 
-    const [localSearchTerm, setLocalSearchTerm] = useState("");
+    const [localSearchTerm, setLocalSearchTerm] = useState('');
 
     // Función para realizar búsqueda
     const performSearch = useCallback(
@@ -56,13 +56,13 @@ export const SearchInput = ({ className, placeholder = "Buscar productos..." }: 
                     setSearchResults([], 0, 1, 0);
                 }
             } catch (error) {
-                console.error("Search error:", error);
+                console.error('Search error:', error);
                 setSearchResults([], 0, 1, 0);
             } finally {
                 setIsSearching(false);
             }
         },
-        [setSearchResults, setIsSearching]
+        [setSearchResults, setIsSearching],
     );
 
     // Manejar click fuera del componente
@@ -75,8 +75,8 @@ export const SearchInput = ({ className, placeholder = "Buscar productos..." }: 
             }
         };
 
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
     }, [showSearchInput, setShowSearchInput]);
 
     // Manejar cambios en el input con búsqueda inmediata
@@ -98,7 +98,7 @@ export const SearchInput = ({ className, placeholder = "Buscar productos..." }: 
     const handleToggleSearch = () => {
         setShowSearchInput(true);
         // Limpiar estado al abrir
-        setLocalSearchTerm("");
+        setLocalSearchTerm('');
         setSearchResults([], 0, 1, 0);
         setIsSearching(false);
 
@@ -109,18 +109,18 @@ export const SearchInput = ({ className, placeholder = "Buscar productos..." }: 
     };
 
     const handleClearSearch = () => {
-        setLocalSearchTerm("");
+        setLocalSearchTerm('');
         setIsSearching(false);
         clearSearch();
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "Enter" && localSearchTerm.trim()) {
+        if (e.key === 'Enter' && localSearchTerm.trim()) {
             router.push(`/gender/unisex?search=${encodeURIComponent(localSearchTerm)}`);
             setShowSearchInput(false);
         }
 
-        if (e.key === "Escape") {
+        if (e.key === 'Escape') {
             setShowSearchInput(false);
             handleClearSearch();
         }
@@ -128,7 +128,7 @@ export const SearchInput = ({ className, placeholder = "Buscar productos..." }: 
 
     // Navbar search (toggle behavior)
     return (
-        <div className={clsx("relative", className)} ref={containerRef}>
+        <div className={clsx('relative', className)} ref={containerRef}>
             {!showSearchInput ? (
                 <button
                     onClick={handleToggleSearch}

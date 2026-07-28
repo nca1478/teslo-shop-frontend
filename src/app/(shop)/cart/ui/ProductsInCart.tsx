@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import Link from "next/link";
-import { ProductImage, QuantitySelector } from "@/components";
-import { useCartStore } from "@/store";
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { ProductImage, QuantitySelector } from '@/components';
+import { useCartStore } from '@/store';
 
 export const ProductsInCart = () => {
     const productsInCart = useCartStore((state) => state.cart);

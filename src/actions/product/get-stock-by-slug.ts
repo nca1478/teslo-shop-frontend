@@ -1,6 +1,6 @@
-"use server";
+'use server';
 
-import { productsService } from "@/lib/services";
+import { productsService } from '@/lib/services';
 // import { sleep } from "@/utils";
 
 export const getStockBySlug = async (slug: string): Promise<number> => {
@@ -10,11 +10,11 @@ export const getStockBySlug = async (slug: string): Promise<number> => {
         return product?.stock ?? 0;
     } catch (error) {
         if (error instanceof Error) {
-            throw new Error("Error al obtener el producto por slug", {
+            throw new Error('Error al obtener el producto por slug', {
                 cause: error,
             });
         } else {
-            throw new Error("Error al obtener el producto por slug");
+            throw new Error('Error al obtener el producto por slug');
         }
     }
 };

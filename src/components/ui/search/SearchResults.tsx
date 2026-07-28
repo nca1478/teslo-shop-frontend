@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useSearchStore } from "@/store";
-import { ProductGrid } from "@/components";
+import { useSearchStore } from '@/store';
+import { ProductGrid } from '@/components';
 
 interface Props {
     className?: string;
@@ -47,8 +47,8 @@ export const SearchResults = ({ className }: Props) => {
                     Resultados de búsqueda para &ldquo;{searchTerm}&rdquo;
                 </h2>
                 <p className="text-gray-600 mt-1">
-                    {totalResults}{" "}
-                    {totalResults === 1 ? "producto encontrado" : "productos encontrados"}
+                    {totalResults}{' '}
+                    {totalResults === 1 ? 'producto encontrado' : 'productos encontrados'}
                 </p>
             </div>
 

@@ -1,8 +1,8 @@
-import { httpClient } from "../http-client";
-import { User as BaseUser } from "@/interfaces";
+import { httpClient } from '../http-client';
+import { User as BaseUser } from '@/interfaces';
 
 // User type for API responses (without password for security)
-export type User = Omit<BaseUser, "password">;
+export type User = Omit<BaseUser, 'password'>;
 
 // Backend API response type (now uses name consistently)
 interface ApiUser {
@@ -36,20 +36,20 @@ export interface ChangeUserRoleResponse {
 }
 
 export class UsersService {
-    private readonly basePath = "/api/users";
+    private readonly basePath = '/api/users';
 
     async getPaginatedUsers(
         params: GetPaginatedUsersRequest,
-        token: string
+        token: string,
     ): Promise<GetPaginatedUsersResponse> {
         const searchParams = new URLSearchParams();
 
         if (params.page) {
-            searchParams.append("page", params.page.toString());
+            searchParams.append('page', params.page.toString());
         }
 
         if (params.limit) {
-            searchParams.append("limit", params.limit.toString());
+            searchParams.append('limit', params.limit.toString());
         }
 
         const queryString = searchParams.toString();
@@ -63,14 +63,14 @@ export class UsersService {
     async changeUserRole(
         userId: string,
         roleData: ChangeUserRoleRequest,
-        token: string
+        token: string,
     ): Promise<ChangeUserRoleResponse> {
         return httpClient.patch<ChangeUserRoleResponse>(
             `${this.basePath}/${userId}/role`,
             roleData,
             {
                 Authorization: `Bearer ${token}`,
-            }
+            },
         );
     }
 }

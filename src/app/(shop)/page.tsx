@@ -1,8 +1,8 @@
 export const revalidate = 60; // mantener página en cache por 60 seg
 
-import { getPaginatedProductsWithImages } from "@/actions";
-import { Pagination, ProductGrid, Title } from "@/components";
-import { redirect } from "next/navigation";
+import { getPaginatedProductsWithImages } from '@/actions';
+import { Pagination, ProductGrid, Title } from '@/components';
+import { redirect } from 'next/navigation';
 
 interface Props {
     searchParams: Promise<{ page?: string }>;
@@ -17,7 +17,7 @@ export default async function HomePage({ searchParams }: Props) {
     });
 
     if (products.length === 0) {
-        redirect("/");
+        redirect('/');
     }
 
     return (

@@ -26,6 +26,6 @@ export interface CartProduct {
     image: string;
 }
 
-export type Gender = "men" | "women" | "kids" | "unisex";
-export type Size = "XS" | "S" | "M" | "L" | "XL" | "XXL" | "XXXL";
-export type Type = "shirts" | "pants" | "hoodies" | "hats";
+export type Gender = 'men' | 'women' | 'kids' | 'unisex';
+export type Size = 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL' | 'XXXL';
+export type Type = 'shirts' | 'pants' | 'hoodies' | 'hats';

@@ -1,5 +1,5 @@
-import { create } from "zustand";
-import { Product } from "@/interfaces";
+import { create } from 'zustand';
+import { Product } from '@/interfaces';
 
 interface SearchState {
     searchTerm: string;
@@ -21,7 +21,7 @@ interface SearchState {
 }
 
 export const useSearchStore = create<SearchState>((set) => ({
-    searchTerm: "",
+    searchTerm: '',
     searchResults: [],
     isSearching: false,
     showSearchInput: false,
@@ -47,7 +47,7 @@ export const useSearchStore = create<SearchState>((set) => ({
 
     clearSearch: () =>
         set({
-            searchTerm: "",
+            searchTerm: '',
             searchResults: [],
             isSearching: false,
             totalResults: 0,

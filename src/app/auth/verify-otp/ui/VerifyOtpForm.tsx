@@ -1,32 +1,24 @@
-"use client";
+'use client';
 
-import clsx from "clsx";
-import Link from "next/link";
-import { IoInformationOutline } from "react-icons/io5";
-import { useVerifyOtpForm } from "../hooks/useVerifyOtpForm";
+import clsx from 'clsx';
+import Link from 'next/link';
+import { IoInformationOutline } from 'react-icons/io5';
+import { useVerifyOtpForm } from '../hooks/useVerifyOtpForm';
 
 interface Props {
     email: string;
 }
 
 export const VerifyOtpForm = ({ email }: Props) => {
-    const {
-        otp,
-        setOtp,
-        errorMessage,
-        isLoading,
-        onSubmit,
-        handleResend,
-        isResending,
-        inputRefs,
-    } = useVerifyOtpForm(email);
+    const { otp, setOtp, errorMessage, isLoading, onSubmit, handleResend, isResending, inputRefs } =
+        useVerifyOtpForm(email);
 
     const handleChange = (index: number, value: string) => {
         if (value && !/^\d$/.test(value)) return;
 
-        const newOtp = otp.split("");
+        const newOtp = otp.split('');
         newOtp[index] = value;
-        const joined = newOtp.join("").slice(0, 6);
+        const joined = newOtp.join('').slice(0, 6);
         setOtp(joined);
 
         if (value && index < 5 && inputRefs.current[index + 1]) {
@@ -35,14 +27,14 @@ export const VerifyOtpForm = ({ email }: Props) => {
     };
 
     const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "Backspace" && !otp[index] && index > 0 && inputRefs.current[index - 1]) {
+        if (e.key === 'Backspace' && !otp[index] && index > 0 && inputRefs.current[index - 1]) {
             inputRefs.current[index - 1]?.focus();
         }
     };
 
     const handlePaste = (e: React.ClipboardEvent) => {
         e.preventDefault();
-        const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6);
+        const pasted = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
         setOtp(pasted);
         const lastIndex = Math.min(pasted.length, 5);
         if (inputRefs.current[lastIndex]) {
@@ -62,16 +54,16 @@ export const VerifyOtpForm = ({ email }: Props) => {
                         type="text"
                         inputMode="numeric"
                         maxLength={1}
-                        value={otp[index] || ""}
+                        value={otp[index] || ''}
                         onChange={(e) => handleChange(index, e.target.value)}
                         onKeyDown={(e) => handleKeyDown(index, e)}
                         onPaste={handlePaste}
                         className={clsx(
-                            "w-full h-12 sm:h-14 text-center text-lg font-bold border-2 rounded-lg transition-colors duration-200",
+                            'w-full h-12 sm:h-14 text-center text-lg font-bold border-2 rounded-lg transition-colors duration-200',
                             {
-                                "border-blue-500 ring-2 ring-blue-200": otp[index],
-                                "border-gray-300": !otp[index],
-                            }
+                                'border-blue-500 ring-2 ring-blue-200': otp[index],
+                                'border-gray-300': !otp[index],
+                            },
                         )}
                     />
                 ))}
@@ -88,15 +80,15 @@ export const VerifyOtpForm = ({ email }: Props) => {
                 type="button"
                 onClick={onSubmit}
                 className={clsx(
-                    "w-full py-2.5 text-sm font-medium rounded-lg transition-all duration-200 touch-target mt-4 cursor-pointer",
+                    'w-full py-2.5 text-sm font-medium rounded-lg transition-all duration-200 touch-target mt-4 cursor-pointer',
                     {
-                        "btn-primary": !isLoading && otp.length === 6,
-                        "btn-disabled": isLoading || otp.length !== 6,
-                    }
+                        'btn-primary': !isLoading && otp.length === 6,
+                        'btn-disabled': isLoading || otp.length !== 6,
+                    },
                 )}
                 disabled={isLoading || otp.length !== 6}
             >
-                {isLoading ? "Verificando..." : "Verificar"}
+                {isLoading ? 'Verificando...' : 'Verificar'}
             </button>
 
             <div className="flex flex-col space-y-2 mt-2">
@@ -104,11 +96,14 @@ export const VerifyOtpForm = ({ email }: Props) => {
                     type="button"
                     onClick={handleResend}
                     disabled={isResending}
-                    className={clsx("btn-secondary text-center py-2.5 text-sm touch-target cursor-pointer", {
-                        "opacity-50 cursor-not-allowed": isResending,
-                    })}
+                    className={clsx(
+                        'btn-secondary text-center py-2.5 text-sm touch-target cursor-pointer',
+                        {
+                            'opacity-50 cursor-not-allowed': isResending,
+                        },
+                    )}
                 >
-                    {isResending ? "Reenviando..." : "Reenviar código"}
+                    {isResending ? 'Reenviando...' : 'Reenviar código'}
                 </button>
 
                 <Link

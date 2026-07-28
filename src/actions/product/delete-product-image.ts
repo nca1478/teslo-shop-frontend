@@ -1,19 +1,19 @@
-"use server";
+'use server';
 
-import { productsService } from "@/lib/services";
-import { getAuthToken } from "@/lib/session";
-import { revalidatePath } from "next/cache";
+import { productsService } from '@/lib/services';
+import { getAuthToken } from '@/lib/session';
+import { revalidatePath } from 'next/cache';
 
 export const deleteProductImage = async (
     imageId: number,
     imageUrl: string,
     productId?: string,
-    productSlug?: string
+    productSlug?: string,
 ) => {
-    if (!imageUrl.startsWith("http")) {
+    if (!imageUrl.startsWith('http')) {
         return {
             ok: false,
-            error: "No se pueden borrar imagenes guardadas localmente",
+            error: 'No se pueden borrar imagenes guardadas localmente',
         };
     }
 
@@ -23,7 +23,7 @@ export const deleteProductImage = async (
         if (!token) {
             return {
                 ok: false,
-                error: "Token de autenticación no encontrado",
+                error: 'Token de autenticación no encontrado',
             };
         }
 
@@ -31,7 +31,7 @@ export const deleteProductImage = async (
         if (!productId) {
             return {
                 ok: false,
-                error: "ID del producto requerido",
+                error: 'ID del producto requerido',
             };
         }
 
@@ -49,7 +49,7 @@ export const deleteProductImage = async (
         console.log(error);
         return {
             ok: false,
-            message: "No se pudo eliminar la imagen",
+            message: 'No se pudo eliminar la imagen',
         };
     }
 };

@@ -1,5 +1,5 @@
-import { titleFont } from "@/config/fonts/fonts";
-import { ForgotPasswordForm } from "./ui/ForgotPasswordForm";
+import { titleFont } from '@/config/fonts/fonts';
+import { ForgotPasswordForm } from './ui/ForgotPasswordForm';
 
 export default function ForgotPasswordPage() {
     return (
@@ -12,7 +12,8 @@ export default function ForgotPasswordPage() {
                 </h1>
 
                 <p className="text-gray-600 text-sm mb-6 text-center sm:text-left">
-                    Ingresa tu correo electrónico y te enviaremos un código para restablecer tu contraseña.
+                    Ingresa tu correo electrónico y te enviaremos un código para restablecer tu
+                    contraseña.
                 </p>
 
                 <ForgotPasswordForm />

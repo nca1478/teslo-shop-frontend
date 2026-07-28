@@ -2,7 +2,11 @@
 
 import { authService } from '@/lib/services';
 
-export async function resetPasswordAction(email: string, otp: string, password: string): Promise<{ ok: boolean; message?: string }> {
+export async function resetPasswordAction(
+    email: string,
+    otp: string,
+    password: string,
+): Promise<{ ok: boolean; message?: string }> {
     try {
         return await authService.resetPassword(email, otp, password);
     } catch {

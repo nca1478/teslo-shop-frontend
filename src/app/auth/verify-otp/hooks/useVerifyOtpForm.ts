@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useState, useRef } from "react";
-import { useRouter } from "next/navigation";
-import { verifyOtpAction } from "@/actions/auth/verify-otp";
-import { requestOtpAction } from "@/actions/auth/request-otp";
+import { useState, useRef } from 'react';
+import { useRouter } from 'next/navigation';
+import { verifyOtpAction } from '@/actions/auth/verify-otp';
+import { requestOtpAction } from '@/actions/auth/request-otp';
 
 export const useVerifyOtpForm = (email: string) => {
     const router = useRouter();
-    const [otp, setOtp] = useState("");
+    const [otp, setOtp] = useState('');
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [isResending, setIsResending] = useState(false);
@@ -21,15 +21,17 @@ export const useVerifyOtpForm = (email: string) => {
         try {
             const result = await verifyOtpAction(email, otp);
             if (result.verified) {
-                router.push(`/auth/reset-password?email=${encodeURIComponent(email)}&otp=${encodeURIComponent(otp)}`);
+                router.push(
+                    `/auth/reset-password?email=${encodeURIComponent(email)}&otp=${encodeURIComponent(otp)}`,
+                );
             } else {
-                setErrorMessage(result.message || "Código inválido o expirado");
-                setOtp("");
+                setErrorMessage(result.message || 'Código inválido o expirado');
+                setOtp('');
                 inputRefs.current[0]?.focus();
             }
         } catch {
-            setErrorMessage("Error al verificar el código");
-            setOtp("");
+            setErrorMessage('Error al verificar el código');
+            setOtp('');
         } finally {
             setIsLoading(false);
         }
@@ -40,10 +42,10 @@ export const useVerifyOtpForm = (email: string) => {
         try {
             await requestOtpAction(email);
             setErrorMessage(null);
-            setOtp("");
+            setOtp('');
             inputRefs.current[0]?.focus();
         } catch {
-            setErrorMessage("Error al reenviar el código");
+            setErrorMessage('Error al reenviar el código');
         } finally {
             setIsResending(false);
         }

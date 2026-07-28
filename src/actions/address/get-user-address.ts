@@ -1,7 +1,7 @@
-"use server";
+'use server';
 
-import { addressesService } from "@/lib/services";
-import { getAuthToken } from "@/lib/session";
+import { addressesService } from '@/lib/services';
+import { getAuthToken } from '@/lib/session';
 
 export const getUserAddress = async () => {
     try {
@@ -20,7 +20,7 @@ export const getUserAddress = async () => {
         return {
             ...rest,
             country: countryId,
-            address2: address2 ? address2 : "",
+            address2: address2 ? address2 : '',
         };
     } catch (error) {
         console.log(error);

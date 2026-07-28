@@ -1,5 +1,5 @@
-import { create } from "zustand";
-import { devtools } from "zustand/middleware";
+import { create } from 'zustand';
+import { devtools } from 'zustand/middleware';
 
 interface State {
     isSideMenuOpen: boolean;
@@ -12,5 +12,5 @@ export const useUIStore = create<State>()(
         isSideMenuOpen: false,
         openSideMenu: () => set({ isSideMenuOpen: true }),
         closeSideMenu: () => set({ isSideMenuOpen: false }),
-    }))
+    })),
 );

@@ -1,5 +1,5 @@
-import { httpClient } from "../http-client";
-import { Address } from "@/interfaces";
+import { httpClient } from '../http-client';
+import { Address } from '@/interfaces';
 
 export interface UserAddress {
     id: string;
@@ -37,7 +37,7 @@ export interface DeleteUserAddressResponse {
 }
 
 export class AddressesService {
-    private readonly basePath = "/api/addresses";
+    private readonly basePath = '/api/addresses';
 
     async getUserAddress(token: string): Promise<UserAddress | null> {
         try {
@@ -73,7 +73,7 @@ export class AddressesService {
             console.log(error);
             return {
                 ok: false,
-                message: "No se pudo grabar la dirección",
+                message: 'No se pudo grabar la dirección',
             };
         }
     }
@@ -88,7 +88,7 @@ export class AddressesService {
             console.log(error);
             return {
                 ok: false,
-                message: "No se pudo eliminar la dirección",
+                message: 'No se pudo eliminar la dirección',
             };
         }
     }

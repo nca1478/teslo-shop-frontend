@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { useShallow } from "zustand/shallow";
-import Link from "next/link";
-import { useCartStore } from "@/store";
-import { currencyFormat } from "@/utils";
+import { useEffect, useState } from 'react';
+import { useShallow } from 'zustand/shallow';
+import Link from 'next/link';
+import { useCartStore } from '@/store';
+import { currencyFormat } from '@/utils';
 
 export const OrderSummary = () => {
     // alternativa #2, useShallow: se suscribe al state calculado sin renderizar (hook de zustand)
     const { itemsInCart, subTotal, tax, total } = useCartStore(
-        useShallow((state) => state.getSummaryInformation())
+        useShallow((state) => state.getSummaryInformation()),
     );
 
     const [loaded, setLoaded] = useState(false);
@@ -36,7 +36,7 @@ export const OrderSummary = () => {
                 <div className="flex justify-between items-center py-2 border-b border-gray-100">
                     <span className="text-gray-600">Cantidad</span>
                     <span className="font-medium text-gray-900">
-                        {itemsInCart === 1 ? "1 artículo" : `${itemsInCart} artículos`}
+                        {itemsInCart === 1 ? '1 artículo' : `${itemsInCart} artículos`}
                     </span>
                 </div>
 

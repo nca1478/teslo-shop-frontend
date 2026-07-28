@@ -1,15 +1,15 @@
 export const revalidate = 0;
 
-import Link from "next/link";
-import { getPaginatedProductsWithImages } from "@/actions";
-import { Pagination, ProductImage, Title } from "@/components";
-import { currencyFormat } from "@/utils";
+import Link from 'next/link';
+import { getPaginatedProductsWithImages } from '@/actions';
+import { Pagination, ProductImage, Title } from '@/components';
+import { currencyFormat } from '@/utils';
 import {
     ResponsiveTable,
     MobileCardContainer,
     MobileCardItem,
     MobileCardField,
-} from "@/components/ui/table/ResponsiveTable";
+} from '@/components/ui/table/ResponsiveTable';
 
 interface Props {
     searchParams: Promise<{ page?: string; take?: string }>;
@@ -128,10 +128,10 @@ export default async function ProductsPage({ searchParams }: Props) {
                                     <span
                                         className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
                                             product.inStock > 10
-                                                ? "bg-green-100 text-green-800"
+                                                ? 'bg-green-100 text-green-800'
                                                 : product.inStock > 0
-                                                ? "bg-yellow-100 text-yellow-800"
-                                                : "bg-red-100 text-red-800"
+                                                  ? 'bg-yellow-100 text-yellow-800'
+                                                  : 'bg-red-100 text-red-800'
                                         }`}
                                     >
                                         {product.inStock} unidades
@@ -202,10 +202,10 @@ export default async function ProductsPage({ searchParams }: Props) {
                                     <span
                                         className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
                                             product.inStock > 10
-                                                ? "bg-green-100 text-green-800"
+                                                ? 'bg-green-100 text-green-800'
                                                 : product.inStock > 0
-                                                ? "bg-yellow-100 text-yellow-800"
-                                                : "bg-red-100 text-red-800"
+                                                  ? 'bg-yellow-100 text-yellow-800'
+                                                  : 'bg-red-100 text-red-800'
                                         }`}
                                     >
                                         {product.inStock} unidades

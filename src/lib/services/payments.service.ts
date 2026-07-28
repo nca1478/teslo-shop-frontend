@@ -1,4 +1,4 @@
-import { httpClient } from "../http-client";
+import { httpClient } from '../http-client';
 
 export interface SetTransactionIdRequest {
     orderId: string;
@@ -15,7 +15,7 @@ export interface PaymentResponse {
 }
 
 export class PaymentsService {
-    private basePath = "/api/payments";
+    private basePath = '/api/payments';
 
     async setTransactionId(data: SetTransactionIdRequest, token: string): Promise<PaymentResponse> {
         try {
@@ -24,17 +24,17 @@ export class PaymentsService {
 
             return { ok: true };
         } catch (error) {
-            console.error("Error setting transaction ID:", error);
+            console.error('Error setting transaction ID:', error);
             return {
                 ok: false,
-                message: "No se pudo actualizar el id de la transacción",
+                message: 'No se pudo actualizar el id de la transacción',
             };
         }
     }
 
     async paypalCheckPayment(
         data: PayPalCheckPaymentRequest,
-        token: string
+        token: string,
     ): Promise<PaymentResponse> {
         try {
             const headers = { Authorization: `Bearer ${token}` };
@@ -42,10 +42,10 @@ export class PaymentsService {
 
             return { ok: true };
         } catch (error) {
-            console.error("Error checking PayPal payment:", error);
+            console.error('Error checking PayPal payment:', error);
             return {
                 ok: false,
-                message: "Error al verificar el pago",
+                message: 'Error al verificar el pago',
             };
         }
     }

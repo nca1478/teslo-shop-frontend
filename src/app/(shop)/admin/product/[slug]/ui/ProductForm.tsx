@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import clsx from "clsx";
-import Image from "next/image";
-import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
-import { Category, Product, ProductImage as ProductWithImage } from "@/interfaces";
-import { createUpdateProduct, deleteProductImage } from "@/actions";
-import { ProductImage } from "@/components";
+import clsx from 'clsx';
+import Image from 'next/image';
+import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { Category, Product, ProductImage as ProductWithImage } from '@/interfaces';
+import { createUpdateProduct, deleteProductImage } from '@/actions';
+import { ProductImage } from '@/components';
 
 interface Props {
     // Partial: los datos de Product son opcionales y puede tener ProductImage[] (optional)
@@ -15,7 +15,7 @@ interface Props {
     categories: Category[];
 }
 
-const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
+const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
 interface FormInputs {
     title: string;
@@ -25,7 +25,7 @@ interface FormInputs {
     inStock: number;
     sizes: string[];
     tags: string;
-    gender: "men" | "women" | "kids" | "unisex";
+    gender: 'men' | 'women' | 'kids' | 'unisex';
     categoryId: string;
     images?: FileList;
 }
@@ -58,23 +58,23 @@ export const ProductForm = ({ product, categories }: Props) => {
         watch,
     } = useForm<FormInputs>({
         defaultValues: {
-            title: product.title || "",
-            slug: product.slug || "",
-            description: product.description || "",
+            title: product.title || '',
+            slug: product.slug || '',
+            description: product.description || '',
             price: product.price || 0,
             inStock: product.inStock || product.stock || 0,
             sizes: product.sizes ?? [],
-            tags: product.tags?.join(", ") || "",
-            gender: (product.gender as "men" | "women" | "kids" | "unisex") || "men",
-            categoryId: product.categoryId || "",
+            tags: product.tags?.join(', ') || '',
+            gender: (product.gender as 'men' | 'women' | 'kids' | 'unisex') || 'men',
+            categoryId: product.categoryId || '',
             images: undefined,
         },
     });
 
-    watch("sizes");
+    watch('sizes');
 
     const onSizeChanged = (size: string) => {
-        const sizes = new Set(getValues("sizes"));
+        const sizes = new Set(getValues('sizes'));
 
         if (sizes.has(size)) {
             sizes.delete(size);
@@ -82,7 +82,7 @@ export const ProductForm = ({ product, categories }: Props) => {
             sizes.add(size);
         }
 
-        setValue("sizes", Array.from(sizes));
+        setValue('sizes', Array.from(sizes));
     };
 
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -118,7 +118,7 @@ export const ProductForm = ({ product, categories }: Props) => {
         });
 
         if (validFiles.length === 0) {
-            event.target.value = "";
+            event.target.value = '';
             return;
         }
 
@@ -137,7 +137,7 @@ export const ProductForm = ({ product, categories }: Props) => {
         setPreviewImages((prev) => [...prev, ...newPreviews]);
 
         // Limpiar el input para permitir seleccionar los mismos archivos nuevamente si es necesario
-        event.target.value = "";
+        event.target.value = '';
     };
 
     const removePreviewImage = (previewId: string) => {
@@ -164,28 +164,28 @@ export const ProductForm = ({ product, categories }: Props) => {
 
         // agregar si existe (es update) si no (es create)
         if (product.id) {
-            formData.append("id", product.id ?? "");
+            formData.append('id', product.id ?? '');
         }
 
-        formData.append("title", productToSave.title);
-        formData.append("slug", productToSave.slug);
-        formData.append("description", productToSave.description);
-        formData.append("price", productToSave.price.toString());
-        formData.append("inStock", productToSave.inStock.toString());
-        formData.append("sizes", productToSave.sizes.toString());
-        formData.append("tags", productToSave.tags);
-        formData.append("categoryId", productToSave.categoryId);
-        formData.append("gender", productToSave.gender);
+        formData.append('title', productToSave.title);
+        formData.append('slug', productToSave.slug);
+        formData.append('description', productToSave.description);
+        formData.append('price', productToSave.price.toString());
+        formData.append('inStock', productToSave.inStock.toString());
+        formData.append('sizes', productToSave.sizes.toString());
+        formData.append('tags', productToSave.tags);
+        formData.append('categoryId', productToSave.categoryId);
+        formData.append('gender', productToSave.gender);
 
         // Agregar todas las imágenes de vista previa al formData
         previewImages.forEach((preview) => {
-            formData.append("images", preview.file);
+            formData.append('images', preview.file);
         });
 
         const { ok, product: updatedProduct } = await createUpdateProduct(formData);
 
         if (!ok) {
-            alert("Producto no se pudo actualizar");
+            alert('Producto no se pudo actualizar');
             return;
         }
 
@@ -205,7 +205,7 @@ export const ProductForm = ({ product, categories }: Props) => {
             image.id,
             image.url,
             product.id,
-            product.slug
+            product.slug,
         );
 
         if (!ok) {
@@ -238,8 +238,8 @@ export const ProductForm = ({ product, categories }: Props) => {
                                         type="text"
                                         className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                                         placeholder="Ej: Camiseta básica de algodón"
-                                        {...register("title", {
-                                            required: "El título es requerido",
+                                        {...register('title', {
+                                            required: 'El título es requerido',
                                         })}
                                     />
                                 </div>
@@ -253,7 +253,7 @@ export const ProductForm = ({ product, categories }: Props) => {
                                         type="text"
                                         className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                                         placeholder="ej: camiseta-basica-algodon"
-                                        {...register("slug", { required: "El slug es requerido" })}
+                                        {...register('slug', { required: 'El slug es requerido' })}
                                     />
                                     <p className="text-xs text-gray-500 mt-1">
                                         Solo letras minúsculas, números y guiones
@@ -269,8 +269,8 @@ export const ProductForm = ({ product, categories }: Props) => {
                                         rows={4}
                                         className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
                                         placeholder="Describe las características del producto..."
-                                        {...register("description", {
-                                            required: "La descripción es requerida",
+                                        {...register('description', {
+                                            required: 'La descripción es requerida',
                                         })}
                                     />
                                 </div>
@@ -287,11 +287,11 @@ export const ProductForm = ({ product, categories }: Props) => {
                                             min="0"
                                             className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                                             placeholder="0.00"
-                                            {...register("price", {
-                                                required: "El precio es requerido",
+                                            {...register('price', {
+                                                required: 'El precio es requerido',
                                                 min: {
                                                     value: 0,
-                                                    message: "El precio debe ser mayor a 0",
+                                                    message: 'El precio debe ser mayor a 0',
                                                 },
                                             })}
                                         />
@@ -306,11 +306,11 @@ export const ProductForm = ({ product, categories }: Props) => {
                                             min="0"
                                             className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                                             placeholder="0"
-                                            {...register("inStock", {
-                                                required: "El stock es requerido",
+                                            {...register('inStock', {
+                                                required: 'El stock es requerido',
                                                 min: {
                                                     value: 0,
-                                                    message: "El stock no puede ser negativo",
+                                                    message: 'El stock no puede ser negativo',
                                                 },
                                             })}
                                         />
@@ -334,8 +334,8 @@ export const ProductForm = ({ product, categories }: Props) => {
                                         </label>
                                         <select
                                             className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                                            {...register("gender", {
-                                                required: "Selecciona un género",
+                                            {...register('gender', {
+                                                required: 'Selecciona un género',
                                             })}
                                         >
                                             <option value="">Seleccionar género</option>
@@ -352,8 +352,8 @@ export const ProductForm = ({ product, categories }: Props) => {
                                         </label>
                                         <select
                                             className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                                            {...register("categoryId", {
-                                                required: "Selecciona una categoría",
+                                            {...register('categoryId', {
+                                                required: 'Selecciona una categoría',
                                             })}
                                         >
                                             <option value="">Seleccionar categoría</option>
@@ -375,7 +375,7 @@ export const ProductForm = ({ product, categories }: Props) => {
                                         type="text"
                                         className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                                         placeholder="camiseta, algodón, básica (separadas por comas)"
-                                        {...register("tags")}
+                                        {...register('tags')}
                                     />
                                     <p className="text-xs text-gray-500 mt-1">
                                         Separa las etiquetas con comas
@@ -399,13 +399,13 @@ export const ProductForm = ({ product, categories }: Props) => {
                                         type="button"
                                         onClick={() => onSizeChanged(size)}
                                         className={clsx(
-                                            "p-3 border-2 rounded-lg font-medium transition-all text-center hover:scale-105",
+                                            'p-3 border-2 rounded-lg font-medium transition-all text-center hover:scale-105',
                                             {
-                                                "bg-blue-500 text-white border-blue-500":
-                                                    getValues("sizes").includes(size),
-                                                "bg-white text-gray-700 border-gray-300 hover:border-blue-300":
-                                                    !getValues("sizes").includes(size),
-                                            }
+                                                'bg-blue-500 text-white border-blue-500':
+                                                    getValues('sizes').includes(size),
+                                                'bg-white text-gray-700 border-gray-300 hover:border-blue-300':
+                                                    !getValues('sizes').includes(size),
+                                            },
                                         )}
                                     >
                                         {size}
@@ -459,7 +459,7 @@ export const ProductForm = ({ product, categories }: Props) => {
                                             <div key={image.id} className="relative group">
                                                 <div className="aspect-square overflow-hidden rounded-lg border border-gray-200">
                                                     <ProductImage
-                                                        alt={product.title ?? ""}
+                                                        alt={product.title ?? ''}
                                                         src={image.url}
                                                         width={300}
                                                         height={300}
@@ -514,7 +514,7 @@ export const ProductForm = ({ product, categories }: Props) => {
                             type="submit"
                             className="w-full sm:w-auto btn-primary px-8 py-3 font-medium"
                         >
-                            {product.id ? "Actualizar producto" : "Crear producto"}
+                            {product.id ? 'Actualizar producto' : 'Crear producto'}
                         </button>
                         <button
                             type="button"

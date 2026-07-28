@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Swiper as SwiperObject } from "swiper";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, FreeMode, Navigation, Pagination, Thumbs } from "swiper/modules";
+import { useState } from 'react';
+import { Swiper as SwiperObject } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, FreeMode, Navigation, Pagination, Thumbs } from 'swiper/modules';
 
 // Import Swiper styles
-import "swiper/css";
-import "swiper/css/free-mode";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/css/thumbs";
-import "./slideshow.css";
-import { ProductImage } from "../product-image/ProductImage";
+import 'swiper/css';
+import 'swiper/css/free-mode';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/thumbs';
+import './slideshow.css';
+import { ProductImage } from '../product-image/ProductImage';
 
 interface Props {
     images: string[];
@@ -24,7 +24,7 @@ export const ProductSlideshow = ({ images, title, className }: Props) => {
     const [thumbsSwiper, setThumbsSwiper] = useState<SwiperObject>();
 
     // Si no hay imágenes, usar placeholder
-    const displayImages = images.length > 0 ? images : ["placeholder.png"];
+    const displayImages = images.length > 0 ? images : ['placeholder.png'];
 
     return (
         <div className={className}>

@@ -1,15 +1,15 @@
 // https://tailwindcomponents.com/component/hoverable-table
-import Link from "next/link";
+import Link from 'next/link';
 
-import { IoCardOutline } from "react-icons/io5";
-import { getOrdersByUser } from "@/actions";
-import { Title } from "@/components";
+import { IoCardOutline } from 'react-icons/io5';
+import { getOrdersByUser } from '@/actions';
+import { Title } from '@/components';
 import {
     ResponsiveTable,
     MobileCardContainer,
     MobileCardItem,
     MobileCardField,
-} from "@/components/ui/table/ResponsiveTable";
+} from '@/components/ui/table/ResponsiveTable';
 
 export default async function OrdersPage() {
     const { orders = [] } = await getOrdersByUser();
@@ -62,7 +62,7 @@ export default async function OrdersPage() {
                             >
                                 {/* Columna - ID */}
                                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                    #{order.id.split("-").at(-1)}
+                                    #{order.id.split('-').at(-1)}
                                 </td>
 
                                 {/* Columna - Nombre completo */}
@@ -109,7 +109,7 @@ export default async function OrdersPage() {
                 <MobileCardContainer>
                     {orders.map((order) => (
                         <MobileCardItem key={order.id}>
-                            <MobileCardField label="ID" value={`#${order.id.split("-").at(-1)}`} />
+                            <MobileCardField label="ID" value={`#${order.id.split('-').at(-1)}`} />
                             <MobileCardField
                                 label="Cliente"
                                 value={`${order.orderAddress?.firstName} ${order.orderAddress?.lastName}`}

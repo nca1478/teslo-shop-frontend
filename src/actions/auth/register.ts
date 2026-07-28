@@ -1,12 +1,12 @@
-"use server";
+'use server';
 
-import { authService } from "@/lib/services";
-import { setSession } from "@/lib/session";
+import { authService } from '@/lib/services';
+import { setSession } from '@/lib/session';
 
 export const registerUser = async (name: string, email: string, password: string) => {
     try {
         if (!name || !email || !password) {
-            throw new Error("Todos los campos son obligatorios");
+            throw new Error('Todos los campos son obligatorios');
         }
 
         const response = await authService.register({
@@ -21,18 +21,18 @@ export const registerUser = async (name: string, email: string, password: string
         return {
             ok: true,
             user: response.user,
-            message: "Usuario creado exitosamente",
+            message: 'Usuario creado exitosamente',
         };
     } catch (error) {
-        console.error("Register error:", error);
+        console.error('Register error:', error);
 
-        let message = "No se pudo crear el usuario";
+        let message = 'No se pudo crear el usuario';
 
         if (error instanceof Error) {
-            if (error.message.includes("already exists")) {
-                message = "El usuario ya existe";
-            } else if (error.message.includes("validation")) {
-                message = "Datos inválidos";
+            if (error.message.includes('already exists')) {
+                message = 'El usuario ya existe';
+            } else if (error.message.includes('validation')) {
+                message = 'Datos inválidos';
             }
         }
 

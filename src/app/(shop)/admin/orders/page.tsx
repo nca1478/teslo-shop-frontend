@@ -1,19 +1,19 @@
 export const revalidate = 0;
 
 // https://tailwindcomponents.com/component/hoverable-table
-import Link from "next/link";
-import { redirect } from "next/navigation";
-import { IoCardOutline } from "react-icons/io5";
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
+import { IoCardOutline } from 'react-icons/io5';
 
-import { Title, Pagination } from "@/components";
-import { getPaginatedOrders } from "@/actions";
-import { extractTimeFromDate, singleDateFormat } from "@/utils";
+import { Title, Pagination } from '@/components';
+import { getPaginatedOrders } from '@/actions';
+import { extractTimeFromDate, singleDateFormat } from '@/utils';
 import {
     ResponsiveTable,
     MobileCardContainer,
     MobileCardItem,
     MobileCardField,
-} from "@/components/ui/table/ResponsiveTable";
+} from '@/components/ui/table/ResponsiveTable';
 
 interface Props {
     searchParams: Promise<{ page?: string }>;
@@ -33,7 +33,7 @@ export default async function OrdersPage({ searchParams }: Props) {
     });
 
     if (!ok) {
-        redirect("/auth/login");
+        redirect('/auth/login');
     }
 
     return (
@@ -94,7 +94,7 @@ export default async function OrdersPage({ searchParams }: Props) {
                                 className="hover:bg-gray-50 transition-colors duration-200"
                             >
                                 <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                    #{order.id.split("-").at(-1)}
+                                    #{order.id.split('-').at(-1)}
                                 </td>
                                 <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap">
                                     {order.orderAddress?.firstName} {order.orderAddress?.lastName}
@@ -141,7 +141,7 @@ export default async function OrdersPage({ searchParams }: Props) {
                 <MobileCardContainer>
                     {orders.map((order) => (
                         <MobileCardItem key={order.id}>
-                            <MobileCardField label="ID" value={`#${order.id.split("-").at(-1)}`} />
+                            <MobileCardField label="ID" value={`#${order.id.split('-').at(-1)}`} />
                             <MobileCardField
                                 label="Cliente"
                                 value={`${order.orderAddress?.firstName} ${order.orderAddress?.lastName}`}

@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
 export interface ApiResponse<T = unknown> {
     data?: T;
@@ -19,7 +19,7 @@ export class HttpClient {
         const config: RequestInit = {
             ...options,
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 ...options.headers,
             },
         };
@@ -33,8 +33,8 @@ export class HttpClient {
             }
 
             // Verificar si la respuesta tiene contenido
-            const contentType = response.headers.get("content-type");
-            const hasJsonContent = contentType && contentType.includes("application/json");
+            const contentType = response.headers.get('content-type');
+            const hasJsonContent = contentType && contentType.includes('application/json');
 
             if (!hasJsonContent || response.status === 204) {
                 return {} as T;
@@ -53,14 +53,14 @@ export class HttpClient {
 
     async get<T>(endpoint: string, headers?: Record<string, string>): Promise<T> {
         return this.request<T>(endpoint, {
-            method: "GET",
+            method: 'GET',
             headers,
         });
     }
 
     async post<T>(endpoint: string, data?: unknown, headers?: Record<string, string>): Promise<T> {
         return this.request<T>(endpoint, {
-            method: "POST",
+            method: 'POST',
             body: data ? JSON.stringify(data) : undefined,
             headers,
         });
@@ -68,7 +68,7 @@ export class HttpClient {
 
     async put<T>(endpoint: string, data?: unknown, headers?: Record<string, string>): Promise<T> {
         return this.request<T>(endpoint, {
-            method: "PUT",
+            method: 'PUT',
             body: data ? JSON.stringify(data) : undefined,
             headers,
         });
@@ -76,7 +76,7 @@ export class HttpClient {
 
     async patch<T>(endpoint: string, data?: unknown, headers?: Record<string, string>): Promise<T> {
         return this.request<T>(endpoint, {
-            method: "PATCH",
+            method: 'PATCH',
             body: data ? JSON.stringify(data) : undefined,
             headers,
         });
@@ -85,10 +85,10 @@ export class HttpClient {
     async delete<T>(
         endpoint: string,
         data?: unknown,
-        headers?: Record<string, string>
+        headers?: Record<string, string>,
     ): Promise<T> {
         return this.request<T>(endpoint, {
-            method: "DELETE",
+            method: 'DELETE',
             body: data ? JSON.stringify(data) : undefined,
             headers,
         });

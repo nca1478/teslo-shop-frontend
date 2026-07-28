@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
 interface ResponsiveTableProps {
     children: ReactNode;
     className?: string;
 }
 
-export const ResponsiveTable = ({ children, className = "" }: ResponsiveTableProps) => {
+export const ResponsiveTable = ({ children, className = '' }: ResponsiveTableProps) => {
     return (
         <div className="w-full overflow-hidden rounded-lg shadow-sm border border-gray-200">
             {/* Desktop Table */}
@@ -23,7 +23,7 @@ interface MobileCardProps {
     className?: string;
 }
 
-export const MobileCardContainer = ({ children, className = "" }: MobileCardProps) => {
+export const MobileCardContainer = ({ children, className = '' }: MobileCardProps) => {
     return <div className={`md:hidden space-y-4 ${className}`}>{children}</div>;
 };
 
@@ -33,11 +33,11 @@ interface MobileCardItemProps {
     onClick?: () => void;
 }
 
-export const MobileCardItem = ({ children, className = "", onClick }: MobileCardItemProps) => {
+export const MobileCardItem = ({ children, className = '', onClick }: MobileCardItemProps) => {
     return (
         <div
             className={`bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-all duration-200 ${
-                onClick ? "cursor-pointer" : ""
+                onClick ? 'cursor-pointer' : ''
             } ${className}`}
             onClick={onClick}
         >
@@ -52,7 +52,7 @@ interface MobileCardFieldProps {
     className?: string;
 }
 
-export const MobileCardField = ({ label, value, className = "" }: MobileCardFieldProps) => {
+export const MobileCardField = ({ label, value, className = '' }: MobileCardFieldProps) => {
     return (
         <div
             className={`flex justify-between items-start py-2 border-b border-gray-100 last:border-b-0 ${className}`}

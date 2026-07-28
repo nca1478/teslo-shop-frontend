@@ -1,5 +1,5 @@
-import { httpClient } from "../http-client";
-import { UpdateUserProfileRequest } from "../../interfaces";
+import { httpClient } from '../http-client';
+import { UpdateUserProfileRequest } from '../../interfaces';
 
 export interface UserProfileResponse {
     id: string;
@@ -10,7 +10,7 @@ export interface UserProfileResponse {
 }
 
 export class UserService {
-    private readonly baseUrl = "/api/users";
+    private readonly baseUrl = '/api/users';
 
     async getUserProfile(token: string): Promise<UserProfileResponse> {
         return httpClient.get<UserProfileResponse>(`${this.baseUrl}/profile`, {
@@ -20,7 +20,7 @@ export class UserService {
 
     async updateUserProfile(
         data: UpdateUserProfileRequest,
-        token: string
+        token: string,
     ): Promise<UserProfileResponse> {
         return httpClient.patch<UserProfileResponse>(`${this.baseUrl}/profile`, data, {
             Authorization: `Bearer ${token}`,

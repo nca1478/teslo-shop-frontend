@@ -1,7 +1,7 @@
-import Link from "next/link";
-import { Title } from "@/components";
-import { ProductsInCart } from "./ui/ProductsInCart";
-import { OrderSummary } from "./ui/OrderSummary";
+import Link from 'next/link';
+import { Title } from '@/components';
+import { ProductsInCart } from './ui/ProductsInCart';
+import { OrderSummary } from './ui/OrderSummary';
 // import { initialData } from "@/seed/seed";
 
 // const productsInCart = [initialData.products[0], initialData.products[1], initialData.products[2]];

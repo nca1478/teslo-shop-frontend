@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useCallback, useEffect, useState } from "react";
-import { getStockBySlug } from "@/actions";
-import { titleFont } from "@/config/fonts/fonts";
+import { useCallback, useEffect, useState } from 'react';
+import { getStockBySlug } from '@/actions';
+import { titleFont } from '@/config/fonts/fonts';
 
 interface Props {
     slug: string;

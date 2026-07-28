@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import clsx from "clsx";
-import Link from "next/link";
-import { IoInformationOutline } from "react-icons/io5";
-import { useLoginForm } from "../hooks/useLoginForm";
+import clsx from 'clsx';
+import Link from 'next/link';
+import { IoInformationOutline } from 'react-icons/io5';
+import { useLoginForm } from '../hooks/useLoginForm';
 
 export const LoginForm = () => {
     const { register, handleSubmit, errors, errorMessage, isLoading, onSubmit, handleInputChange } =
@@ -19,20 +19,20 @@ export const LoginForm = () => {
                 <input
                     id="email"
                     className={clsx(
-                        "px-3 py-2.5 sm:px-4 sm:py-3 border bg-gray-200 rounded-lg transition-colors duration-200 text-sm touch-target",
+                        'px-3 py-2.5 sm:px-4 sm:py-3 border bg-gray-200 rounded-lg transition-colors duration-200 text-sm touch-target',
                         {
-                            "border-red-500 focus:border-red-500 focus:ring-red-200": errors.email,
-                            "border-gray-300 focus:border-blue-500 focus:ring-blue-200":
+                            'border-red-500 focus:border-red-500 focus:ring-red-200': errors.email,
+                            'border-gray-300 focus:border-blue-500 focus:ring-blue-200':
                                 !errors.email,
-                        }
+                        },
                     )}
                     type="email"
                     placeholder="tu@email.com"
-                    {...register("email", {
-                        required: "El email es requerido",
+                    {...register('email', {
+                        required: 'El email es requerido',
                         pattern: {
                             value: /^\S+@\S+$/i,
-                            message: "Formato de email inválido",
+                            message: 'Formato de email inválido',
                         },
                         onChange: handleInputChange,
                     })}
@@ -47,21 +47,21 @@ export const LoginForm = () => {
                 <input
                     id="password"
                     className={clsx(
-                        "px-3 py-2.5 sm:px-4 sm:py-3 border bg-gray-200 rounded-lg transition-colors duration-200 text-sm touch-target",
+                        'px-3 py-2.5 sm:px-4 sm:py-3 border bg-gray-200 rounded-lg transition-colors duration-200 text-sm touch-target',
                         {
-                            "border-red-500 focus:border-red-500 focus:ring-red-200":
+                            'border-red-500 focus:border-red-500 focus:ring-red-200':
                                 errors.password,
-                            "border-gray-300 focus:border-blue-500 focus:ring-blue-200":
+                            'border-gray-300 focus:border-blue-500 focus:ring-blue-200':
                                 !errors.password,
-                        }
+                        },
                     )}
                     type="password"
                     placeholder="••••••••"
-                    {...register("password", {
-                        required: "La contraseña es requerida",
+                    {...register('password', {
+                        required: 'La contraseña es requerida',
                         minLength: {
                             value: 6,
-                            message: "Debe tener al menos 6 caracteres",
+                            message: 'Debe tener al menos 6 caracteres',
                         },
                         onChange: handleInputChange,
                     })}
@@ -88,15 +88,15 @@ export const LoginForm = () => {
             <button
                 type="submit"
                 className={clsx(
-                    "w-full py-2.5 text-sm font-medium rounded-lg transition-all duration-200 touch-target mt-4 cursor-pointer",
+                    'w-full py-2.5 text-sm font-medium rounded-lg transition-all duration-200 touch-target mt-4 cursor-pointer',
                     {
-                        "btn-primary": !isLoading,
-                        "btn-disabled": isLoading,
-                    }
+                        'btn-primary': !isLoading,
+                        'btn-disabled': isLoading,
+                    },
                 )}
                 disabled={isLoading}
             >
-                {isLoading ? "Ingresando..." : "Ingresar"}
+                {isLoading ? 'Ingresando...' : 'Ingresar'}
             </button>
 
             {/* Divider */}

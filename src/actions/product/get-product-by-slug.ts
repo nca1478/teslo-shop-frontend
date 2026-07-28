@@ -1,6 +1,6 @@
-"use server";
+'use server';
 
-import { productsService } from "@/lib/services";
+import { productsService } from '@/lib/services';
 
 export const getProductBySlug = async (slug: string) => {
     try {
@@ -26,26 +26,26 @@ export const getProductBySlug = async (slug: string) => {
                       }))
                     : [],
             createdAt:
-                typeof product.createdAt === "string"
+                typeof product.createdAt === 'string'
                     ? new Date(product.createdAt)
                     : product.createdAt,
             updatedAt:
-                typeof product.updatedAt === "string"
+                typeof product.updatedAt === 'string'
                     ? new Date(product.updatedAt)
                     : product.updatedAt,
         };
     } catch (error) {
         // Si el producto no se encuentra, devolver null en lugar de lanzar error
-        if (error instanceof Error && error.message.includes("404")) {
+        if (error instanceof Error && error.message.includes('404')) {
             return null;
         }
 
         if (error instanceof Error) {
-            throw new Error("Error al obtener el producto por slug", {
+            throw new Error('Error al obtener el producto por slug', {
                 cause: error,
             });
         } else {
-            throw new Error("Error al obtener el producto por slug");
+            throw new Error('Error al obtener el producto por slug');
         }
     }
 };

@@ -1,24 +1,24 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { useShallow } from "zustand/shallow";
-import { useRouter } from "next/navigation";
-import clsx from "clsx";
+import { useEffect, useState } from 'react';
+import { useShallow } from 'zustand/shallow';
+import { useRouter } from 'next/navigation';
+import clsx from 'clsx';
 
-import { useAddressStore, useCartStore } from "@/store";
-import { currencyFormat } from "@/utils";
-import { placeOrder } from "@/actions";
+import { useAddressStore, useCartStore } from '@/store';
+import { currencyFormat } from '@/utils';
+import { placeOrder } from '@/actions';
 
 export const PlaceOrder = () => {
     const router = useRouter();
     const [loaded, setLoaded] = useState(false);
     const [isPlacingOrder, setIsPlacingOrder] = useState(false);
-    const [errorMessage, setErrorMessage] = useState<string | undefined>("");
+    const [errorMessage, setErrorMessage] = useState<string | undefined>('');
 
     const cart = useCartStore((store) => store.cart);
     const clearCart = useCartStore((store) => store.clearCart);
     const { itemsInCart, subTotal, tax, total } = useCartStore(
-        useShallow((state) => state.getSummaryInformation())
+        useShallow((state) => state.getSummaryInformation()),
     );
 
     const address = useAddressStore((state) => state.address);
@@ -46,7 +46,7 @@ export const PlaceOrder = () => {
         removeCurrentAddress();
 
         // ir a la vista de orden final
-        router.replace("/orders/" + resp.order!.id);
+        router.replace('/orders/' + resp.order!.id);
     };
 
     useEffect(() => {
@@ -90,7 +90,7 @@ export const PlaceOrder = () => {
                     <div className="flex justify-between text-sm">
                         <span className="text-gray-600">Cantidad</span>
                         <span className="font-medium">
-                            {itemsInCart === 1 ? "1 artículo" : `${itemsInCart} artículos`}
+                            {itemsInCart === 1 ? '1 artículo' : `${itemsInCart} artículos`}
                         </span>
                     </div>
 
@@ -120,11 +120,11 @@ export const PlaceOrder = () => {
                 {/* Disclaimer */}
                 <div className="text-xs text-gray-500 leading-relaxed">
                     <p>
-                        Al hacer clic en &quot;Colocar orden&quot;, aceptas nuestros{" "}
+                        Al hacer clic en &quot;Colocar orden&quot;, aceptas nuestros{' '}
                         <a href="#" className="text-blue-600 hover:text-blue-800 underline">
                             términos y condiciones
-                        </a>{" "}
-                        y{" "}
+                        </a>{' '}
+                        y{' '}
                         <a href="#" className="text-blue-600 hover:text-blue-800 underline">
                             política de privacidad
                         </a>
@@ -143,12 +143,12 @@ export const PlaceOrder = () => {
                     onClick={onPlaceOrder}
                     disabled={isPlacingOrder}
                     className={clsx(
-                        "w-full py-3 px-6 rounded-lg font-medium transition-all duration-200",
+                        'w-full py-3 px-6 rounded-lg font-medium transition-all duration-200',
                         {
-                            "bg-blue-600 text-white hover:bg-blue-700 hover:scale-105 active:scale-95 shadow-sm":
+                            'bg-blue-600 text-white hover:bg-blue-700 hover:scale-105 active:scale-95 shadow-sm':
                                 !isPlacingOrder,
-                            "bg-gray-300 text-gray-500 cursor-not-allowed": isPlacingOrder,
-                        }
+                            'bg-gray-300 text-gray-500 cursor-not-allowed': isPlacingOrder,
+                        },
                     )}
                 >
                     {isPlacingOrder ? (
@@ -157,7 +157,7 @@ export const PlaceOrder = () => {
                             Procesando...
                         </div>
                     ) : (
-                        "Colocar orden"
+                        'Colocar orden'
                     )}
                 </button>
 

@@ -1,5 +1,5 @@
-import { titleFont } from "@/config/fonts/fonts";
-import { RegisterForm } from "./ui/RegisterForm";
+import { titleFont } from '@/config/fonts/fonts';
+import { RegisterForm } from './ui/RegisterForm';
 
 export default function NewAccountPage() {
     return (

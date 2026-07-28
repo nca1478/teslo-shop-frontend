@@ -1,4 +1,4 @@
-import { httpClient } from "../http-client";
+import { httpClient } from '../http-client';
 
 export interface Category {
     id: string;
@@ -8,14 +8,14 @@ export interface Category {
 }
 
 export class CategoriesService {
-    private readonly basePath = "/api/categories";
+    private readonly basePath = '/api/categories';
 
     async getCategories(): Promise<Category[]> {
         try {
             const result = await httpClient.get<Category[]>(this.basePath);
             return result;
         } catch (error) {
-            console.error("Error fetching categories:", error);
+            console.error('Error fetching categories:', error);
             return [];
         }
     }

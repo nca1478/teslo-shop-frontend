@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { createContext, useContext, useEffect, useState } from "react";
-import type { User } from "@/lib/session";
+import { createContext, useContext, useEffect, useState } from 'react';
+import type { User } from '@/lib/session';
 
 interface AuthContextType {
     user: User | null;
@@ -19,11 +19,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const fetchUser = async () => {
         try {
-            const response = await fetch("/api/auth/session", {
-                method: "GET",
-                credentials: "include",
+            const response = await fetch('/api/auth/session', {
+                method: 'GET',
+                credentials: 'include',
                 headers: {
-                    "Content-Type": "application/json",
+                    'Content-Type': 'application/json',
                 },
             });
 
@@ -40,12 +40,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             }
         } catch (error) {
             // Solo mostrar error si no es un problema de red común
-            if (error instanceof TypeError && error.message.includes("fetch")) {
+            if (error instanceof TypeError && error.message.includes('fetch')) {
                 console.warn(
-                    "Network error fetching user session - this is normal if not logged in"
+                    'Network error fetching user session - this is normal if not logged in',
                 );
             } else {
-                console.error("Error fetching user session:", error);
+                console.error('Error fetching user session:', error);
             }
             setUser(null);
         }
@@ -82,7 +82,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 export function useAuth() {
     const context = useContext(AuthContext);
     if (context === undefined) {
-        throw new Error("useAuth must be used within an AuthProvider");
+        throw new Error('useAuth must be used within an AuthProvider');
     }
     return context;
 }

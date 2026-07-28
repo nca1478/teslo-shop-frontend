@@ -1,7 +1,7 @@
-"use server";
+'use server';
 
-import { getSession, getAuthToken } from "@/lib/session";
-import { ordersService } from "@/lib/services";
+import { getSession, getAuthToken } from '@/lib/session';
+import { ordersService } from '@/lib/services';
 
 interface PaginationOptions {
     page?: number;
@@ -14,10 +14,10 @@ export const getPaginatedOrders = async ({ page = 1, take = 10 }: PaginationOpti
 
     const user = await getSession();
 
-    if (!user || !user.roles.includes("admin")) {
+    if (!user || !user.roles.includes('admin')) {
         return {
             ok: false,
-            message: "Debe de estar autenticado como administrador",
+            message: 'Debe de estar autenticado como administrador',
         };
     }
 
@@ -25,7 +25,7 @@ export const getPaginatedOrders = async ({ page = 1, take = 10 }: PaginationOpti
     if (!token) {
         return {
             ok: false,
-            message: "Token de autenticación no encontrado",
+            message: 'Token de autenticación no encontrado',
         };
     }
 
@@ -41,10 +41,10 @@ export const getPaginatedOrders = async ({ page = 1, take = 10 }: PaginationOpti
             message: result.message,
         };
     } catch (error) {
-        console.error("Error al obtener las órdenes:", error);
+        console.error('Error al obtener las órdenes:', error);
         return {
             ok: false,
-            message: "Error al obtener las órdenes",
+            message: 'Error al obtener las órdenes',
             orders: [],
             currentPage: page,
             totalPages: 0,

@@ -1,8 +1,8 @@
-"use server";
+'use server';
 
-import type { Address, Size } from "@/interfaces";
-import { ordersService } from "@/lib/services";
-import { getAuthToken } from "@/lib/session";
+import type { Address, Size } from '@/interfaces';
+import { ordersService } from '@/lib/services';
+import { getAuthToken } from '@/lib/session';
 
 interface ProductToOrder {
     productId: string;
@@ -18,7 +18,7 @@ export const placeOrder = async (productIds: ProductToOrder[], address: Address)
         if (!token) {
             return {
                 ok: false,
-                message: "No hay sesión de usuario",
+                message: 'No hay sesión de usuario',
             };
         }
 
@@ -29,7 +29,7 @@ export const placeOrder = async (productIds: ProductToOrder[], address: Address)
         if (error instanceof Error) {
             return { ok: false, message: error.message };
         } else {
-            return { ok: false, message: "Error desconocido" };
+            return { ok: false, message: 'Error desconocido' };
         }
     }
 };

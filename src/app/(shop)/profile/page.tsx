@@ -1,16 +1,16 @@
-import { getSession } from "@/lib/session";
-import { Title, ProfileForm } from "@/components";
-import { redirect } from "next/navigation";
+import { getSession } from '@/lib/session';
+import { Title, ProfileForm } from '@/components';
+import { redirect } from 'next/navigation';
 
 export default async function ProfilePage() {
     const user = await getSession();
 
     if (!user) {
-        redirect("/auth/login");
+        redirect('/auth/login');
     }
 
-    const title = "Mi Perfil";
-    const subtitle = "Actualiza tu información personal y configuración de cuenta";
+    const title = 'Mi Perfil';
+    const subtitle = 'Actualiza tu información personal y configuración de cuenta';
 
     return (
         <div className="space-y-6">

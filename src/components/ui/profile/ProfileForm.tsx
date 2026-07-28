@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
-import clsx from "clsx";
-import { getUserProfile, updateUserProfile } from "@/actions";
-import { UpdateUserProfileRequest } from "@/interfaces";
+import { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
+import clsx from 'clsx';
+import { getUserProfile, updateUserProfile } from '@/actions';
+import { UpdateUserProfileRequest } from '@/interfaces';
 
 interface ProfileFormData {
     name: string;
@@ -16,8 +16,8 @@ interface ProfileFormData {
 export const ProfileForm = () => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
-    const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(
-        null
+    const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(
+        null,
     );
     const [isLoadingProfile, setIsLoadingProfile] = useState(true);
 
@@ -28,9 +28,9 @@ export const ProfileForm = () => {
         setValue,
     } = useForm<ProfileFormData>({
         defaultValues: {
-            name: "",
-            email: "",
-            password: "",
+            name: '',
+            email: '',
+            password: '',
         },
     });
 
@@ -42,16 +42,16 @@ export const ProfileForm = () => {
                 const result = await getUserProfile();
 
                 if (result.ok && result.user) {
-                    setValue("name", result.user.name);
-                    setValue("email", result.user.email);
+                    setValue('name', result.user.name);
+                    setValue('email', result.user.email);
                 } else {
                     setMessage({
-                        type: "error",
-                        text: result.message || "Error al cargar el perfil",
+                        type: 'error',
+                        text: result.message || 'Error al cargar el perfil',
                     });
                 }
             } catch {
-                setMessage({ type: "error", text: "Error al cargar el perfil" });
+                setMessage({ type: 'error', text: 'Error al cargar el perfil' });
             } finally {
                 setIsLoadingProfile(false);
             }
@@ -71,7 +71,7 @@ export const ProfileForm = () => {
                 email: data.email,
             };
 
-            if (data.password && data.password.trim() !== "") {
+            if (data.password && data.password.trim() !== '') {
                 updateData.password = data.password;
             }
 
@@ -79,11 +79,11 @@ export const ProfileForm = () => {
 
             if (result.ok) {
                 setMessage({
-                    type: "success",
-                    text: result.message || "Perfil actualizado correctamente",
+                    type: 'success',
+                    text: result.message || 'Perfil actualizado correctamente',
                 });
                 // Clear password field after successful update
-                setValue("password", "");
+                setValue('password', '');
 
                 // Refresh the page to update session data
                 setTimeout(() => {
@@ -91,13 +91,13 @@ export const ProfileForm = () => {
                 }, 1500);
             } else {
                 setMessage({
-                    type: "error",
-                    text: result.message || "Error al actualizar el perfil",
+                    type: 'error',
+                    text: result.message || 'Error al actualizar el perfil',
                 });
             }
         } catch (error) {
-            console.error("Error updating profile:", error);
-            setMessage({ type: "error", text: "Error al actualizar el perfil" });
+            console.error('Error updating profile:', error);
+            setMessage({ type: 'error', text: 'Error al actualizar el perfil' });
         } finally {
             setIsLoading(false);
         }
@@ -134,16 +134,16 @@ export const ProfileForm = () => {
                                     <input
                                         type="text"
                                         className={clsx(
-                                            "w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all",
-                                            errors.name ? "border-red-300" : "border-gray-300"
+                                            'w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all',
+                                            errors.name ? 'border-red-300' : 'border-gray-300',
                                         )}
                                         placeholder="Ingresa tu nombre completo"
-                                        {...register("name", {
-                                            required: "El nombre es requerido",
+                                        {...register('name', {
+                                            required: 'El nombre es requerido',
                                             minLength: {
                                                 value: 2,
                                                 message:
-                                                    "El nombre debe tener al menos 2 caracteres",
+                                                    'El nombre debe tener al menos 2 caracteres',
                                             },
                                         })}
                                     />
@@ -162,15 +162,15 @@ export const ProfileForm = () => {
                                     <input
                                         type="email"
                                         className={clsx(
-                                            "w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all",
-                                            errors.email ? "border-red-300" : "border-gray-300"
+                                            'w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all',
+                                            errors.email ? 'border-red-300' : 'border-gray-300',
                                         )}
                                         placeholder="tu@email.com"
-                                        {...register("email", {
-                                            required: "El email es requerido",
+                                        {...register('email', {
+                                            required: 'El email es requerido',
                                             pattern: {
                                                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                                                message: "Email inválido",
+                                                message: 'Email inválido',
                                             },
                                         })}
                                     />
@@ -198,15 +198,15 @@ export const ProfileForm = () => {
                                     <input
                                         type="password"
                                         className={clsx(
-                                            "w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all",
-                                            errors.password ? "border-red-300" : "border-gray-300"
+                                            'w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all',
+                                            errors.password ? 'border-red-300' : 'border-gray-300',
                                         )}
                                         placeholder="Deja vacío para mantener la actual"
-                                        {...register("password", {
+                                        {...register('password', {
                                             minLength: {
                                                 value: 6,
                                                 message:
-                                                    "La contraseña debe tener al menos 6 caracteres",
+                                                    'La contraseña debe tener al menos 6 caracteres',
                                             },
                                         })}
                                     />
@@ -226,10 +226,10 @@ export const ProfileForm = () => {
                         {message && (
                             <div
                                 className={clsx(
-                                    "p-4 rounded-lg border",
-                                    message.type === "success"
-                                        ? "bg-green-50 text-green-700 border-green-200"
-                                        : "bg-red-50 text-red-700 border-red-200"
+                                    'p-4 rounded-lg border',
+                                    message.type === 'success'
+                                        ? 'bg-green-50 text-green-700 border-green-200'
+                                        : 'bg-red-50 text-red-700 border-red-200',
                                 )}
                             >
                                 <p className="text-sm font-medium">{message.text}</p>
@@ -245,8 +245,8 @@ export const ProfileForm = () => {
                             type="submit"
                             disabled={isLoading}
                             className={clsx(
-                                "w-full sm:w-auto btn-primary px-8 py-3 font-medium",
-                                isLoading && "opacity-50 cursor-not-allowed"
+                                'w-full sm:w-auto btn-primary px-8 py-3 font-medium',
+                                isLoading && 'opacity-50 cursor-not-allowed',
                             )}
                         >
                             {isLoading ? (
@@ -255,12 +255,12 @@ export const ProfileForm = () => {
                                     Actualizando...
                                 </span>
                             ) : (
-                                "Actualizar perfil"
+                                'Actualizar perfil'
                             )}
                         </button>
                         <button
                             type="button"
-                            onClick={() => router.push("/")}
+                            onClick={() => router.push('/')}
                             className="w-full sm:w-auto px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
                         >
                             Cancelar

@@ -1,8 +1,8 @@
-"use server";
+'use server';
 
-import { getSession, getAuthToken } from "@/lib/session";
-import { usersService } from "@/lib/services";
-import { User } from "@/interfaces";
+import { getSession, getAuthToken } from '@/lib/session';
+import { usersService } from '@/lib/services';
+import { User } from '@/interfaces';
 
 interface PaginationOptions {
     page?: number;
@@ -16,10 +16,10 @@ export const getPaginatedUsers = async ({ page = 1, take = 5 }: PaginationOption
     const user = await getSession();
     const token = await getAuthToken();
 
-    if (!user || !user.roles.includes("admin") || !token) {
+    if (!user || !user.roles.includes('admin') || !token) {
         return {
             ok: false,
-            message: "Acceso denegado - Solo para Administradores",
+            message: 'Acceso denegado - Solo para Administradores',
         };
     }
 
@@ -29,7 +29,7 @@ export const getPaginatedUsers = async ({ page = 1, take = 5 }: PaginationOption
                 page,
                 limit: take,
             },
-            token
+            token,
         );
 
         const users: User[] = response.users.map((user) => ({
@@ -39,7 +39,7 @@ export const getPaginatedUsers = async ({ page = 1, take = 5 }: PaginationOption
             emailVerified: user.emailVerified,
             role: user.role,
             image: user.image,
-            password: "",
+            password: '',
         }));
 
         return {
@@ -49,17 +49,17 @@ export const getPaginatedUsers = async ({ page = 1, take = 5 }: PaginationOption
             totalPages: response.totalPages,
         };
     } catch (error) {
-        console.error("Error fetching paginated users:", error);
+        console.error('Error fetching paginated users:', error);
 
         if (error instanceof Error) {
             return {
                 ok: false,
-                message: error.message || "No se pudo cargar los usuarios",
+                message: error.message || 'No se pudo cargar los usuarios',
             };
         } else {
             return {
                 ok: false,
-                message: "No se pudo cargar los usuarios",
+                message: 'No se pudo cargar los usuarios',
             };
         }
     }

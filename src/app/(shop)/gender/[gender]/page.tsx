@@ -1,9 +1,9 @@
 export const revalidate = 60; // mantener página en cache por 60 seg
 
-import { redirect } from "next/navigation";
-import { Pagination, ProductGrid, Title } from "@/components";
-import { Gender } from "@/interfaces";
-import { getPaginatedProductsWithImages, searchProducts } from "@/actions";
+import { redirect } from 'next/navigation';
+import { Pagination, ProductGrid, Title } from '@/components';
+import { Gender } from '@/interfaces';
+import { getPaginatedProductsWithImages, searchProducts } from '@/actions';
 
 interface Props {
     params: Promise<{ gender: Gender }>;
@@ -30,8 +30,8 @@ export default async function GenderPage({ params, searchParams }: Props) {
                         title={`Resultados de búsqueda: "${search}"`}
                         subtitle={`${searchResult.total} ${
                             searchResult.total === 1
-                                ? "producto encontrado"
-                                : "productos encontrados"
+                                ? 'producto encontrado'
+                                : 'productos encontrados'
                         }`}
                         size="lg"
                         className="text-center sm:text-left"
@@ -58,17 +58,17 @@ export default async function GenderPage({ params, searchParams }: Props) {
     }
 
     const labels: Record<Gender, string> = {
-        men: "Hombres",
-        women: "Mujeres",
-        kids: "Niños",
-        unisex: "Todos",
+        men: 'Hombres',
+        women: 'Mujeres',
+        kids: 'Niños',
+        unisex: 'Todos',
     };
 
     const subtitles: Record<Gender, string> = {
-        men: "Descubre la última moda masculina",
-        women: "Encuentra tu estilo perfecto",
-        kids: "Ropa cómoda y divertida para los más pequeños",
-        unisex: "Estilos para todos",
+        men: 'Descubre la última moda masculina',
+        women: 'Encuentra tu estilo perfecto',
+        kids: 'Ropa cómoda y divertida para los más pequeños',
+        unisex: 'Estilos para todos',
     };
 
     return (

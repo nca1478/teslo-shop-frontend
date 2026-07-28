@@ -1,4 +1,4 @@
-import { Title, SearchResults } from "@/components";
+import { Title, SearchResults } from '@/components';
 
 export default function SearchPage() {
     return (

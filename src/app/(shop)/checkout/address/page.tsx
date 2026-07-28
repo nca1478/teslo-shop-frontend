@@ -1,16 +1,16 @@
-import { Title } from "@/components";
-import { AddressForm } from "./ui/AddressForm";
-import { getCountries, getUserAddress } from "@/actions";
-import { Country } from "@/interfaces";
-import { getSession } from "@/lib/session";
-import { redirect } from "next/navigation";
+import { Title } from '@/components';
+import { AddressForm } from './ui/AddressForm';
+import { getCountries, getUserAddress } from '@/actions';
+import { Country } from '@/interfaces';
+import { getSession } from '@/lib/session';
+import { redirect } from 'next/navigation';
 
 export default async function AddressPage() {
     const countries: Country[] = await getCountries();
     const user = await getSession();
 
     if (!user) {
-        redirect("/auth/login");
+        redirect('/auth/login');
     }
 
     const userAddress = await getUserAddress();

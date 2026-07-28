@@ -1,7 +1,7 @@
-"use server";
+'use server';
 
-import { paymentsService } from "@/lib/services";
-import { getAuthToken } from "@/lib/session";
+import { paymentsService } from '@/lib/services';
+import { getAuthToken } from '@/lib/session';
 
 export const setTransactionId = async (orderId: string, transactionId: string) => {
     try {
@@ -10,7 +10,7 @@ export const setTransactionId = async (orderId: string, transactionId: string) =
         if (!token) {
             return {
                 ok: false,
-                message: "No autorizado",
+                message: 'No autorizado',
             };
         }
 
@@ -21,7 +21,7 @@ export const setTransactionId = async (orderId: string, transactionId: string) =
         console.log(error);
         return {
             ok: false,
-            message: "No se pudo actualizar el id de la transacción",
+            message: 'No se pudo actualizar el id de la transacción',
         };
     }
 };

@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useForm } from "react-hook-form";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { requestOtpAction } from "@/actions/auth/request-otp";
+import { useForm } from 'react-hook-form';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { requestOtpAction } from '@/actions/auth/request-otp';
 
 interface ForgotPasswordFormData {
     email: string;
@@ -21,7 +21,7 @@ export const useForgotPasswordForm = () => {
         formState: { errors },
         watch,
     } = useForm<ForgotPasswordFormData>({
-        mode: "onBlur",
+        mode: 'onBlur',
     });
 
     const onSubmit = async (data: ForgotPasswordFormData) => {
@@ -36,10 +36,10 @@ export const useForgotPasswordForm = () => {
                     router.push(`/auth/verify-otp?email=${encodeURIComponent(data.email)}`);
                 }, 1500);
             } else {
-                setErrorMessage(result.message || "Error al enviar el código");
+                setErrorMessage(result.message || 'Error al enviar el código');
             }
         } catch {
-            setErrorMessage("Error al enviar el código");
+            setErrorMessage('Error al enviar el código');
         } finally {
             setIsLoading(false);
         }
@@ -53,6 +53,6 @@ export const useForgotPasswordForm = () => {
         isLoading,
         isSuccess,
         onSubmit,
-        email: watch("email"),
+        email: watch('email'),
     };
 };

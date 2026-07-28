@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import clsx from "clsx";
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { useAuth } from "@/contexts/AuthContext";
-import { Address, Country } from "@/interfaces";
-import { useAddressStore } from "@/store";
-import { deleteUserAddress, setUserAddress } from "@/actions";
-import { useRouter } from "next/navigation";
+import clsx from 'clsx';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { useAuth } from '@/contexts/AuthContext';
+import { Address, Country } from '@/interfaces';
+import { useAddressStore } from '@/store';
+import { deleteUserAddress, setUserAddress } from '@/actions';
+import { useRouter } from 'next/navigation';
 
 type FormInputs = {
     firstName: string;
@@ -58,7 +58,7 @@ export const AddressForm = ({ countries, userStoredAddress = {} }: Props) => {
             await deleteUserAddress(); // eliminar de la db
         }
 
-        router.push("/checkout"); // si sale bien, abre el page checkout
+        router.push('/checkout'); // si sale bien, abre el page checkout
     };
 
     useEffect(() => {
@@ -88,7 +88,7 @@ export const AddressForm = ({ countries, userStoredAddress = {} }: Props) => {
                                         type="text"
                                         className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                                         placeholder="Ingresa tu nombre"
-                                        {...register("firstName", { required: true })}
+                                        {...register('firstName', { required: true })}
                                     />
                                 </div>
 
@@ -101,7 +101,7 @@ export const AddressForm = ({ countries, userStoredAddress = {} }: Props) => {
                                         type="text"
                                         className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                                         placeholder="Ingresa tus apellidos"
-                                        {...register("lastName", { required: true })}
+                                        {...register('lastName', { required: true })}
                                     />
                                 </div>
 
@@ -114,7 +114,7 @@ export const AddressForm = ({ countries, userStoredAddress = {} }: Props) => {
                                         type="tel"
                                         className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                                         placeholder="Ej: +507 6123-4567"
-                                        {...register("phone", { required: true })}
+                                        {...register('phone', { required: true })}
                                     />
                                 </div>
                             </div>
@@ -138,7 +138,7 @@ export const AddressForm = ({ countries, userStoredAddress = {} }: Props) => {
                                         type="text"
                                         className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                                         placeholder="Calle, número, colonia"
-                                        {...register("address", { required: true })}
+                                        {...register('address', { required: true })}
                                     />
                                 </div>
 
@@ -151,7 +151,7 @@ export const AddressForm = ({ countries, userStoredAddress = {} }: Props) => {
                                         type="text"
                                         className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                                         placeholder="Apartamento, suite, edificio"
-                                        {...register("address2")}
+                                        {...register('address2')}
                                     />
                                 </div>
 
@@ -165,7 +165,7 @@ export const AddressForm = ({ countries, userStoredAddress = {} }: Props) => {
                                             type="text"
                                             className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                                             placeholder="Tu ciudad"
-                                            {...register("city", { required: true })}
+                                            {...register('city', { required: true })}
                                         />
                                     </div>
 
@@ -177,7 +177,7 @@ export const AddressForm = ({ countries, userStoredAddress = {} }: Props) => {
                                             type="text"
                                             className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                                             placeholder="12345"
-                                            {...register("postalCode", { required: true })}
+                                            {...register('postalCode', { required: true })}
                                         />
                                     </div>
                                 </div>
@@ -189,7 +189,7 @@ export const AddressForm = ({ countries, userStoredAddress = {} }: Props) => {
                                     </label>
                                     <select
                                         className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
-                                        {...register("country", { required: true })}
+                                        {...register('country', { required: true })}
                                     >
                                         <option value="">Selecciona un país</option>
                                         {countries.map((country) => (
@@ -214,7 +214,7 @@ export const AddressForm = ({ countries, userStoredAddress = {} }: Props) => {
                                     type="checkbox"
                                     id="rememberAddress"
                                     className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
-                                    {...register("rememberAddress")}
+                                    {...register('rememberAddress')}
                                 />
                                 <label
                                     htmlFor="rememberAddress"
@@ -230,12 +230,12 @@ export const AddressForm = ({ countries, userStoredAddress = {} }: Props) => {
                             <button
                                 type="submit"
                                 className={clsx(
-                                    "px-8 py-3 rounded-lg font-medium transition-all duration-200 min-w-[160px]",
+                                    'px-8 py-3 rounded-lg font-medium transition-all duration-200 min-w-[160px]',
                                     {
-                                        "bg-blue-600 text-white hover:bg-blue-700 hover:scale-105 active:scale-95 shadow-sm":
+                                        'bg-blue-600 text-white hover:bg-blue-700 hover:scale-105 active:scale-95 shadow-sm':
                                             isValid,
-                                        "bg-gray-300 text-gray-500 cursor-not-allowed": !isValid,
-                                    }
+                                        'bg-gray-300 text-gray-500 cursor-not-allowed': !isValid,
+                                    },
                                 )}
                                 disabled={!isValid}
                             >

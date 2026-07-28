@@ -1,15 +1,15 @@
-"use server";
+'use server';
 
-import { authService } from "@/lib/services";
-import { setSession } from "@/lib/session";
+import { authService } from '@/lib/services';
+import { setSession } from '@/lib/session';
 
 export async function authenticate(prevState: string | undefined, formData: FormData) {
     try {
-        const email = formData.get("email") as string;
-        const password = formData.get("password") as string;
+        const email = formData.get('email') as string;
+        const password = formData.get('password') as string;
 
         if (!email || !password) {
-            return "InvalidCredentials";
+            return 'InvalidCredentials';
         }
 
         const response = await authService.login({ email, password });
@@ -17,20 +17,20 @@ export async function authenticate(prevState: string | undefined, formData: Form
         // Guardar el token y datos del usuario en cookies seguras
         await setSession(response.token, response.user);
 
-        return "Success";
+        return 'Success';
     } catch (error) {
-        console.error("Login error:", error);
+        console.error('Login error:', error);
 
         if (error instanceof Error) {
-            if (error.message.includes("Invalid credentials")) {
-                return "CredentialsSignin";
+            if (error.message.includes('Invalid credentials')) {
+                return 'CredentialsSignin';
             }
-            if (error.message.includes("not active")) {
-                return "UserNotActive";
+            if (error.message.includes('not active')) {
+                return 'UserNotActive';
             }
         }
 
-        return "UnknownError";
+        return 'UnknownError';
     }
 }
 
@@ -46,15 +46,15 @@ export const login = async (email: string, password: string) => {
             user: response.user,
         };
     } catch (error) {
-        console.error("Login error:", error);
+        console.error('Login error:', error);
 
-        let message = "No se pudo iniciar sesión";
+        let message = 'No se pudo iniciar sesión';
 
         if (error instanceof Error) {
-            if (error.message.includes("Invalid credentials")) {
-                message = "Credenciales inválidas";
-            } else if (error.message.includes("not active")) {
-                message = "Usuario no activo";
+            if (error.message.includes('Invalid credentials')) {
+                message = 'Credenciales inválidas';
+            } else if (error.message.includes('not active')) {
+                message = 'Usuario no activo';
             }
         }
 

@@ -1,5 +1,5 @@
-import { httpClient } from "../http-client";
-import { Address, Size } from "@/interfaces";
+import { httpClient } from '../http-client';
+import { Address, Size } from '@/interfaces';
 
 export interface ProductToOrder {
     productId: string;
@@ -99,12 +99,12 @@ export interface GetPaginatedOrdersResponse {
 }
 
 export class OrdersService {
-    private readonly basePath = "/api/orders";
+    private readonly basePath = '/api/orders';
 
     async placeOrder(
         productIds: ProductToOrder[],
         address: Address,
-        token: string
+        token: string,
     ): Promise<PlaceOrderResponse> {
         try {
             const headers = { Authorization: `Bearer ${token}` };
@@ -135,7 +135,7 @@ export class OrdersService {
             };
         } catch (error) {
             console.log(error);
-            let message = "Error desconocido";
+            let message = 'Error desconocido';
 
             if (error instanceof Error) {
                 message = error.message;
@@ -171,7 +171,7 @@ export class OrdersService {
     async getAllOrders(
         token: string,
         page: number = 1,
-        limit: number = 10
+        limit: number = 10,
     ): Promise<GetPaginatedOrdersResponse> {
         try {
             const headers = { Authorization: `Bearer ${token}` };
@@ -212,7 +212,7 @@ export class OrdersService {
             };
         } catch (error) {
             console.log(error);
-            let message = "Error al obtener las órdenes";
+            let message = 'Error al obtener las órdenes';
 
             if (error instanceof Error) {
                 message = error.message;

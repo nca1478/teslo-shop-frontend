@@ -1,5 +1,5 @@
-import { httpClient } from "../http-client";
-import { SearchProductsRequest, SearchProductsResponse } from "../../interfaces";
+import { httpClient } from '../http-client';
+import { SearchProductsRequest, SearchProductsResponse } from '../../interfaces';
 
 export interface GetProductsRequest {
     page?: number;
@@ -50,25 +50,25 @@ export interface CreateProductRequest {
 export type UpdateProductRequest = Partial<CreateProductRequest>;
 
 export class ProductsService {
-    private readonly basePath = "/api/products";
+    private readonly basePath = '/api/products';
 
     async getProducts(params: GetProductsRequest = {}): Promise<GetProductsResponse> {
         try {
             const searchParams = new URLSearchParams();
 
-            if (params.page) searchParams.append("page", params.page.toString());
-            if (params.limit) searchParams.append("limit", params.limit.toString());
-            if (params.gender) searchParams.append("gender", params.gender);
-            if (params.category) searchParams.append("category", params.category);
-            if (params.search) searchParams.append("search", params.search);
+            if (params.page) searchParams.append('page', params.page.toString());
+            if (params.limit) searchParams.append('limit', params.limit.toString());
+            if (params.gender) searchParams.append('gender', params.gender);
+            if (params.category) searchParams.append('category', params.category);
+            if (params.search) searchParams.append('search', params.search);
 
             const queryString = searchParams.toString();
-            const endpoint = `${this.basePath}${queryString ? `?${queryString}` : ""}`;
+            const endpoint = `${this.basePath}${queryString ? `?${queryString}` : ''}`;
 
             const result = await httpClient.get<GetProductsResponse>(endpoint);
             return result;
         } catch (error) {
-            console.error("Error fetching products:", error);
+            console.error('Error fetching products:', error);
             throw error;
         }
     }
@@ -87,7 +87,7 @@ export class ProductsService {
             const result = await httpClient.post<Product>(this.basePath, productData, headers);
             return result;
         } catch (error) {
-            console.error("Error creating product:", error);
+            console.error('Error creating product:', error);
             throw error;
         }
     }
@@ -95,18 +95,18 @@ export class ProductsService {
     async updateProduct(
         id: string,
         productData: UpdateProductRequest,
-        token: string
+        token: string,
     ): Promise<Product> {
         try {
             const headers = { Authorization: `Bearer ${token}` };
             const result = await httpClient.patch<Product>(
                 `${this.basePath}/${id}`,
                 productData,
-                headers
+                headers,
             );
             return result;
         } catch (error) {
-            console.error("Error updating product:", error);
+            console.error('Error updating product:', error);
             throw error;
         }
     }
@@ -122,10 +122,10 @@ export class ProductsService {
             await httpClient.delete<void>(
                 `${this.basePath}/${productId}/images`,
                 { imageUrl },
-                headers
+                headers,
             );
         } catch (error) {
-            console.error("Error deleting product image:", error);
+            console.error('Error deleting product image:', error);
             throw error;
         }
     }
@@ -134,17 +134,17 @@ export class ProductsService {
         try {
             const searchParams = new URLSearchParams();
 
-            if (params.q) searchParams.append("q", params.q);
-            if (params.page) searchParams.append("page", params.page.toString());
-            if (params.limit) searchParams.append("limit", params.limit.toString());
+            if (params.q) searchParams.append('q', params.q);
+            if (params.page) searchParams.append('page', params.page.toString());
+            if (params.limit) searchParams.append('limit', params.limit.toString());
 
             const queryString = searchParams.toString();
-            const endpoint = `${this.basePath}/search${queryString ? `?${queryString}` : ""}`;
+            const endpoint = `${this.basePath}/search${queryString ? `?${queryString}` : ''}`;
 
             const result = await httpClient.get<SearchProductsResponse>(endpoint);
             return result;
         } catch (error) {
-            console.error("Error searching products:", error);
+            console.error('Error searching products:', error);
             throw error;
         }
     }

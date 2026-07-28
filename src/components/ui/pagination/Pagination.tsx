@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { redirect, usePathname, useSearchParams } from "next/navigation";
-import { IoChevronBackOutline, IoChevronForwardOutline } from "react-icons/io5";
-import { generatePaginationNumbers } from "@/utils";
-import clsx from "clsx";
+import Link from 'next/link';
+import { redirect, usePathname, useSearchParams } from 'next/navigation';
+import { IoChevronBackOutline, IoChevronForwardOutline } from 'react-icons/io5';
+import { generatePaginationNumbers } from '@/utils';
+import clsx from 'clsx';
 
 interface Props {
     totalPages: number;
@@ -13,7 +13,7 @@ interface Props {
 export const Pagination = ({ totalPages }: Props) => {
     const pathname = usePathname(); // obtener ruta actual
     const searchParams = useSearchParams(); // obtener parámetros de la ruta
-    const pageString = searchParams.get("page") ?? 1; // verificar si hay parámetros en la ruta
+    const pageString = searchParams.get('page') ?? 1; // verificar si hay parámetros en la ruta
 
     // si los params son válidos devuelva 1, si no convierta los params en número
     const currentPage = isNaN(+pageString) ? 1 : +pageString;
@@ -28,7 +28,7 @@ export const Pagination = ({ totalPages }: Props) => {
     const createPageUrl = (pageNumber: number | string) => {
         const params = new URLSearchParams(searchParams);
 
-        if (pageNumber === "...") {
+        if (pageNumber === '...') {
             return `${pathname}?${params.toString()}`;
         }
 
@@ -40,7 +40,7 @@ export const Pagination = ({ totalPages }: Props) => {
             return `${pathname}?${params.toString()}`;
         }
 
-        params.set("page", pageNumber.toString());
+        params.set('page', pageNumber.toString());
 
         return `${pathname}?${params.toString()}`;
     };
@@ -52,10 +52,10 @@ export const Pagination = ({ totalPages }: Props) => {
                     {/* Botón Anterior */}
                     <Link
                         className={clsx(
-                            "flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-lg border transition-all duration-200",
+                            'flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-lg border transition-all duration-200',
                             currentPage <= 1
-                                ? "border-gray-200 text-gray-400 cursor-not-allowed"
-                                : "border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400"
+                                ? 'border-gray-200 text-gray-400 cursor-not-allowed'
+                                : 'border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400',
                         )}
                         href={createPageUrl(currentPage - 1)}
                         aria-label="Página anterior"
@@ -69,16 +69,16 @@ export const Pagination = ({ totalPages }: Props) => {
                             <Link
                                 key={index}
                                 className={clsx(
-                                    "flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-lg border text-sm sm:text-base font-medium transition-all duration-200",
+                                    'flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-lg border text-sm sm:text-base font-medium transition-all duration-200',
                                     page === currentPage
-                                        ? "bg-blue-600 border-blue-600 text-white shadow-sm"
-                                        : page === "..."
-                                        ? "border-transparent text-gray-500 cursor-default"
-                                        : "border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400"
+                                        ? 'bg-blue-600 border-blue-600 text-white shadow-sm'
+                                        : page === '...'
+                                          ? 'border-transparent text-gray-500 cursor-default'
+                                          : 'border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400',
                                 )}
                                 href={createPageUrl(page)}
-                                aria-label={page === "..." ? undefined : `Ir a página ${page}`}
-                                aria-current={page === currentPage ? "page" : undefined}
+                                aria-label={page === '...' ? undefined : `Ir a página ${page}`}
+                                aria-current={page === currentPage ? 'page' : undefined}
                             >
                                 {page}
                             </Link>
@@ -88,10 +88,10 @@ export const Pagination = ({ totalPages }: Props) => {
                     {/* Botón Siguiente */}
                     <Link
                         className={clsx(
-                            "flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-lg border transition-all duration-200",
+                            'flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-lg border transition-all duration-200',
                             currentPage >= totalPages
-                                ? "border-gray-200 text-gray-400 cursor-not-allowed"
-                                : "border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400"
+                                ? 'border-gray-200 text-gray-400 cursor-not-allowed'
+                                : 'border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400',
                         )}
                         href={createPageUrl(currentPage + 1)}
                         aria-label="Página siguiente"

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import clsx from "clsx";
-import Link from "next/link";
+import clsx from 'clsx';
+import Link from 'next/link';
 import {
     IoCloseOutline,
     IoLogInOutline,
@@ -10,10 +10,10 @@ import {
     IoPersonOutline,
     IoShirtOutline,
     IoTicketOutline,
-} from "react-icons/io5";
-import { useAuth } from "@/contexts/AuthContext";
-import { useUIStore } from "@/store";
-import { useRouter } from "next/navigation";
+} from 'react-icons/io5';
+import { useAuth } from '@/contexts/AuthContext';
+import { useUIStore } from '@/store';
+import { useRouter } from 'next/navigation';
 
 export const Sidebar = () => {
     const router = useRouter();
@@ -23,7 +23,7 @@ export const Sidebar = () => {
     const closeSideMenu = useUIStore((state) => state.closeSideMenu);
 
     const isAuthenticated = !!user;
-    const isAdmin = user?.roles.includes("admin");
+    const isAdmin = user?.roles.includes('admin');
 
     const handleLogout = async () => {
         try {
@@ -32,20 +32,20 @@ export const Sidebar = () => {
             closeSideMenu();
 
             // Llamar a la API para limpiar las cookies del servidor
-            const response = await fetch("/api/auth/logout", {
-                method: "POST",
+            const response = await fetch('/api/auth/logout', {
+                method: 'POST',
             });
 
             if (!response.ok) {
-                throw new Error("Failed to logout");
+                throw new Error('Failed to logout');
             }
 
             // Redirigir al home
-            router.push("/");
+            router.push('/');
         } catch (error) {
-            console.error("Error during logout:", error);
+            console.error('Error during logout:', error);
             // Fallback: redirigir al home de todas formas
-            router.push("/");
+            router.push('/');
         }
     };
 
@@ -67,10 +67,10 @@ export const Sidebar = () => {
             {/* Sidemenu */}
             <nav
                 className={clsx(
-                    "overflow-auto fixed p-4 sm:p-6 right-0 top-0 w-full max-w-sm sm:max-w-xs h-screen bg-white z-20 shadow-2xl transform transition-all duration-300",
+                    'overflow-auto fixed p-4 sm:p-6 right-0 top-0 w-full max-w-sm sm:max-w-xs h-screen bg-white z-20 shadow-2xl transform transition-all duration-300',
                     {
-                        "translate-x-full": !isSideMenuOpen,
-                    }
+                        'translate-x-full': !isSideMenuOpen,
+                    },
                 )}
             >
                 {/* Close menu button */}

@@ -1,10 +1,10 @@
 export const revalidate = 0;
 
-import { redirect } from "next/navigation";
-import { getPaginatedUsers } from "@/actions";
-import { getSession } from "@/lib/session";
-import { Pagination, Title } from "@/components";
-import { UsersTable } from "./ui/UsersTable";
+import { redirect } from 'next/navigation';
+import { getPaginatedUsers } from '@/actions';
+import { getSession } from '@/lib/session';
+import { Pagination, Title } from '@/components';
+import { UsersTable } from './ui/UsersTable';
 
 interface Props {
     searchParams: Promise<{ page?: string }>;
@@ -18,7 +18,7 @@ export default async function UsersPage({ searchParams }: Props) {
     const currentUser = await getSession();
 
     if (!currentUser) {
-        redirect("/auth/login");
+        redirect('/auth/login');
     }
 
     const {
@@ -30,7 +30,7 @@ export default async function UsersPage({ searchParams }: Props) {
     });
 
     if (users.length === 0 || !ok) {
-        redirect("/");
+        redirect('/');
     }
 
     return (

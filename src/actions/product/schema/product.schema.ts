@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 // Validación de datos del formulario
 export const productSchema = z.object({
@@ -9,7 +9,7 @@ export const productSchema = z.object({
         .string()
         .min(3)
         .max(255)
-        .transform((val) => val.toLowerCase().replace(/ /g, "_").trim()),
+        .transform((val) => val.toLowerCase().replace(/ /g, '_').trim()),
     description: z.string(),
     price: z.coerce
         .number()
@@ -20,7 +20,7 @@ export const productSchema = z.object({
         .min(0)
         .transform((val) => Number(val.toFixed(0))),
     categoryId: z.uuid(),
-    sizes: z.coerce.string().transform((val) => val.split(",")),
+    sizes: z.coerce.string().transform((val) => val.split(',')),
     tags: z.string(),
-    gender: z.enum(["men", "women", "kids", "unisex"]),
+    gender: z.enum(['men', 'women', 'kids', 'unisex']),
 });

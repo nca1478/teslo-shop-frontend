@@ -1,10 +1,10 @@
-"use server";
+'use server';
 
-import { revalidatePath } from "next/cache";
-import { v2 as cloudinary } from "cloudinary";
-import { productsService } from "@/lib/services";
-import { getAuthToken } from "@/lib/session";
-import { productSchema } from "./schema/product.schema";
+import { revalidatePath } from 'next/cache';
+import { v2 as cloudinary } from 'cloudinary';
+import { productsService } from '@/lib/services';
+import { getAuthToken } from '@/lib/session';
+import { productSchema } from './schema/product.schema';
 
 // configurar cloudinary (subir imagenes)
 cloudinary.config({
@@ -33,13 +33,13 @@ export const createUpdateProduct = async (formData: FormData) => {
         if (!token) {
             return {
                 ok: false,
-                message: "Token de autenticación no encontrado",
+                message: 'Token de autenticación no encontrado',
             };
         }
 
         // Cargar y subir las imágenes primero
         let images: string[] = [];
-        const imageFiles = formData.getAll("images") as File[];
+        const imageFiles = formData.getAll('images') as File[];
 
         // Filtrar archivos vacíos
         const validImageFiles = imageFiles.filter((file) => file instanceof File && file.size > 0);
@@ -47,12 +47,12 @@ export const createUpdateProduct = async (formData: FormData) => {
         if (validImageFiles.length > 0) {
             const uploadedImages = await uploadImages(validImageFiles);
             if (!uploadedImages) {
-                throw new Error("Error al subir las imágenes");
+                throw new Error('Error al subir las imágenes');
             }
             images = uploadedImages.filter((img) => img !== null) as string[];
         }
 
-        const tagsArray = rest.tags.split(",").map((tag) => tag.trim().toLowerCase());
+        const tagsArray = rest.tags.split(',').map((tag) => tag.trim().toLowerCase());
 
         const productData = {
             title: rest.title,
@@ -78,7 +78,7 @@ export const createUpdateProduct = async (formData: FormData) => {
         }
 
         // revalidar los paths
-        revalidatePath("/admin/products");
+        revalidatePath('/admin/products');
         revalidatePath(`/admin/product/${resultProduct.slug}`);
         revalidatePath(`/products/${resultProduct.slug}`);
 
@@ -88,7 +88,7 @@ export const createUpdateProduct = async (formData: FormData) => {
         };
     } catch (error) {
         console.log(error);
-        let message = "Revisar los logs, no se pudo actualizar/crear";
+        let message = 'Revisar los logs, no se pudo actualizar/crear';
 
         if (error instanceof Error) {
             message = error.message;
@@ -106,7 +106,7 @@ const uploadImages = async (images: File[]) => {
         const uploadPromises = images.map(async (image) => {
             try {
                 const buffer = await image.arrayBuffer();
-                const base64Image = Buffer.from(buffer).toString("base64");
+                const base64Image = Buffer.from(buffer).toString('base64');
 
                 return cloudinary.uploader
                     .upload(`data:image/png;base64,${base64Image}`)

@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import Link from "next/link";
-import { IoCartOutline } from "react-icons/io5";
-import { useCartStore, useUIStore } from "@/store";
-import { titleFont } from "@/config/fonts/fonts";
-import { SearchInput } from "@/components";
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { IoCartOutline } from 'react-icons/io5';
+import { useCartStore, useUIStore } from '@/store';
+import { titleFont } from '@/config/fonts/fonts';
+import { SearchInput } from '@/components';
 
 export const TopMenu = () => {
     const openSideMenu = useUIStore((state) => state.openSideMenu);
@@ -77,7 +77,7 @@ export const TopMenu = () => {
                         >
                             <div className="relative">
                                 <span className="fade-in absolute text-xs rounded-full px-1.5 py-0.5 font-bold -top-1 -right-1 bg-blue-700 text-white min-w-[18px] text-center leading-none">
-                                    {totalItemsInCart > 99 ? "99+" : totalItemsInCart}
+                                    {totalItemsInCart > 99 ? '99+' : totalItemsInCart}
                                 </span>
                                 <IoCartOutline className="w-5 h-5 sm:w-6 sm:h-6" />
                             </div>
