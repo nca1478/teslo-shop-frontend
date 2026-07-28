@@ -109,7 +109,7 @@ export const RegisterForm = () => {
             <button
                 type="submit"
                 className={clsx(
-                    "w-full py-2.5 text-sm font-medium rounded-lg transition-all duration-200 touch-target mt-4",
+                    "w-full py-2.5 text-sm font-medium rounded-lg transition-all duration-200 touch-target mt-4 cursor-pointer",
                     {
                         "btn-primary": !isLoading,
                         "btn-disabled": isLoading,
