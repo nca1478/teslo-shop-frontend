@@ -36,7 +36,7 @@ export const useForgotPasswordForm = () => {
                     router.push(`/auth/verify-otp?email=${encodeURIComponent(data.email)}`);
                 }, 1500);
             } else {
-                setErrorMessage(result.message || 'Error al enviar el código');
+            setErrorMessage(result.message || 'Error al enviar el código OTP');
             }
         } catch {
             setErrorMessage('Error al enviar el código');
